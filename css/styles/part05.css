@@ -1,0 +1,440 @@
+
+
+/* Portal comercial Premedic */
+.premedic-portal {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(44, 201, 172, .16), transparent 27%),
+    radial-gradient(circle at 12% 88%, rgba(13, 138, 122, .14), transparent 24%),
+    linear-gradient(135deg, #031817 0%, #052b28 48%, #063f39 100%);
+}
+.portal-shell {
+  position: relative;
+  overflow: hidden;
+  width: min(1040px, 100%);
+  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 42px 48px 46px;
+  border: 1px solid rgba(115, 232, 208, .14);
+  border-radius: 32px;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+  box-shadow: 0 34px 90px rgba(0,0,0,.28);
+  isolation: isolate;
+}
+.portal-brand {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: max-content;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+.portal-brand-mark {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: #062c27;
+  background: #66e3ca;
+  font-size: 18px;
+  font-weight: 900;
+  box-shadow: 0 8px 22px rgba(83, 225, 196, .18);
+}
+.portal-panel {
+  position: relative;
+  z-index: 2;
+  width: min(670px, 76%);
+  padding: 42px 0 12px;
+}
+.portal-kicker {
+  display: block;
+  margin-bottom: 14px;
+  color: #6be3ca;
+  font-size: 13px;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+.portal-panel h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(48px, 6.2vw, 78px);
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+.portal-panel > p {
+  margin: 22px 0 0;
+  color: rgba(239, 249, 247, .72);
+  font-size: clamp(16px, 1.8vw, 20px);
+}
+.portal-action-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 38px;
+}
+.portal-vigencia {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1px solid rgba(119, 227, 206, .18);
+  border-radius: 14px;
+  color: rgba(241, 250, 248, .78);
+  background: rgba(255,255,255,.045);
+  font-size: 13px;
+  font-weight: 650;
+}
+.portal-open-btn {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 19px;
+  border: 0;
+  border-radius: 14px;
+  color: #042e29;
+  background: #64e1c8;
+  font-weight: 800;
+  box-shadow: 0 12px 28px rgba(66, 218, 187, .15);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.portal-open-btn:hover {
+  transform: translateY(-2px);
+  background: #78ead3;
+  box-shadow: 0 16px 34px rgba(66, 218, 187, .22);
+}
+.portal-open-btn svg,
+.portal-back-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.portal-art {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.portal-orbit {
+  position: absolute;
+  border: 1px solid rgba(100, 225, 200, .22);
+  border-radius: 46% 54% 58% 42% / 52% 43% 57% 48%;
+}
+.portal-orbit-one {
+  width: 510px;
+  height: 410px;
+  right: -150px;
+  top: 55px;
+  transform: rotate(18deg);
+}
+.portal-orbit-two {
+  width: 370px;
+  height: 310px;
+  right: -55px;
+  bottom: -150px;
+  transform: rotate(-19deg);
+  border-color: rgba(100, 225, 200, .13);
+}
+.portal-dot-grid {
+  position: absolute;
+  width: 118px;
+  height: 82px;
+  right: 52px;
+  top: 52px;
+  opacity: .26;
+  background-image: radial-gradient(circle, #6ee2cc 1.2px, transparent 1.4px);
+  background-size: 13px 13px;
+}
+.portal-back-btn {
+  margin: 0 0 12px auto;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--accent-strong);
+  background: rgba(255,255,255,.76);
+  font-size: 12px;
+  font-weight: 750;
+  box-shadow: 0 6px 18px rgba(19,57,51,.06);
+}
+.portal-back-btn:hover { background: #fff; }
+
+@media (max-width: 760px) {
+  .premedic-portal { padding: 12px; }
+  .portal-shell {
+    min-height: 520px;
+    padding: 28px 24px 30px;
+    border-radius: 24px;
+  }
+  .portal-panel { width: 100%; }
+  .portal-panel h1 { font-size: clamp(42px, 13vw, 62px); }
+  .portal-action-row { align-items: stretch; flex-direction: column; }
+  .portal-vigencia, .portal-open-btn { width: 100%; }
+  .portal-art { opacity: .72; }
+  .portal-back-btn { margin-right: 2px; }
+}
+
+/* =========================================================
+   COTIZACION PDF V3 - propuesta comercial Premedic
+   ========================================================= */
+.quote-document {
+  display: grid;
+  gap: 24px;
+}
+.quote-page {
+  width: 794px;
+  min-height: 1123px;
+  margin: 0 auto;
+  background: #fff;
+  color: #18302c;
+  border-radius: 18px;
+  box-shadow: 0 16px 36px rgba(0,0,0,.09);
+  overflow: hidden;
+}
+.quote-commercial-page {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.quote-editorial-header {
+  position: relative;
+  min-height: 320px;
+  padding: 30px 34px 38px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 92% 12%, rgba(24,150,131,.14), transparent 26%),
+    linear-gradient(180deg, #f5fbf9 0%, #ffffff 100%);
+  border-bottom: 1px solid #dfeae7;
+}
+.quote-editorial-header::before {
+  content: "";
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  right: -178px;
+  top: -140px;
+  border: 1px solid rgba(10,121,106,.16);
+  border-radius: 50%;
+  box-shadow: 0 0 0 46px rgba(10,121,106,.035), 0 0 0 92px rgba(10,121,106,.02);
+}
+.quote-editorial-top,
+.quote-editorial-main {
+  position: relative;
+  z-index: 1;
+}
+.quote-editorial-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.quote-brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.quote-brand-lockup strong {
+  color: #087568;
+  font-size: 16px;
+  letter-spacing: .015em;
+}
+.quote-brand-lockup em {
+  padding-left: 12px;
+  border-left: 1px solid #cbded9;
+  color: #758985;
+  font-size: 11px;
+  font-style: normal;
+}
+.quote-logo-mark-light {
+  background: linear-gradient(145deg, #0a8b7a, #075e55);
+  border-color: rgba(0,0,0,.02);
+  box-shadow: none;
+}
+.quote-meta-light span { color: #7c8f8a; }
+.quote-meta-light strong { color: #1d3933; }
+.quote-editorial-main {
+  margin-top: 70px;
+  max-width: 620px;
+}
+.quote-eyebrow-dark {
+  display: block;
+  margin-bottom: 9px;
+  color: #0a8b7a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.quote-editorial-main h1 {
+  margin: 0;
+  max-width: 630px;
+  color: #17332e;
+  font-size: 38px;
+  line-height: 1.02;
+  letter-spacing: -.045em;
+}
+.quote-plan-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  color: #506a64;
+  font-size: 12px;
+}
+.quote-plan-line > span {
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: #0a7c6e;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+.quote-plan-line > strong { font-weight: 700; }
+.quote-plan-line > i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #b4c6c1;
+}
+.quote-body-v3 {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+  padding: 23px 30px 18px;
+}
+.quote-client-summary {
+  display: grid;
+  grid-template-columns: 175px minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+  border: 1px solid #dfeae7;
+  border-radius: 18px;
+  background: #fff;
+}
+.quote-client-lead {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 18px;
+  background: #f3f9f7;
+}
+.quote-client-lead span {
+  color: #0a8475;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.quote-client-lead strong { font-size: 13px; }
+.quote-client-data {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.quote-client-data > div {
+  display: grid;
+  gap: 3px;
+  padding: 12px 15px;
+  border-left: 1px solid #e6efed;
+  border-bottom: 1px solid #e6efed;
+}
+.quote-client-data > div:nth-last-child(-n+2) { border-bottom: 0; }
+.quote-client-data span { color: #849691; font-size: 9px; }
+.quote-client-data strong { font-size: 11px; line-height: 1.25; }
+.quote-economy-v3 {
+  grid-template-columns: minmax(0, 1.12fr) minmax(250px, .88fr);
+  padding: 16px;
+  border-radius: 20px;
+  background: #f2f8f6;
+}
+.quote-total-card-v3 {
+  min-height: 190px;
+  justify-content: center;
+  padding: 22px;
+}
+.quote-total-card-v3 > span {
+  color: rgba(255,255,255,.72);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.quote-total-card-v3 > b {
+  display: inline-flex;
+  margin: 11px 0 9px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.14);
+  color: #fff;
+  font-size: 13px;
+}
+.quote-total-card-v3 > strong {
+  margin: 0 0 5px;
+  font-size: 38px;
+}
+.quote-total-card-v3 > em { margin-top: 15px; }
+.quote-advisor-strip-v3 > div { padding: 10px 13px; }
+.quote-conditions {
+  display: grid;
+  grid-template-columns: 190px minmax(0,1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid #e3ecea;
+  background: #fbfdfc;
+}
+.quote-conditions > div { display: grid; gap: 3px; }
+.quote-conditions span { color: #81938e; font-size: 8.5px; }
+.quote-conditions strong { font-size: 10.5px; }
+.quote-conditions p {
+  margin: 0;
+  padding-left: 14px;
+  border-left: 1px solid #e2ebe8;
+  color: #70827d;
+  font-size: 8.5px;
+  line-height: 1.45;
+}
+.quote-footer-v3 { margin-top: auto; }
+
+.quote-benefits-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(17,142,124,.09), transparent 24%),
+    #fff;
+}
+.benefits-header {
+  padding: 38px 42px 30px;
+  border-bottom: 1px solid #e1ebe8;
+}
+.benefits-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 44px;
+  color: #087568;
+}
