@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Acceso · Premedic</title>
+  <link rel="stylesheet" href="auth/login.css">
+</head>
+<body>
+  <main class="login-page">
+    <section class="login-shell" aria-labelledby="loginTitle">
+      <div class="login-visual" aria-hidden="true">
+        <img src="https://images.pexels.com/photos/20194638/pexels-photo-20194638.jpeg?cs=srgb&dl=pexels-catalinac29-20194638.jpg&fm=jpg" alt="" referrerpolicy="no-referrer">
+        <div class="login-visual-overlay"></div>
+        <div class="login-visual-copy">
+          <span>Portal comercial</span>
+          <strong>Tu cobertura, más cerca.</strong>
+        </div>
+      </div>
+
+      <div class="login-panel">
+        <header class="login-brand">
+          <img src="assets/premedic-logo-oficial.png" alt="Premedic">
+        </header>
+
+        <div class="login-copy">
+          <span>Bienvenido</span>
+          <h1 id="loginTitle">Ingresá al portal</h1>
+          <p>Accedé al cotizador Premedic de forma simple y segura.</p>
+        </div>
+
+        <form id="loginForm" class="login-form" novalidate>
+          <label>
+            <span>Usuario</span>
+            <input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+          </label>
+
+          <label>
+            <span>Contraseña</span>
+            <div class="password-field">
+              <input id="password" name="password" type="password" autocomplete="current-password" required>
+              <button id="togglePassword" type="button" aria-label="Mostrar contraseña">Ver</button>
+            </div>
+          </label>
+
+          <p id="loginError" class="login-error" role="alert" aria-live="polite"></p>
+
+          <button id="loginButton" class="login-button" type="submit">
+            <span>Ingresar</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <footer>Herramienta comercial · Grupo Zeroka</footer>
+      </div>
+    </section>
+  </main>
+  <script src="auth/login.js"></script>
+</body>
+</html>
