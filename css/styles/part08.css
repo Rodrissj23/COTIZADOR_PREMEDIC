@@ -1,0 +1,293 @@
+
+
+/* Hero: más corto, más marca y menos decorado */
+.hero-card {
+  min-height: 242px;
+  padding-top: 34px;
+  padding-bottom: 32px;
+  border-radius: 20px;
+  box-shadow: 0 10px 28px rgba(46,66,70,.055);
+}
+.hero-brand-logo { width: 204px; margin-bottom: 15px; }
+.hero-copy h1 { margin-top: 13px; font-size: clamp(34px,4vw,48px); }
+.hero-copy p { margin-top: 9px; max-width: 600px; }
+.hero-features { margin-top: 18px; gap: 12px; }
+.hero-art { opacity: .17; }
+.hero-shape { transform: scale(.72); }
+
+/* Constructor: menos cajas, más aire */
+.quote-workspace { gap: 18px; }
+.quote-builder,
+.quote-summary-card { border-radius: 20px; box-shadow: 0 8px 24px rgba(49,66,72,.045); }
+.builder-topbar { padding-top: 25px; padding-bottom: 22px; }
+.builder-topbar p { max-width: 610px; }
+.builder-section { padding-top: 24px; padding-bottom: 24px; }
+.selector-tile,
+.children-card,
+.contribution-panel,
+.advisor-panel { border-radius: 14px; box-shadow: none; }
+.selector-tile:hover { transform: none; }
+
+/* Resumen realmente en vivo y visualmente más liviano */
+.summary-cover {
+  min-height: 114px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg,#078d83 0%,#06776f 100%);
+}
+.summary-cover-art { width: 130px; height: 130px; right: -52px; top: -55px; opacity: .65; }
+.summary-status { padding: 5px 8px; font-size: 9px; }
+.summary-cover h2 { margin: 11px 0 2px; font-size: 21px; }
+.summary-cover p { display: none; }
+.summary-body { padding: 14px 18px 18px; }
+.summary-empty-refined { min-height: 82px; }
+.summary-empty-mark { width: 38px; height: 38px; border-radius: 12px; font-size: 15px; }
+.summary-line { min-height: 40px; }
+.commercial-note { margin-top: 12px; }
+
+/* Resultados: comerciales y sin repetir el mismo precio */
+.results-panel {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.results-top { padding: 24px 4px 16px; }
+.plans-grid {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  gap: 14px;
+}
+.plan-card.plan-card-refined {
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 7px 20px rgba(47,67,72,.045);
+}
+.plan-card.plan-card-refined:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  width: calc(50% - 7px);
+  justify-self: center;
+}
+.plan-card.selected {
+  border-color: #8bcfc5;
+  box-shadow: 0 0 0 2px rgba(7,139,130,.07), 0 10px 26px rgba(7,139,130,.07);
+}
+.plan-card-top { padding: 17px 18px 8px; }
+.plan-content { gap: 12px; padding: 4px 18px 18px; }
+.plan-price-block { padding: 9px 0 5px; }
+.plan-row-label { text-transform: none; letter-spacing: 0; font-size: 11px; }
+.plan-price { margin-top: 5px; font-size: 34px; }
+.breakdown.breakdown-compact {
+  gap: 7px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #f8fbfa;
+}
+.breakdown-compact .breakdown-line { font-size: 11px; }
+.breakdown-compact .breakdown-line.discount strong { color: var(--pm-brand-dark); }
+.plan-detail { min-height: 20px; font-size: 11px; line-height: 1.45; }
+.elegir-plan { min-height: 43px; border-radius: 10px; }
+
+/* Selección: confirmación compacta, no una segunda hero */
+.selection-banner {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid #d9e9e5;
+  border-left: 5px solid var(--pm-brand);
+  border-radius: 15px;
+  color: var(--pm-ink);
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(47,67,72,.05);
+}
+.selection-copy h2 { margin: 5px 0 3px; color: var(--pm-brand-dark); font-size: 23px; }
+.selection-copy p { color: #78827f; font-size: 11px; }
+.selection-price { margin-bottom: 5px; color: var(--pm-brand-dark); font-size: 29px; }
+.selection-banner .section-chip { color: var(--pm-brand-dark); background: var(--pm-brand-soft); }
+.selection-banner .btn-secondary { color: #68736f; background: #fff; border: 1px solid #dce5e2; }
+.selection-banner .btn-primary { color: #fff; background: var(--pm-brand); }
+
+/* Preview siempre arriba y con cabecera fija */
+.preview-dialog { max-height: 96vh; }
+.preview-header { position: sticky; top: 0; z-index: 10; }
+.preview-body { scroll-behavior: auto; }
+
+/* PDF: más Premedic, más blanco, logo oficial en color */
+.quote-editorial-header {
+  min-height: 245px;
+  padding: 27px 32px 28px;
+  color: #303846;
+  background: #fff;
+  border-bottom: 1px solid #e3ece9;
+}
+.quote-editorial-header::before {
+  width: 250px;
+  height: 250px;
+  right: -126px;
+  top: -130px;
+  border-color: rgba(7,139,130,.15);
+  box-shadow: 0 0 0 34px rgba(7,139,130,.025), 0 0 0 68px rgba(7,139,130,.015);
+}
+.quote-brand-logo-header {
+  width: 210px;
+  filter: none !important;
+}
+.quote-brand-lockup em {
+  border-left-color: #d8e5e2;
+  color: #788984;
+}
+.quote-meta-light span { color: #8a9794; }
+.quote-meta-light strong { color: #28423d; }
+.quote-editorial-main {
+  max-width: none;
+  margin-top: 25px;
+  padding: 20px 22px;
+  border: 1px solid #dcebe7;
+  border-radius: 16px;
+  background: linear-gradient(135deg,#f3faf8 0%,#fbfdfc 100%);
+}
+.quote-eyebrow-dark { color: var(--pm-brand); }
+.quote-editorial-main h1 { color: #303846; font-size: 32px; }
+.quote-plan-line { margin-top: 12px; color: #667773; }
+.quote-plan-line > span,
+.quote-plan-line > strong {
+  min-height: 25px;
+  padding: 5px 9px;
+  border: 1px solid #dceae7;
+  background: #fff;
+  color: #526760;
+}
+.quote-plan-line > span { color: #fff; background: var(--pm-brand); border-color: var(--pm-brand); }
+.quote-body-v3 { gap: 12px; padding: 18px 30px 14px; }
+.quote-client-summary,
+.quote-economy-v3,
+.quote-advisor-strip-v3,
+.quote-conditions { border-radius: 13px; }
+.quote-economy-v3 { background: #f5f9f8; }
+.quote-total-card-v3 {
+  min-height: 160px;
+  background: linear-gradient(145deg,#078b82,#06736b);
+  border-radius: 14px;
+}
+.quote-total-card-v3 > strong { font-size: 34px; }
+.quote-highlights { gap: 8px; }
+.quote-highlights > article { padding: 11px 12px; border-radius: 13px; }
+.quote-highlights small { display: none; }
+
+.quote-brand-story {
+  min-height: 106px;
+  display: grid;
+  grid-template-columns: 1.35fr .65fr;
+  overflow: hidden;
+  border: 1px solid #dceae7;
+  border-radius: 14px;
+  background: #f4faf8;
+}
+.quote-brand-story > div:first-child {
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 16px 18px;
+}
+.quote-brand-story span {
+  color: var(--pm-brand);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+.quote-brand-story strong { color: #29423d; font-size: 14px; }
+.quote-brand-story small { max-width: 430px; color: #75857f; font-size: 8px; line-height: 1.4; }
+.quote-brand-story-media { position: relative; overflow: hidden; }
+.quote-brand-story-media::before {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: linear-gradient(90deg,#f4faf8 0%,transparent 45%);
+}
+.quote-brand-story-media img {
+  width: 135%;
+  height: 100%;
+  margin-left: -35%;
+  object-fit: cover;
+  object-position: right center;
+}
+
+/* Página 2: marca + familia sin perder claridad */
+.benefits-header {
+  display: grid;
+  grid-template-columns: minmax(0,1.25fr) minmax(210px,.75fr);
+  gap: 24px;
+  align-items: stretch;
+  padding: 30px 38px 26px;
+  background: #fff;
+}
+.benefits-header-copy { display: flex; flex-direction: column; justify-content: center; }
+.benefits-brand { margin-bottom: 32px; }
+.benefits-brand-logo { width: 178px; }
+.benefits-header-copy > span {
+  color: var(--pm-brand);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.benefits-header h2 { margin-top: 7px; font-size: 32px; }
+.benefits-header p { font-size: 11px; }
+.benefits-family {
+  position: relative;
+  min-height: 205px;
+  overflow: hidden;
+  border-radius: 34% 12px 34% 12px;
+  background: #f3f6f7;
+}
+.benefits-family img {
+  width: 150%;
+  height: 100%;
+  margin-left: -50%;
+  object-fit: cover;
+  object-position: right center;
+}
+.benefits-grid { padding-top: 22px; }
+.benefit-card { min-height: 175px; border-radius: 15px; }
+
+@media (max-width: 860px) {
+  .portal-family img { width: 120%; margin-left: -20%; }
+  .hero-card { min-height: auto; }
+  .plans-grid { grid-template-columns: 1fr; }
+  .plan-card.plan-card-refined:last-child:nth-child(odd) { grid-column: auto; width: 100%; }
+  .selection-banner { align-items: stretch; }
+  .benefits-header { grid-template-columns: 1fr; }
+  .benefits-family { min-height: 180px; }
+}
+
+@media print {
+  #printArea .quote-editorial-header { min-height: 245px !important; background: #fff !important; }
+  #printArea .quote-brand-logo-header { filter: none !important; }
+  #printArea .quote-editorial-main { margin-top: 25px !important; }
+  #printArea .quote-brand-story { display: grid !important; grid-template-columns: 1.35fr .65fr !important; }
+  #printArea .benefits-header { display: grid !important; grid-template-columns: minmax(0,1.25fr) minmax(210px,.75fr) !important; }
+}
+
+/* =========================================================
+   AUDITORIA FINAL 70 PUNTOS — agosto 2026
+   Unifica Login / Portal / Cotizador / Resultados / PDF
+   ========================================================= */
+:root{
+  --pm-brand:#078b82;
+  --pm-brand-dark:#056f69;
+  --pm-brand-soft:#e9f6f4;
+  --pm-brand-faint:#f4faf8;
+  --pm-ink:#343746;
+  --pm-muted:#7a8190;
+  --pm-line:#e4e9eb;
+}
+
+/* PORTAL: más blanco, humano y Premedic */
+.premedic-portal{padding:22px;background:linear-gradient(180deg,#fff 0%,#f7f9fa 100%)}
+.portal-shell.portal-shell-brand{min-height:620px;border-radius:26px;box-shadow:0 20px 54px rgba(45,62,69,.09)}
+.portal-topbar{min-height:70px;padding:0 34px;border-bottom:1px solid #edf0f1}
+.portal-brand-logo{width:220px}
+.portal-logout-btn{min-height:38px;padding:0 14px;border-radius:9px;font-size:12px}
+.portal-grid{min-height:550px;grid-template-columns:.9fr 1.1fr}
+.portal-panel{padding:54px 34px 46px 58px}
+.portal-kicker{margin-bottom:11px;font-size:10px}
+.portal-panel h1{font-size:clamp(48px,4.7vw,68px);line-height:1;letter-spacing:-.045em}
+.portal-panel>p{max-width:430px;margin-top:18px;font-size:15px;line-height:1.5}
