@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d8a7a">
+  <title>Cotizador Premedic</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <section id="portalScreen" class="premedic-portal" aria-label="Portal comercial Premedic">
+    <div class="portal-shell portal-shell-brand">
+      <div class="portal-topbar">
+        <div class="portal-brand">
+          <img src="assets/premedic-logo-oficial.png" alt="Premedic" class="portal-brand-logo">
+        </div>
+        <button id="logoutBtn" class="portal-logout-btn" type="button">Cerrar sesión</button>
+      </div>
+
+      <div class="portal-grid">
+        <div class="portal-panel">
+          <span class="portal-kicker">Bienvenido</span>
+          <h1>Cotizador<br><strong>Premedic</strong></h1>
+          <p>Cotizá planes Premedic de forma simple, clara y rápida.</p>
+
+          <div class="portal-specs" aria-label="Cobertura del cotizador">
+            <span>Directo y Desregulado</span>
+            <i></i>
+            <span>AMBA e Interior</span>
+          </div>
+
+          <div class="portal-action-row">
+            <button id="abrirCotizadorBtn" class="portal-open-btn" type="button">
+              Abrir cotizador
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+            </button>
+            <span class="portal-vigencia">Vigencia Septiembre 2026</span>
+          </div>
+
+          <div class="portal-signature">Herramienta comercial · Grupo Zeroka</div>
+        </div>
+
+        <div class="portal-family" aria-hidden="true">
+          <span class="portal-family-curve"></span>
+          <img src="https://images.pexels.com/photos/7983214/pexels-photo-7983214.jpeg?cs=srgb&dl=pexels-kampus-7983214.jpg&fm=jpg" alt="" referrerpolicy="no-referrer">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="cotizadorApp" class="app-shell hidden">
+    <button id="volverPortalBtn" class="portal-back-btn" type="button" aria-label="Volver al portal">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+      Portal Premedic
+    </button>
+    <header class="hero-card">
+      <div class="hero-art" aria-hidden="true">
+        <span class="hero-shape hero-shape-one"></span>
+        <span class="hero-shape hero-shape-two"></span>
+        <span class="hero-shape hero-shape-three"></span>
+        <span class="hero-dots hero-dots-one"></span>
+        <span class="hero-dots hero-dots-two"></span>
+      </div>
+
+      <div class="hero-copy">
+        <img class="hero-brand-logo" src="assets/premedic-logo-oficial.png" alt="Premedic">
+        <div class="hero-vigencia">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 2v3M17 2v3M3.5 9h17M5.5 4.5h13a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2Z"/>
+            <path d="M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01"/>
+          </svg>
+          <span id="vigenciaBadge">Vigencia Septiembre 2026</span>
+        </div>
+
+        <h1>Cotizador Premedic</h1>
+        <p>Completá los datos y encontrá el plan indicado de forma simple y clara.</p>
+
+        <div class="hero-features" aria-label="Características del cotizador">
+          <span>
+            <i class="feature-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m7 12 3 3 7-7"/></svg>
+            </i>
+            Directo y Desregulado
+          </span>
+          <span class="feature-divider" aria-hidden="true"></span>
+          <span>
+            <i class="feature-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="m7 12 3 3 7-7"/></svg>
+            </i>
+            AMBA e Interior
+          </span>
+        </div>
+      </div>
+    </header>
+
+    <main class="quote-workspace">
+      <section class="quote-builder">
+        <div class="builder-topbar">
+          <div>
+            <span class="builder-kicker">Nueva cotización</span>
+            <h2>Armá tu cotización</h2>
+            <p>Completá los datos del cliente y calculá los planes disponibles.</p>
+          </div>
+          <div class="builder-progress" aria-label="Progreso de carga">
+            <span class="is-active"><b>01</b> Datos</span>
+            <i></i>
+            <span><b>02</b> Integrantes</span>
+          </div>
+        </div>
+
+        <section class="builder-section">
+          <div class="section-intro">
+            <div class="section-index">01</div>
+            <div>
+              <span class="section-eyebrow">Cliente</span>
+              <h3>Datos del cliente</h3>
+              <p>Elegí zona, modalidad y composición.</p>
+            </div>
+          </div>
+
+          <div class="client-grid">
+            <label class="field field-prominent">
+              <span>Nombre y apellido</span>
+              <input id="nombre" type="text" placeholder="Ej. Juan Pérez" autocomplete="name">
+            </label>
+            <label class="field">
+              <span>DNI <small>(opcional)</small></span>
+              <input id="dni" type="text" inputmode="numeric" placeholder="Ej. 30111222">
+            </label>
+          </div>
+
+          <div class="selector-grid">
+            <label class="selector-tile" for="zona">
+              <span class="selector-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 21s6-5.2 6-11a6 6 0 1 0-12 0c0 5.8 6 11 6 11Z"/><circle cx="12" cy="10" r="2.2"/></svg>
+              </span>
+              <span class="selector-copy">
+                <small>Zona</small>
+                <select id="zona">
+                  <option value="amba">AMBA</option>
+                  <option value="interior">Interior</option>
+                </select>
+              </span>
+            </label>
+
+            <label class="selector-tile" for="modalidad">
+              <span class="selector-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 7h16M7 4v6M17 4v6M5 13h14v7H5z"/></svg>
+              </span>
+              <span class="selector-copy">
+                <small>Modalidad</small>
+                <select id="modalidad">
+                  <option value="directo">Directo</option>
+                  <option value="desregulado">Desregulado</option>
+                </select>
+              </span>
+            </label>
+
+            <label class="selector-tile" for="composicion">
+              <span class="selector-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.3"/><path d="M3.5 19c.6-3.3 2.5-5 5.5-5s4.9 1.7 5.5 5M14 19c.3-2.3 1.5-3.6 3.6-3.6 1.5 0 2.6.7 3.2 2"/></svg>
+              </span>
+              <span class="selector-copy">
+                <small>Composición</small>
+                <select id="composicion">
+                  <option value="individual">Individual</option>
+                  <option value="titular_hijos">Titular + hijo/s</option>
+                  <option value="pareja">Titular + pareja</option>
+                  <option value="pareja_hijos">Titular + pareja + hijo/s</option>
+                </select>
+              </span>
+            </label>
+          </div>
+
+          <div id="aporteWrap" class="contribution-panel hidden">
+            <div class="contribution-symbol">$</div>
+            <div class="contribution-copy">
+              <span>Aportes de recibo</span>
+              <strong>Aplicación automática para Desregulado</strong>
+              <p>El aporte computable se calcula como <b>(aporte ÷ 3) × 7,65</b> y se descuenta de cada plan.</p>
+            </div>
+            <label class="field contribution-field">
+              <span>Aporte del recibo</span>
+              <input id="aporteRecibo" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Ej. 30000">
+            </label>
+          </div>
+        </section>
+
+        <section class="builder-section builder-section-members">
+          <div class="section-intro">
+            <div class="section-index">02</div>
+            <div>
+              <span class="section-eyebrow">Integrantes</span>
+              <h3>¿Quiénes forman parte de la cotización?</h3>
+              <p id="reglaEdad">La edad tarifaria se toma desde la edad del titular.</p>
+            </div>
+          </div>
+
+          <div class="age-grid">
+            <label class="age-field">
+              <span>Edad del titular</span>
+              <div class="age-input">
+                <input id="edadTitular" type="number" min="1" max="59" step="1" inputmode="numeric" placeholder="32">
+                <em>años</em>
+              </div>
+            </label>
+            <label id="parejaWrap" class="age-field hidden">
+              <span>Edad de la pareja</span>
+              <div class="age-input">
+                <input id="edadPareja" type="number" min="1" max="59" step="1" inputmode="numeric" placeholder="35">
+                <em>años</em>
+              </div>
+            </label>
+          </div>
+
+          <div id="hijosWrap" class="children-card children-card-refined hidden">
+            <div class="children-head">
+              <div>
+                <span class="section-eyebrow">Hijos</span>
+                <h3>Edades de los hijos</h3>
+                <p>Para menores de 1 año ingresá <strong>0</strong>. Los adicionales se aplican según corresponda.</p>
+              </div>
+              <label class="field compact mini-field">
+                <span>Cantidad</span>
+                <input id="cantidadHijos" type="number" min="1" max="10" step="1" value="1" inputmode="numeric">
+              </label>
+            </div>
+            <div id="edadesHijos" class="form-grid cols-3 children-grid"></div>
+          </div>
+        </section>
+
+        <details class="advisor-panel">
+          <summary>
+            <span class="advisor-summary-copy">
+              <span class="advisor-dot"></span>
+              <span>
+                <strong>Datos del asesor</strong>
+                <small>Se usan únicamente en la cotización formal.</small>
+              </span>
+            </span>
+            <span class="advisor-optional">Opcional <b>+</b></span>
+          </summary>
+          <div class="form-grid cols-3 advisor-content">
+            <label class="field">
+              <span>Asesor comercial</span>
+              <input id="asesorNombre" type="text" placeholder="Ej. Rodrigo Altamura">
+            </label>
+            <label class="field">
+              <span>Teléfono / WhatsApp</span>
+              <input id="asesorTelefono" type="text" placeholder="Ej. 11 0000-0000">
+            </label>
+            <label class="field">
+              <span>Mail</span>
+              <input id="asesorMail" type="email" placeholder="Ej. asesor@empresa.com">
+            </label>
+          </div>
+        </details>
+
+        <div class="builder-actions">
+          <div class="builder-actions-copy">
+            <strong>Todo listo para cotizar</strong>
+            <span>El cálculo no modifica los datos cargados.</span>
+          </div>
+          <div class="builder-actions-buttons">
+            <button id="limpiarBtn" class="btn btn-secondary" type="button">Limpiar</button>
+            <button id="cotizarBtn" class="btn btn-primary" type="button">Calcular cotización</button>
+          </div>
+        </div>
+
+        <div id="mensaje" class="alert-box hidden" role="alert" aria-live="polite"></div>
+      </section>
+
+      <aside class="quote-rail">
+        <section class="quote-summary-card">
+          <div class="summary-cover">
+            <div class="summary-cover-art" aria-hidden="true"></div>
+            <span class="summary-status"><i></i> Resumen en vivo</span>
+            <h2>Caso actual</h2>
+            <p>Una lectura rápida antes de calcular los planes.</p>
+          </div>
+
+          <div class="summary-body">
+            <div id="emptySummary" class="summary-empty-refined">
+              <div>
+                <strong>Esperando datos</strong>
+                <p>Completá el nombre o la edad para ver el resumen.</p>
+              </div>
+            </div>
+
+            <div id="summaryContent" class="hidden">
+              <div class="summary-line"><span>Cliente</span><strong id="sumCliente">—</strong></div>
+              <div class="summary-line"><span>Tipo</span><strong id="sumTipo">—</strong></div>
+              <div class="summary-line"><span>Composición</span><strong id="sumComposicion">—</strong></div>
+              <div class="summary-line"><span>Edad tarifaria</span><strong id="sumEdad">—</strong></div>
+              <div class="summary-line"><span>Tramo</span><strong id="sumTramo">—</strong></div>
+              <div id="sumAporteReciboRow" class="summary-line hidden"><span>Aporte del recibo</span><strong id="sumAporteRecibo">—</strong></div>
+              <div id="sumAporteCalculadoRow" class="summary-line hidden"><span>Aporte computable</span><strong id="sumAporteCalculado">—</strong></div>
+              <div class="summary-line summary-line-strong"><span>Planes disponibles</span><strong id="sumPlanes">—</strong></div>
+            </div>
+
+            <div class="commercial-note">
+              <span class="commercial-note-icon">i</span>
+              <p>Pareja: edad del mayor · hasta 59 años · C-100 sólo AMBA.</p>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <section id="resultadosSection" class="glass-panel results-panel hidden">
+      <div class="results-top">
+        <div>
+          <span class="section-chip">Resultados</span>
+          <h2>Planes disponibles</h2>
+          <p id="resumenCaso"></p>
+        </div>
+        <span id="badgeTramo" class="hero-subchip"></span>
+      </div>
+      <div id="notasModalidad" class="inline-note hidden"></div>
+      <div id="resultados" class="plans-grid"></div>
+    </section>
+
+    <section id="seleccionSection" class="selection-banner hidden">
+      <div class="selection-copy">
+        <span class="section-chip">Plan seleccionado</span>
+        <h2 id="seleccionPlan"></h2>
+        <div id="seleccionPrecio" class="selection-price"></div>
+        <p id="seleccionDetalle"></p>
+      </div>
+      <div class="selection-actions">
+        <button id="verCotizacionBtn" class="btn btn-secondary" type="button">Ver cotización</button>
+        <button id="guardarPdfBtn" class="btn btn-primary" type="button">Guardar PDF</button>
+      </div>
+    </section>
+  </div>
+
+  <dialog id="previewDialog" class="preview-dialog">
+    <div class="preview-header">
+      <div>
+        <strong>Vista previa de la cotización</strong>
+        <span>Revisá el documento antes de guardarlo en PDF.</span>
+      </div>
+      <div class="selection-actions small-actions">
+        <button id="previewPdfBtn" class="btn btn-primary" type="button">Guardar PDF</button>
+        <button id="cerrarPreviewBtn" class="btn btn-secondary" type="button">Cerrar</button>
+      </div>
+    </div>
+    <div class="preview-body">
+      <div id="previewContent"></div>
+    </div>
+  </dialog>
+
+  <div id="printArea"></div>
+
+  <script src="js/precios-premedic.js"></script>
+  <script src="js/motor-premedic.js"></script>
+  <script src="js/cotizacion.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/portal.js"></script>
+</body>
+</html>
