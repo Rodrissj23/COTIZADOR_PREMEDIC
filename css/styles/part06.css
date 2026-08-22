@@ -1,0 +1,378 @@
+
+.benefits-brand strong { font-size: 15px; letter-spacing: .02em; }
+.benefits-header > span {
+  color: #0a8b7a;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.benefits-header h2 {
+  margin: 8px 0 8px;
+  color: #16332e;
+  font-size: 38px;
+  line-height: 1.05;
+  letter-spacing: -.045em;
+}
+.benefits-header p {
+  max-width: 540px;
+  margin: 0;
+  color: #6c817b;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 12px;
+  padding: 26px 42px 24px;
+}
+.benefit-card {
+  position: relative;
+  min-height: 188px;
+  padding: 20px 20px 18px;
+  border: 1px solid #e0ebe8;
+  border-radius: 18px;
+  background: #fbfdfc;
+  overflow: hidden;
+}
+.benefit-card::after {
+  content: "";
+  position: absolute;
+  width: 88px;
+  height: 88px;
+  right: -34px;
+  bottom: -35px;
+  border: 1px solid rgba(9,127,112,.09);
+  border-radius: 50%;
+}
+.benefit-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #e6f5f1;
+  color: #087568;
+}
+.benefit-icon svg {
+  width: 23px;
+  height: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.benefit-number {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #c1d1cd;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+.benefit-card h3 {
+  margin: 18px 0 7px;
+  color: #17342e;
+  font-size: 14px;
+  line-height: 1.15;
+  letter-spacing: -.015em;
+}
+.benefit-card p {
+  margin: 0;
+  color: #6f817c;
+  font-size: 10px;
+  line-height: 1.48;
+}
+.benefits-closing {
+  margin: 0 42px 22px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #073d37, #0b7869);
+  color: #fff;
+}
+.benefits-closing span {
+  color: #86e4d5;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .1em;
+}
+.benefits-closing strong { font-size: 13px; font-weight: 700; }
+.benefits-footer { margin-top: auto; }
+
+@media (max-width: 860px) {
+  .quote-document { gap: 14px; }
+  .quote-page { width: 100%; min-height: auto; }
+  .quote-editorial-top { flex-direction: column; }
+  .quote-meta-light { grid-template-columns: repeat(3, minmax(0,1fr)); width: 100%; text-align: left; }
+  .quote-editorial-main { margin-top: 42px; }
+  .quote-client-summary, .quote-conditions { grid-template-columns: 1fr; }
+  .quote-client-data { grid-template-columns: 1fr 1fr; }
+  .quote-client-data > div { border-left: 0; }
+  .quote-economy-v3 { grid-template-columns: 1fr; }
+  .benefits-grid { grid-template-columns: 1fr; padding: 22px; }
+  .benefits-header { padding: 28px 22px 24px; }
+  .benefits-closing { margin: 0 22px 20px; }
+}
+
+@media print {
+  html, body {
+    width: 210mm !important;
+    height: auto !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+  body > #printArea {
+    position: static !important;
+    width: 210mm !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  #printArea .quote-document {
+    display: block !important;
+    width: 210mm !important;
+  }
+  #printArea .quote-page,
+  #printArea .quote-sheet {
+    width: 210mm !important;
+    height: 297mm !important;
+    min-height: 297mm !important;
+    max-height: 297mm !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    overflow: hidden !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+  #printArea .quote-page + .quote-page {
+    break-before: page !important;
+    page-break-before: always !important;
+  }
+}
+
+/* Ajustes finales de impresión V3 */
+.quote-meta-light {
+  grid-template-columns: 72px 86px 138px;
+  gap: 12px;
+}
+.quote-meta-light div { min-width: 0; }
+.quote-meta-light strong { white-space: nowrap; font-size: 9.5px; }
+.quote-meta-light div:last-child strong { font-size: 8.9px; letter-spacing: -.01em; }
+.benefits-closing { background: #0a6f63; }
+
+/* Refinamiento final de la cotización Premedic */
+.quote-editorial-header {
+  min-height: 238px;
+  padding: 27px 32px 30px;
+  color: #fff;
+  background:
+    radial-gradient(circle at 92% -2%, rgba(91, 232, 204, .20), transparent 30%),
+    linear-gradient(132deg, #062d2a 0%, #07554c 58%, #0a7568 100%);
+  border-bottom: 0;
+}
+.quote-editorial-header::before {
+  width: 300px;
+  height: 300px;
+  right: -154px;
+  top: -164px;
+  border-color: rgba(126, 234, 213, .22);
+  box-shadow: 0 0 0 38px rgba(126,234,213,.035), 0 0 0 76px rgba(126,234,213,.02);
+}
+.quote-brand-lockup strong { color: #fff; }
+.quote-brand-lockup em {
+  padding-left: 14px;
+  border-left: 1px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.66);
+  font-size: 11px;
+  font-style: normal;
+}
+.quote-brand-logo {
+  display: block;
+  height: auto;
+}
+.quote-brand-logo-header {
+  width: 220px;
+  max-width: 100%;
+  filter: brightness(0) invert(1);
+}
+.benefits-brand-logo {
+  width: 185px;
+}
+.quote-meta-light span { color: rgba(255,255,255,.55); }
+.quote-meta-light strong { color: rgba(255,255,255,.96); }
+.quote-editorial-main { margin-top: 43px; max-width: 650px; }
+.quote-eyebrow-dark { color: #76e3cf; }
+.quote-editorial-main h1 {
+  color: #fff;
+  font-size: 34px;
+  line-height: 1.02;
+}
+.quote-plan-line { margin-top: 15px; gap: 8px; color: rgba(255,255,255,.86); }
+.quote-plan-line > span,
+.quote-plan-line > strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.09);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 750;
+}
+.quote-plan-line > span {
+  background: #fff;
+  border-color: #fff;
+  color: #086d61;
+  font-size: 11px;
+  font-weight: 850;
+}
+.quote-plan-line > i { display: none; }
+
+.quote-body-v3 {
+  gap: 14px;
+  padding: 20px 30px 18px;
+}
+.quote-client-summary {
+  display: block;
+  border-radius: 17px;
+  background: #fff;
+}
+.quote-summary-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 13px 15px 12px;
+  border-bottom: 1px solid #e5eeeb;
+  background: linear-gradient(180deg,#fbfdfc,#f8fbfa);
+}
+.quote-summary-title > div { display: grid; gap: 3px; }
+.quote-summary-title span {
+  color: #0a8475;
+  font-size: 8.7px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.quote-summary-title strong {
+  color: #28423d;
+  font-size: 11px;
+  font-weight: 700;
+}
+.quote-summary-title > b {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e7f5f1;
+  color: #087568;
+  font-size: 10px;
+  font-weight: 850;
+}
+.quote-client-data { grid-template-columns: repeat(4,minmax(0,1fr)); }
+.quote-client-data > div {
+  padding: 12px 13px;
+  border-left: 1px solid #e6efed;
+  border-bottom: 0;
+}
+.quote-client-data > div:first-child { border-left: 0; }
+.quote-client-data span { font-size: 8.5px; }
+.quote-client-data strong { font-size: 10.5px; }
+
+.quote-economy-v3 {
+  grid-template-columns: minmax(0,1.18fr) minmax(244px,.82fr);
+  gap: 16px;
+  padding: 15px;
+  border-radius: 19px;
+  background: #f4f9f7;
+  border-color: #dce9e5;
+}
+.quote-section-heading-economic { margin-bottom: 5px; }
+.quote-economic-row { padding: 8px 0; font-size: 10.8px; }
+.quote-total-card-v3 {
+  min-height: 178px;
+  justify-content: flex-start;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: linear-gradient(150deg,#083d37 0%,#086f63 100%);
+  box-shadow: none;
+}
+.quote-total-card-v3::before,
+.quote-total-card-v3::after { display: none !important; }
+.quote-total-card-v3 > span { font-size: 8.8px; }
+.quote-total-card-v3 > b {
+  margin: 11px 0 7px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,.12);
+  font-size: 12px;
+}
+.quote-total-card-v3 > strong {
+  margin: 3px 0 4px;
+  font-size: 36px;
+  letter-spacing: -.055em;
+}
+.quote-total-card-v3 small { font-size: 9.5px; }
+.quote-total-card-v3 > em {
+  margin-top: auto;
+  padding: 6px 8px;
+  font-size: 8.5px;
+}
+.quote-advisor-strip-v3 { border-radius: 14px; }
+.quote-advisor-strip-v3 > div { padding: 9px 12px; }
+.quote-conditions {
+  grid-template-columns: 175px minmax(0,1fr);
+  padding: 10px 12px;
+  border-radius: 13px;
+}
+.quote-conditions p { font-size: 7.9px; }
+.quote-footer-v3 { padding-bottom: 14px; }
+
+@media (max-width: 860px) {
+  .quote-client-data { grid-template-columns: 1fr 1fr; }
+  .quote-client-data > div:nth-child(odd) { border-left: 0; }
+  .quote-client-data > div:nth-child(n+3) { border-top: 1px solid #e6efed; }
+}
+
+@media print {
+  #printArea .quote-editorial-top {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: space-between !important;
+  }
+  #printArea .quote-meta-light {
+    display: grid !important;
+    grid-template-columns: 72px 86px 138px !important;
+    gap: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    margin-left: auto !important;
+    text-align: right !important;
+  }
+  #printArea .quote-editorial-main { margin-top: 43px !important; }
+  #printArea .quote-client-summary { display: block !important; }
+  #printArea .quote-client-data { grid-template-columns: repeat(4,minmax(0,1fr)) !important; }
+  #printArea .quote-client-data > div {
+    border-top: 0 !important;
+    border-bottom: 0 !important;
+    border-left: 1px solid #e6efed !important;
+  }
+  #printArea .quote-client-data > div:first-child { border-left: 0 !important; }
+  #printArea .quote-economy-v3 { grid-template-columns: minmax(0,1.18fr) minmax(244px,.82fr) !important; }
+  #printArea .benefits-header { padding: 38px 42px 30px !important; }
+  #printArea .benefits-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr)) !important;
+    gap: 12px !important;
+    padding: 26px 42px 24px !important;
+  }
+  #printArea .benefit-card { min-height: 188px !important; }
+  #printArea .benefits-closing { margin: 0 42px 22px !important; }
+}
