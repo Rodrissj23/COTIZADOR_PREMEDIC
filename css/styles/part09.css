@@ -1,0 +1,171 @@
+
+.portal-specs{margin-top:23px;font-size:11px}
+.portal-action-row{margin-top:28px}
+.portal-open-btn{min-height:47px}
+.portal-vigencia{min-height:47px}
+.portal-signature{margin-top:34px}
+.portal-family{min-height:550px;background:#f3f6f6}
+.portal-family img{width:132%;height:100%;min-height:550px;margin-left:-32%;object-fit:cover;object-position:right center}
+.portal-family::after{background:linear-gradient(90deg,rgba(255,255,255,.98) 0%,rgba(255,255,255,.42) 18%,transparent 39%)}
+.portal-family-curve{width:190px;height:190px;left:-103px;top:126px;opacity:.48}
+
+/* HERO: marca real, poca decoración y sin sensación de dashboard */
+.app-shell{max-width:1280px}
+.portal-back-btn{margin-bottom:10px}
+.hero-card{
+  min-height:220px;
+  padding:30px 38px 28px;
+  border:1px solid var(--pm-line);
+  border-radius:19px;
+  background:linear-gradient(135deg,#fff 0%,#fbfdfd 70%,#eef8f6 100%);
+  box-shadow:0 8px 24px rgba(46,66,70,.05);
+}
+.hero-brand-logo{width:210px;margin-bottom:13px}
+.hero-vigencia{padding:7px 10px}
+.hero-copy h1{margin-top:11px;font-size:clamp(33px,3.5vw,45px);letter-spacing:-.035em}
+.hero-copy p{margin-top:7px;font-size:14px;line-height:1.45}
+.hero-features{margin-top:15px;gap:10px;font-size:11px}
+.hero-art{opacity:.10}
+.hero-shape{transform:scale(.58)}
+.hero-dots{opacity:.22}
+
+/* CONSTRUCTOR: menos contenedores visibles, más jerarquía por aire */
+.quote-workspace{grid-template-columns:minmax(0,1fr) 300px;gap:18px;margin-top:18px}
+.quote-builder{border:1px solid var(--pm-line);border-radius:18px;box-shadow:0 7px 20px rgba(49,66,72,.035)}
+.builder-topbar{padding:22px 24px 18px;border-bottom:1px solid #edf0f1}
+.builder-topbar h2{font-size:26px}
+.builder-topbar p{margin-top:5px;font-size:12px}
+.builder-progress{opacity:.72;transform:scale(.92);transform-origin:right center}
+.builder-section{padding:21px 24px;border-bottom:1px solid #eef1f2}
+.section-intro{margin-bottom:17px}
+.section-index{width:34px;height:34px;border-radius:10px;font-size:10px}
+.section-intro h3{font-size:18px}
+.section-intro p{margin-top:3px;font-size:11px}
+.client-grid{gap:12px}
+.field input,.field select,.age-input,.selector-tile{border-radius:10px}
+.selector-grid{gap:10px}
+.selector-tile{min-height:72px;padding:11px 12px;border:1px solid #e3e8ea;background:#fff}
+.selector-icon{width:34px;height:34px;border-radius:10px}
+.selector-copy small{font-size:9px}
+.selector-copy select{font-size:12px}
+.contribution-panel,.children-card,.advisor-panel{border-radius:12px;background:#fbfdfc;border-color:#e5ebea}
+.builder-actions{padding:18px 24px}
+.builder-actions-copy span{font-size:10px}
+
+/* RESUMEN EN VIVO: compacto, útil y realmente en vivo */
+.quote-summary-card{border-radius:17px;box-shadow:0 7px 20px rgba(49,66,72,.035)}
+.summary-cover{min-height:auto;padding:15px 17px;background:#f1f9f7;color:var(--pm-ink);border-bottom:1px solid #e2ece9}
+.summary-cover-art{display:none}
+.summary-status{display:inline-flex;padding:4px 7px;color:var(--pm-brand-dark);background:#fff;border:1px solid #d8eae6;font-size:8px}
+.summary-status i{background:var(--pm-brand)}
+.summary-cover h2{margin:9px 0 0;color:#39433f;font-size:19px}
+.summary-cover p{display:none}
+.summary-body{padding:10px 15px 14px}
+.summary-empty-refined{min-height:62px;padding:4px 0;display:grid;align-content:center}
+.summary-empty-refined strong{font-size:12px}
+.summary-empty-refined p{margin-top:4px;font-size:10px}
+.summary-line{min-height:34px;padding:6px 0}
+.summary-line span{font-size:9px}
+.summary-line strong{font-size:10px}
+.commercial-note{margin-top:8px;padding:8px 9px;border-radius:9px;background:#f8faf9}
+.commercial-note p{font-size:8.5px;line-height:1.35}
+.commercial-note-icon{width:17px;height:17px;font-size:9px}
+
+/* RESULTADOS: una sola fila cuando hay 5 planes, sin precio duplicado */
+.results-panel{margin-top:20px;padding:0;border:0;background:transparent;box-shadow:none}
+.results-top{padding:20px 2px 13px}
+.results-top h2{font-size:27px}
+.results-top p{font-size:11px}
+.plans-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.plan-card.plan-card-refined{
+  min-width:0;
+  border:1px solid #e2e8e9;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:none;
+  transition:border-color .15s ease,transform .15s ease,box-shadow .15s ease;
+}
+.plan-card.plan-card-refined:last-child:nth-child(odd){grid-column:auto;width:auto;justify-self:stretch}
+.plan-card.plan-card-refined:hover{border-color:#b9dcd6;box-shadow:0 8px 20px rgba(7,139,130,.055);transform:translateY(-1px)}
+.plan-card.selected{border-color:#78c7bc;box-shadow:0 0 0 2px rgba(7,139,130,.055)}
+.plan-card-top{padding:14px 14px 7px;align-items:flex-start}
+.plan-brand{font-size:8px;letter-spacing:.1em}
+.plan-name{margin-top:4px;font-size:21px}
+.plan-card-tags{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px}
+.plan-mode,.plan-special-tag{display:inline-flex;align-items:center;min-height:23px;padding:0 7px;border-radius:999px;font-size:8px;font-weight:800}
+.plan-mode{color:#63706c;background:#f3f6f5}
+.plan-special-tag{color:#94671a;background:#fff6df}
+.plan-content{gap:9px;padding:3px 14px 14px}
+.plan-row-label{font-size:9px;color:#778480}
+.plan-price{margin-top:3px;font-size:28px;line-height:1;letter-spacing:-.04em}
+.breakdown.breakdown-compact{gap:5px;padding:8px 9px;border-radius:9px;background:#f7faf9}
+.breakdown-compact .breakdown-line{font-size:9px}
+.plan-detail{min-height:30px;font-size:9px;line-height:1.35;color:#7c8784}
+.elegir-plan{min-height:38px;padding:0 10px;border-radius:9px;font-size:10px}
+.inline-note{font-size:10px}
+
+/* PLAN SELECCIONADO: confirmación compacta */
+.selection-banner{margin-top:14px;padding:13px 15px;border:1px solid #dce9e6;border-left:4px solid var(--pm-brand);border-radius:13px;background:#fff;box-shadow:none}
+.selection-copy{display:grid;grid-template-columns:auto auto 1fr;align-items:center;gap:10px 14px}
+.selection-banner .section-chip{grid-row:1 / span 2;align-self:center;margin:0}
+.selection-copy h2{margin:0;font-size:20px}
+.selection-price{margin:0;font-size:24px}
+.selection-copy p{grid-column:2 / -1;margin:0;font-size:9.5px}
+.selection-actions{gap:8px}
+.selection-actions .btn{min-height:39px;padding:0 13px}
+
+/* PREVIEW */
+.preview-dialog{max-height:96vh;border-radius:16px}
+.preview-header{position:sticky;top:0;z-index:10;padding:14px 18px}
+.preview-header strong{font-size:13px}
+.preview-header span{font-size:10px}
+.preview-body{scroll-behavior:auto}
+
+/* PDF PÁGINA 1 — editorial, luminoso y con espacio bien usado */
+.quote-page{border-radius:14px}
+.quote-editorial-header.quote-editorial-header-clean{min-height:232px;padding:25px 30px 23px;background:#fff;border-bottom:1px solid #e1ebe8}
+.quote-editorial-header.quote-editorial-header-clean::before{width:220px;height:220px;right:-112px;top:-117px;opacity:.75}
+.quote-brand-logo-header{width:220px;filter:none!important}
+.quote-brand-lockup{gap:12px;flex-wrap:nowrap}
+.quote-brand-lockup em{padding-left:12px;color:#7c8a86;font-size:10px;white-space:nowrap}
+.quote-meta-light{grid-template-columns:68px 84px 135px;gap:10px}
+.quote-meta-light span{font-size:7.5px}
+.quote-meta-light strong{font-size:8.7px}
+.quote-proposal-band{margin-top:23px;padding:17px 19px;border:1px solid #dceae7;border-radius:14px;background:linear-gradient(135deg,#f2faf8 0%,#fbfdfc 100%)}
+.quote-eyebrow-dark{margin-bottom:6px;font-size:8.5px}
+.quote-editorial-main h1{font-size:29px;line-height:1.04}
+.quote-plan-line{margin-top:10px;gap:6px}
+.quote-plan-line>span,.quote-plan-line>strong{min-height:23px;padding:4px 8px;font-size:9px}
+.quote-body-final{gap:9px;padding:14px 28px 12px}
+.quote-client-summary-final{border-radius:12px}
+.quote-summary-title{padding:10px 12px 9px}
+.quote-summary-title span{font-size:7.5px}
+.quote-summary-title strong{font-size:9.5px}
+.quote-summary-title>b{padding:5px 8px;font-size:9px}
+.quote-client-data-dynamic{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr))}
+.quote-client-data-dynamic>div{padding:9px 11px;border-bottom:0;border-left:1px solid #e8efed}
+.quote-client-data-dynamic>div:first-child{border-left:0}
+.quote-client-data-dynamic span{font-size:7.5px}
+.quote-client-data-dynamic strong{font-size:9.5px}
+.quote-economy-final{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(230px,.8fr);gap:12px;padding:12px;border:1px solid #dfe9e6;border-radius:13px;background:#f7faf9}
+.quote-section-heading-economic{margin-bottom:4px}
+.quote-section-heading-economic span{font-size:7.5px}
+.quote-section-heading-economic strong{font-size:11px}
+.quote-economic-row{padding:6px 0;font-size:9.6px}
+.quote-economic-empty{min-height:92px;display:grid;align-content:center;gap:5px;color:#76837f}
+.quote-economic-empty strong{color:#34433f;font-size:12px}
+.quote-economic-empty span{font-size:9px}
+.quote-total-card-final{min-height:138px;padding:15px 17px;border-radius:12px;background:linear-gradient(145deg,#078b82,#066f68)}
+.quote-total-card-final>span{font-size:7.6px}
+.quote-total-card-final>b{margin:8px 0 5px;padding:5px 8px;font-size:10px}
+.quote-total-card-final>strong{margin:1px 0 3px;font-size:31px}
+.quote-total-card-final small{font-size:8.5px}
+.quote-total-card-final>em{margin-top:auto;padding:5px 7px;font-size:7.5px}
+.quote-advisor-dynamic{display:grid;border-radius:11px;overflow:hidden}
+.quote-advisor-dynamic.cols-1{grid-template-columns:1fr}
+.quote-advisor-dynamic.cols-2{grid-template-columns:repeat(2,1fr)}
+.quote-advisor-dynamic.cols-3{grid-template-columns:repeat(3,1fr)}
+.quote-advisor-dynamic>div{padding:8px 10px}
+.quote-advisor-dynamic span{font-size:7.5px}
+.quote-advisor-dynamic strong{font-size:9px}
+.quote-highlights-final{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
