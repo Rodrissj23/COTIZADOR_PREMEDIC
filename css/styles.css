@@ -8,3 +8,16 @@
 @import url("./styles/part08.css");
 @import url("./styles/part09.css");
 @import url("./styles/part10.css");
+
+/* Fotografías Premedic actualizadas */
+.portal-family img {
+  content: url("../assets/portal-family.webp");
+  object-fit: cover;
+  object-position: 68% center;
+}
+
+.benefits-family img {
+  content: url("../assets/benefits-family.webp");
+  object-fit: cover;
+  object-position: 68% center;
+}
