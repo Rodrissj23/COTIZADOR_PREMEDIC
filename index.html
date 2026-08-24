@@ -222,7 +222,7 @@
               </div>
               <label class="field compact mini-field">
                 <span>Cantidad</span>
-                <input id="cantidadHijos" type="number" min="1" max="10" step="1" value="1" inputmode="numeric">
+                <input id="cantidadHijos" type="number" min="1" step="1" value="1" inputmode="numeric">
               </label>
             </div>
             <div id="edadesHijos" class="form-grid cols-3 children-grid"></div>
@@ -329,7 +329,7 @@
       </div>
       <div class="selection-actions">
         <button id="verCotizacionBtn" class="btn btn-secondary" type="button">Ver cotización</button>
-        <button id="guardarPdfBtn" class="btn btn-primary" type="button">Guardar PDF</button>
+        <button id="guardarPdfBtn" class="btn btn-primary" type="button">Descargar PDF</button>
       </div>
     </section>
   </div>
@@ -338,10 +338,10 @@
     <div class="preview-header">
       <div>
         <strong>Vista previa de la cotización</strong>
-        <span>Revisá el documento antes de guardarlo en PDF.</span>
+        <span>Revisá el documento antes de descargarlo en PDF.</span>
       </div>
       <div class="selection-actions small-actions">
-        <button id="previewPdfBtn" class="btn btn-primary" type="button">Guardar PDF</button>
+        <button id="previewPdfBtn" class="btn btn-primary" type="button">Descargar PDF</button>
         <button id="cerrarPreviewBtn" class="btn btn-secondary" type="button">Cerrar</button>
       </div>
     </div>
@@ -355,6 +355,7 @@
   <script src="js/precios-premedic.js"></script>
   <script src="js/motor-premedic.js"></script>
   <script src="js/cotizacion.js"></script>
+  <script src="js/pmo-quote.js"></script>
   <script src="js/app.js"></script>
   <script src="js/portal.js"></script>
 </body>
