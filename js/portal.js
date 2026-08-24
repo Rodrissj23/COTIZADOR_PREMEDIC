@@ -25,6 +25,40 @@
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
+  function limpiarAporteComputable() {
+    const aporteCopy = document.querySelector('.contribution-copy p');
+    if (aporteCopy) aporteCopy.textContent = 'Ingresá el aporte del recibo para calcular los planes disponibles.';
+
+    document.getElementById('sumAporteCalculadoRow')?.classList.add('hidden');
+    document.getElementById('notasModalidad')?.classList.add('hidden');
+
+    document.querySelectorAll('.breakdown-line.discount, .quote-economic-row-discount').forEach(el => el.remove());
+
+    const resultados = document.getElementById('resultados');
+    if (resultados) {
+      const pmo = [...resultados.querySelectorAll('.plan-card')]
+        .find(card => card.dataset.plan === 'PMO');
+      if (pmo && resultados.firstElementChild !== pmo) resultados.prepend(pmo);
+      if (pmo) {
+        const detail = pmo.querySelector('.plan-detail');
+        if (detail) detail.textContent = 'PMO · cubierto íntegramente con los aportes del recibo';
+        const valueRow = pmo.querySelector('.breakdown-line');
+        if (valueRow) valueRow.remove();
+      }
+    }
+  }
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #sumAporteCalculadoRow,
+    .breakdown-line.discount,
+    .quote-economic-row-discount { display:none !important; }
+  `;
+  document.head.appendChild(style);
+
+  const observer = new MutationObserver(limpiarAporteComputable);
+  observer.observe(document.body, { childList: true, subtree: true });
+  limpiarAporteComputable();
 
   logoutBtn?.addEventListener('click', async () => {
     try {
