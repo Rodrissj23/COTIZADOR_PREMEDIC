@@ -128,6 +128,144 @@ window.PremedicQuote = (() => {
     return benefitsByPlan[plan] || benefitsByPlan['C-100'];
   }
 
+  function planCoverage(plan) {
+    const common = {
+      pharmacy: [
+        ['Farmacia', 'Medicamentos bajo receta', '40%', 'En farmacias adheridas, desde el ingreso.'],
+        ['Farmacia', 'Medicamentos de uso crónico', '70%', 'Conforme normativa de la Superintendencia de Servicios de Salud.']
+      ],
+      digital: [
+        ['Servicios', 'App Premedic Móvil', 'Incluida', 'Credencial, cartilla, autorizaciones, facturas y medios de pago.'],
+        ['Servicios', 'Asistencia al viajero', 'Incluida', 'Cobertura nacional y en países limítrofes según condiciones vigentes.']
+      ]
+    };
+    const byPlan = {
+      'C-100': [
+        ['Consultas', 'Consultorio', 'Con copago', 'Sin tope y sin límite, desde el ingreso.'],
+        ['Consultas', 'Domicilio, guardia y videoconsulta', 'Sin cargo', 'Sin tope y sin límite, desde el ingreso.'],
+        ['Diagnóstico', 'Laboratorio de rutina, ECG y EEG', 'Sin cargo', 'Cobertura desde el ingreso.'],
+        ['Diagnóstico', 'Mamografía', 'Con copago', '1 por año por persona; carencia de 4 meses.'],
+        ['Diagnóstico', 'Ecografías simples', 'Con copago', 'Carencia de 4 meses.'],
+        ['Diagnóstico', 'TAC y resonancia', 'Con copago', '1 por año por persona; carencia de 6 meses.'],
+        ['Tratamientos', 'Foniatría, psicología y psiquiatría', '10 sesiones', 'Tope anual por persona; carencia de 4 meses.'],
+        ['Tratamientos', 'Fisiokinesioterapia', 'Con copago', 'Excedentes con copago; carencia de 4 meses.'],
+        ['Odontología', 'Consulta odontológica', 'Con copago', 'Con tope, desde el ingreso.'],
+        ['Odontología', 'Radiología panorámica o seriada', 'Con copago', '1 por año por persona.'],
+        ['Internación', 'Clínica y quirúrgica', 'Habitación compartida', 'Hasta 30 días por año por persona.'],
+        ['Maternidad', 'Parto normal o cesárea', 'Incluida', 'Carencia de 14 meses; 3 ecografías 2D por embarazo.']
+      ],
+      '200': [
+        ['Consultas', 'Consultorio', 'Con copago', 'Sin tope y sin límite, desde el ingreso.'],
+        ['Consultas', 'Domicilio, guardia y videoconsulta', 'Sin cargo', 'Sin tope y sin límite, desde el ingreso.'],
+        ['Diagnóstico', 'Rutina, radiología, ECG, PAP y colposcopía', 'Sin cargo', 'Cobertura desde el ingreso.'],
+        ['Diagnóstico', 'Mamografía bilateral', 'Sin cargo', 'Carencia de 5 meses.'],
+        ['Diagnóstico', 'Laboratorio hormonal y alta complejidad', '6 determinaciones', 'Tope anual; carencia de 6 meses.'],
+        ['Tratamientos', 'Foniatría y psicología', '15 sesiones', 'Tope anual por persona; carencia de 4 meses.'],
+        ['Tratamientos', 'Fisiokinesioterapia', 'Sin cargo', 'Excedentes con copago; carencia de 4 meses.'],
+        ['Odontología', 'Prevención, endodoncia y operatoria', 'Incluidas', 'Con topes según PMO, desde el ingreso.'],
+        ['Odontología', 'Radiología panorámica o seriada', 'Con copago', '1 por año por persona.'],
+        ['Emergencias', 'Ambulancia y traslados de urgencia', 'Sin cargo', 'Desde el ingreso.'],
+        ['Internación', 'Clínica y quirúrgica', 'Habitación compartida', 'Hasta 30 días por año por persona.'],
+        ['Maternidad', 'Parto, cesárea y PMI', 'Incluidos', 'Carencia de 14 meses; 3 ecografías 2D por embarazo.']
+      ],
+      '300': [
+        ['Consultas', 'Consultorio, domicilio, guardia y videoconsulta', 'Sin cargo', 'Sin tope y sin límite, desde el ingreso.'],
+        ['Diagnóstico', 'Rutina, radiología, ECG, PAP y ecografías', 'Sin cargo', 'Cobertura desde el ingreso.'],
+        ['Diagnóstico', 'Laboratorio hormonal y alta complejidad', '8 determinaciones', 'Tope anual; carencia de 4 meses.'],
+        ['Diagnóstico', 'TAC y resonancia', '2 por año', 'Por persona y por estudio, sin cargo; carencia de 5 meses.'],
+        ['Diagnóstico', 'Ecodoppler, Holter, MAPA y eco estrés', '2 por año', 'Por persona y por estudio, sin cargo; carencia de 3 meses.'],
+        ['Tratamientos', 'Foniatría, psicología y psiquiatría', '20 sesiones', 'Tope anual por persona; carencia de 4 meses.'],
+        ['Tratamientos', 'Fisiokinesioterapia', 'Sin cargo', 'Excedentes con copago; carencia de 4 meses.'],
+        ['Odontología', 'Atención odontológica integral', 'Incluida', 'Prevención, endodoncia, operatoria, cirugía y periodoncia.'],
+        ['Odontología', 'Radiología panorámica', 'Con copago', 'Desde el ingreso.'],
+        ['Emergencias', 'Ambulancia y traslados de urgencia', 'Sin cargo', 'Desde el ingreso.'],
+        ['Internación', 'Clínica y quirúrgica', 'Habitación compartida', 'Hasta 30 días por año por persona.'],
+        ['Maternidad', 'Parto, cesárea y PMI', 'Incluidos', 'Carencia de 14 meses; 3 ecografías 2D por embarazo.']
+      ],
+      '400': [
+        ['Consultas', 'Consultorio, domicilio, guardia y videoconsulta', 'Sin cargo', 'Sin tope y sin límite, desde el ingreso.'],
+        ['Diagnóstico', 'Rutina, radiología, ECG, PAP y ecografías', 'Sin cargo', 'Cobertura desde el ingreso.'],
+        ['Diagnóstico', 'Laboratorio hormonal y alta complejidad', '12 determinaciones', 'Tope anual; carencia de 2 meses.'],
+        ['Diagnóstico', 'TAC y resonancia', '3 por año', 'Por persona y por estudio, sin cargo; carencia de 5 meses.'],
+        ['Diagnóstico', 'Ecodoppler, Holter, MAPA y eco estrés', '2 por año', 'Por persona y por estudio, sin cargo; carencia de 4 meses.'],
+        ['Tratamientos', 'Foniatría, psicología y psiquiatría', '30 sesiones', 'Tope anual por persona; carencia de 4 meses.'],
+        ['Tratamientos', 'Fisiokinesioterapia', 'Sin cargo', 'Excedentes con copago; carencia de 4 meses.'],
+        ['Odontología', 'Atención odontológica integral', 'Incluida', 'Prevención, endodoncia, operatoria, cirugía y periodoncia.'],
+        ['Odontología', 'Blanqueamiento', 'Incluido', 'Carencia de 8 meses.'],
+        ['Emergencias', 'Ambulancia y traslados de urgencia', 'Sin cargo', 'Desde el ingreso.'],
+        ['Internación', 'Clínica, quirúrgica y maternidad', 'Habitación individual', 'Hasta 30 días por año por persona en internación clínica o quirúrgica.'],
+        ['Maternidad', 'Parto, cesárea y PMI', 'Incluidos', 'Carencia de 14 meses; 3 ecografías 2D por embarazo.']
+      ],
+      '500': [
+        ['Consultas', 'Consultorio, domicilio, guardia y videoconsulta', 'Sin cargo', 'Sin tope y sin límite, desde el ingreso.'],
+        ['Diagnóstico', 'Rutina, radiología, ECG, PAP y ecografías', 'Sin cargo', 'Cobertura desde el ingreso.'],
+        ['Diagnóstico', 'Laboratorio hormonal y alta complejidad', '12 determinaciones', 'Tope anual; carencia de 2 meses.'],
+        ['Diagnóstico', 'TAC y resonancia', '3 por año', 'Por persona y por estudio, sin cargo; carencia de 5 meses.'],
+        ['Diagnóstico', 'Ecodoppler, Holter, MAPA y eco estrés', '2 por año', 'Por persona y por estudio, sin cargo; carencia de 4 meses.'],
+        ['Tratamientos', 'Foniatría, psicología y psiquiatría', '35 sesiones', 'Tope anual por persona; carencia de 4 meses.'],
+        ['Tratamientos', 'Fisiokinesioterapia', 'Sin cargo', 'Excedentes con copago; carencia de 4 meses.'],
+        ['Odontología', 'Atención integral y blanqueamiento', 'Incluidos', 'Blanqueamiento en Smile Group; carencia de 8 meses.'],
+        ['Odontología', 'Radiología panorámica', '2 por año', 'Sin coseguro, desde el ingreso.'],
+        ['Óptica', 'Par de lentes', 'Incluido', 'Una unidad por única vez; carencia de 6 meses.'],
+        ['Internación', 'Clínica, quirúrgica y maternidad', 'Habitación individual', 'Hasta 30 días por año por persona en internación clínica o quirúrgica.'],
+        ['Maternidad', 'Parto, cesárea, PMI y ecografía 4D', 'Incluidos', 'Ecografía 4D en centro propio; condiciones según cartilla.']
+      ]
+    };
+    return [...(byPlan[plan] || byPlan['C-100']), ...common.pharmacy, ...common.digital];
+  }
+
+  function renderCoveragePage(plan, quoteId) {
+    const rows = planCoverage(plan);
+    const groups = [...new Set(rows.map(row => row[0]))];
+    return `
+      <section class="quote-sheet quote-page quote-coverage-page">
+        <header class="coverage-header-premedic">
+          <div>
+            <span>Información para decidir</span>
+            <h2>Cobertura y condiciones</h2>
+            <p>Resumen comercial del Plan ${esc(plan)}, con topes, copagos y carencias relevantes.</p>
+          </div>
+          <img src="assets/premedic-logo-oficial.png" alt="Premedic" class="coverage-brand-logo">
+        </header>
+        <div class="coverage-table-head-premedic"><span>Prestación</span><span>Cobertura</span><span>Condición principal</span></div>
+        <div class="coverage-groups-premedic">
+          ${groups.map(group => `
+            <section class="coverage-group-premedic">
+              <h3>${esc(group)}</h3>
+              <table><tbody>
+                ${rows.filter(row => row[0] === group).map(([, service, coverage, detail]) => `
+                  <tr><td>${esc(service)}</td><td><span class="coverage-pill-premedic">${esc(coverage)}</span></td><td>${esc(detail)}</td></tr>
+                `).join('')}
+              </tbody></table>
+            </section>
+          `).join('')}
+        </div>
+        <aside class="coverage-reading-note"><strong>Cómo leer este resumen</strong><span>“Incluida” o “sin cargo” no elimina autorizaciones, derivaciones, topes o carencias indicadas. La cartilla contractual vigente determina el alcance definitivo.</span></aside>
+        <footer class="quote-footer quote-footer-clean coverage-footer-premedic">
+          <div class="quote-legal">Resumen orientativo para facilitar la comparación del plan.</div>
+          <div class="quote-footer-side"><span>3 / 4 · Grupo Zeroka</span><b>${esc(quoteId)}</b></div>
+        </footer>
+      </section>
+    `;
+  }
+
+  function renderClosingPage(plan, quoteId) {
+    return `
+      <section class="quote-sheet quote-page quote-closing-page">
+        <div class="closing-orbit closing-orbit-a"></div>
+        <div class="closing-orbit closing-orbit-b"></div>
+        <div class="closing-orbit closing-orbit-c"></div>
+        <div class="closing-premedic-lockup">
+          <div class="closing-logo-card"><img src="assets/premedic-logo-oficial.png" alt="Premedic"></div>
+          <span>Tu propuesta · Plan ${esc(plan)}</span>
+          <h2>Tu salud,<br>más cerca.</h2>
+          <p>Gracias por elegir una propuesta Premedic.</p>
+        </div>
+        <div class="closing-premedic-meta"><span>GRUPO ZEROKA</span><b>${esc(quoteId)}</b></div>
+      </section>
+    `;
+  }
+
   function renderBenefitsPage(plan, quoteId) {
     const benefits = planBenefits(plan);
 
@@ -163,7 +301,7 @@ window.PremedicQuote = (() => {
 
         <footer class="quote-footer benefits-footer quote-footer-clean">
           <div class="quote-legal">Resumen comercial. Topes, carencias, prestadores y condiciones se rigen por la cartilla vigente del Plan ${esc(plan)}.</div>
-          <div class="quote-footer-side"><span>Herramienta comercial · Grupo Zeroka</span><b>${esc(quoteId)}</b></div>
+          <div class="quote-footer-side"><span>2 / 4 · Grupo Zeroka</span><b>${esc(quoteId)}</b></div>
         </footer>
       </section>
     `;
@@ -266,12 +404,12 @@ window.PremedicQuote = (() => {
 
         <footer class="quote-footer quote-footer-v3 quote-footer-clean">
           <div class="quote-legal">Premedic · Cotización orientativa para uso comercial.</div>
-          <div class="quote-footer-side"><span>Herramienta comercial · Grupo Zeroka</span><b>${esc(quoteId)}</b></div>
+          <div class="quote-footer-side"><span>1 / 4 · Grupo Zeroka</span><b>${esc(quoteId)}</b></div>
         </footer>
       </section>
     `;
 
-    return `<article class="quote-document">${pageOne}${renderBenefitsPage(selected.plan, quoteId)}</article>`;
+    return `<article class="quote-document">${pageOne}${renderBenefitsPage(selected.plan, quoteId)}${renderCoveragePage(selected.plan, quoteId)}${renderClosingPage(selected.plan, quoteId)}</article>`;
   }
 
   return { renderQuote, makeId };
