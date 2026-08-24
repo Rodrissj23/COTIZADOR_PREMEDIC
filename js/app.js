@@ -26,9 +26,11 @@
   let currentResult = null;
   let selectedPlan = null;
   let quoteId = null;
+  let pdfBusy = false;
 
   els.vigenciaBadge.textContent = `Vigencia ${data.vigencia}`;
-
+  // No existe un máximo comercial de hijos definido por el motor.
+  els.cantidadHijos.removeAttribute('max');
 
   function displayName(value) {
     return String(value || '')
@@ -122,8 +124,14 @@
   }
 
   function renderChildrenInputs() {
-    const count = Math.max(1, Math.min(10, Number(els.cantidadHijos.value) || 1));
-    els.cantidadHijos.value = count;
+    const raw = String(els.cantidadHijos.value || '').trim();
+    if (!raw) {
+      els.edadesHijos.innerHTML = '';
+      return;
+    }
+    const parsed = Math.floor(Number(raw));
+    const count = Number.isFinite(parsed) && parsed >= 1 ? parsed : 1;
+    els.cantidadHijos.value = String(count);
     const old = [...els.edadesHijos.querySelectorAll('input')].map(i => i.value);
     els.edadesHijos.innerHTML = '';
     for (let i = 0; i < count; i++) {
@@ -185,11 +193,12 @@
       els.notasModalidad.classList.add('hidden');
       return;
     }
-    els.notasModalidad.innerHTML = 'En <strong>Desregulado</strong> el sistema descuenta automáticamente el aporte computable calculado como <strong>(aporte del recibo ÷ 3) × 7,65</strong>. Si el aporte cubre totalmente el plan, el total a abonar se muestra en <strong>$ 0</strong>.';
+    els.notasModalidad.innerHTML = 'En <strong>Desregulado</strong> el sistema descuenta automáticamente el aporte computable calculado como <strong>(aporte del recibo ÷ 3) × 7,65</strong>. Si el aporte cubre totalmente el plan, el total a abonar se muestra en <strong>$ 0</strong>. Cuando el aporte computable por persona alcanza <strong>$ 15.000</strong>, también se habilita la opción <strong>PMO</strong>.';
     els.notasModalidad.classList.remove('hidden');
   }
 
   function detailText(planResult) {
+    if (planResult.esPMO) return 'PMO · cubierto íntegramente con los aportes del recibo';
     const parts = [planResult.baseLabel];
     const inf = planResult.extras.filter(x => x.tipo === 'Menor de 1 año').length;
     const u25 = planResult.extras.filter(x => x.tipo === 'Menor de 25 años').length;
@@ -200,7 +209,7 @@
 
   function renderResults(state, result) {
     els.resultados.innerHTML = '';
-    const planOrder = { 'C-100': 0, '200': 1, '300': 2, '400': 3, '500': 4 };
+    const planOrder = { 'PMO': -1, 'C-100': 0, '200': 1, '300': 2, '400': 3, '500': 4 };
     const orderedPlans = [...result.plans].sort((a, b) => (planOrder[a.plan] ?? 99) - (planOrder[b.plan] ?? 99));
 
     orderedPlans.forEach(planResult => {
@@ -209,15 +218,20 @@
       card.dataset.plan = planResult.plan;
 
       const detailRows = [];
-      if (planResult.totalAdicionales > 0) {
-        detailRows.push(`<div class="breakdown-line"><span>Valor base</span><strong>${money(planResult.base)}</strong></div>`);
-        detailRows.push(`<div class="breakdown-line"><span>Adicionales</span><strong>${money(planResult.totalAdicionales)}</strong></div>`);
-      }
-      if (state.modalidad === 'desregulado') {
-        if (planResult.totalAdicionales === 0) detailRows.push(`<div class="breakdown-line"><span>Valor del plan</span><strong>${money(planResult.bruto)}</strong></div>`);
-        detailRows.push(`<div class="breakdown-line discount"><span>Aporte computable</span><strong>-${money(planResult.aporteComputable)}</strong></div>`);
+      if (planResult.esPMO) {
+        detailRows.push(`<div class="breakdown-line"><span>Valor del plan</span><strong>${money(0)}</strong></div>`);
+      } else {
+        if (planResult.totalAdicionales > 0) {
+          detailRows.push(`<div class="breakdown-line"><span>Valor base</span><strong>${money(planResult.base)}</strong></div>`);
+          detailRows.push(`<div class="breakdown-line"><span>Adicionales</span><strong>${money(planResult.totalAdicionales)}</strong></div>`);
+        }
+        if (state.modalidad === 'desregulado') {
+          if (planResult.totalAdicionales === 0) detailRows.push(`<div class="breakdown-line"><span>Valor del plan</span><strong>${money(planResult.bruto)}</strong></div>`);
+          detailRows.push(`<div class="breakdown-line discount"><span>Aporte computable</span><strong>-${money(planResult.aporteComputable)}</strong></div>`);
+        }
       }
 
+      const modeTag = planResult.esPMO ? 'Cubierto por aportes' : (state.modalidad === 'directo' ? 'Directo' : 'Desregulado');
       card.innerHTML = `
         <div class="plan-card-top">
           <div>
@@ -226,7 +240,8 @@
           </div>
           <div class="plan-card-tags">
             ${planResult.plan === 'C-100' ? '<span class="plan-special-tag">Solo AMBA</span>' : ''}
-            <span class="plan-mode">${state.modalidad === 'directo' ? 'Directo' : 'Desregulado'}</span>
+            ${planResult.esPMO ? '<span class="plan-special-tag">PMO</span>' : ''}
+            <span class="plan-mode">${modeTag}</span>
           </div>
         </div>
         <div class="plan-content">
@@ -235,7 +250,7 @@
             <div class="plan-price">${money(planResult.neto)}</div>
           </div>
           ${detailRows.length ? `<div class="breakdown breakdown-compact">${detailRows.join('')}</div>` : ''}
-          <div class="plan-detail">${detailText(planResult)}${planResult.cubiertoPorAporte ? ' · Aportes suficientes para cubrir el plan' : ''}</div>
+          <div class="plan-detail">${detailText(planResult)}${!planResult.esPMO && planResult.cubiertoPorAporte ? ' · Aportes suficientes para cubrir el plan' : ''}</div>
           <button class="btn btn-primary elegir-plan" type="button">Elegir Plan ${planResult.plan}</button>
         </div>
       `;
@@ -248,7 +263,6 @@
     renderNote(state);
     els.resultadosSection.classList.remove('hidden');
   }
-
 
   function refreshSelectionMeta() {
     if (!currentResult || !selectedPlan) return;
@@ -312,11 +326,103 @@
     });
   }
 
-  function printQuote() {
-    if (!currentResult || !selectedPlan) return;
-    if (!els.nombre.value.trim()) { showAlert('Completá el nombre del cliente antes de guardar el PDF.'); return; }
-    els.printArea.innerHTML = buildQuoteHTML();
-    window.print();
+  function loadExternalScript(src, ready) {
+    if (ready()) return Promise.resolve();
+    const existing = [...document.scripts].find(script => script.src === src);
+    if (existing) {
+      return new Promise((resolve, reject) => {
+        const done = () => ready() ? resolve() : reject(new Error('La librería no quedó disponible.'));
+        existing.addEventListener('load', done, { once: true });
+        existing.addEventListener('error', () => reject(new Error('No se pudo cargar una librería del PDF.')), { once: true });
+        setTimeout(done, 5000);
+      });
+    }
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.async = true;
+      script.crossOrigin = 'anonymous';
+      script.onload = () => ready() ? resolve() : reject(new Error('La librería no quedó disponible.'));
+      script.onerror = () => reject(new Error('No se pudo cargar una librería del PDF.'));
+      document.head.appendChild(script);
+    });
+  }
+
+  async function ensurePdfLibraries() {
+    await Promise.all([
+      loadExternalScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js', () => typeof window.html2canvas === 'function'),
+      loadExternalScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js', () => Boolean(window.jspdf?.jsPDF))
+    ]);
+  }
+
+  async function waitForImages(container) {
+    const images = [...container.querySelectorAll('img')];
+    await Promise.all(images.map(img => {
+      if (img.complete) return Promise.resolve();
+      return new Promise(resolve => {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      });
+    }));
+  }
+
+  function setPdfButtonsBusy(busy) {
+    [els.guardarPdfBtn, els.previewPdfBtn].forEach(button => {
+      if (!button) return;
+      button.disabled = busy;
+      button.textContent = busy ? 'Generando PDF...' : 'Descargar PDF';
+    });
+  }
+
+  async function downloadQuotePDF() {
+    if (pdfBusy || !currentResult || !selectedPlan) return;
+    if (!els.nombre.value.trim()) { showAlert('Completá el nombre del cliente antes de descargar el PDF.'); return; }
+
+    pdfBusy = true;
+    setPdfButtonsBusy(true);
+    let stage;
+    try {
+      await ensurePdfLibraries();
+      stage = document.createElement('div');
+      stage.setAttribute('aria-hidden', 'true');
+      stage.style.cssText = 'position:fixed;left:-100000px;top:0;width:210mm;background:#fff;z-index:-1;pointer-events:none;';
+      stage.innerHTML = buildQuoteHTML();
+      document.body.appendChild(stage);
+      stage.querySelectorAll('.quote-page').forEach(page => {
+        page.style.margin = '0';
+        page.style.boxShadow = 'none';
+      });
+
+      await document.fonts?.ready;
+      await waitForImages(stage);
+
+      const pages = [...stage.querySelectorAll('.quote-page')];
+      if (!pages.length) throw new Error('No se encontraron páginas para exportar.');
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
+      for (let index = 0; index < pages.length; index++) {
+        const canvas = await window.html2canvas(pages[index], {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          imageTimeout: 10000
+        });
+        if (index > 0) doc.addPage('a4', 'portrait');
+        doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+      }
+
+      const safeName = (displayName(els.nombre.value) || 'Cliente').replace(/[\\/:*?"<>|]/g, '').trim() || 'Cliente';
+      doc.save(`Cotizacion Premedic (${safeName}).pdf`);
+    } catch (error) {
+      console.error(error);
+      showAlert('No pudimos generar el PDF directo. Revisá la conexión y volvé a intentarlo.');
+    } finally {
+      stage?.remove();
+      pdfBusy = false;
+      setPdfButtonsBusy(false);
+    }
   }
 
   function clearForm() {
@@ -338,7 +444,16 @@
   });
   els.composicion.addEventListener('change', updateCompositionUI);
   els.modalidad.addEventListener('change', updateModalidadUI);
-  els.cantidadHijos.addEventListener('input', () => { renderChildrenInputs(); resetCalculatedViews(); });
+  els.cantidadHijos.addEventListener('input', () => {
+    if (els.cantidadHijos.value === '') els.edadesHijos.innerHTML = '';
+    else renderChildrenInputs();
+    resetCalculatedViews();
+  });
+  els.cantidadHijos.addEventListener('change', () => {
+    if (els.cantidadHijos.value === '') els.cantidadHijos.value = '1';
+    renderChildrenInputs();
+    resetCalculatedViews();
+  });
 
   // Nombre y DNI no cambian el precio, pero sí actualizan el resumen en vivo.
   els.nombre.addEventListener('input', () => { refreshSelectionMeta(); renderLiveSummary(); });
@@ -351,10 +466,11 @@
   els.cotizarBtn.addEventListener('click', calculate);
   els.limpiarBtn.addEventListener('click', clearForm);
   els.verCotizacionBtn.addEventListener('click', openPreview);
-  els.guardarPdfBtn.addEventListener('click', printQuote);
-  els.previewPdfBtn.addEventListener('click', printQuote);
+  els.guardarPdfBtn.addEventListener('click', downloadQuotePDF);
+  els.previewPdfBtn.addEventListener('click', downloadQuotePDF);
   els.cerrarPreviewBtn.addEventListener('click', () => els.previewDialog.close());
 
+  setPdfButtonsBusy(false);
   updateModalidadUI();
   updateCompositionUI();
   renderLiveSummary();
