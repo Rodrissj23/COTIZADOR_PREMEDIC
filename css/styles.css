@@ -9,7 +9,7 @@
 @import url("./styles/part09.css");
 @import url("./styles/part10.css");
 
-/* Nuevas fotos Premedic, sin zoom ni recortes agresivos */
+/* Reemplazo puntual de las fotos existentes de Premedic */
 .portal-family img {
   content: url("../assets/portal-family-hq.webp") !important;
   width: 100% !important;
@@ -17,7 +17,7 @@
   min-height: 550px !important;
   margin: 0 !important;
   object-fit: cover !important;
-  object-position: center center !important;
+  object-position: 70% center !important;
   transform: none !important;
 }
 
@@ -27,10 +27,11 @@
   height: 100% !important;
   margin: 0 !important;
   object-fit: cover !important;
-  object-position: center center !important;
+  object-position: 72% center !important;
   transform: none !important;
 }
 
+/* No agregamos fotos nuevas: se conserva la estructura original del PDF */
 .quote-brand-story-final > div:first-child {
   padding-right: 120px !important;
 }
@@ -39,9 +40,9 @@
   .portal-family img{
     min-height:285px !important;
     height:285px !important;
-    object-position:center center !important;
+    object-position:68% center !important;
   }
   .benefits-family img{
-    object-position:center center !important;
+    object-position:70% center !important;
   }
 }
