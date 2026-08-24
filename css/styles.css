@@ -9,9 +9,9 @@
 @import url("./styles/part09.css");
 @import url("./styles/part10.css");
 
-/* Fotos Premedic: usar originales en alta calidad, sin ampliaciones forzadas */
+/* Nuevas fotos Premedic, sin zoom ni recortes agresivos */
 .portal-family img {
-  content: url("../assets/portal-family.jpg") !important;
+  content: url("../assets/portal-family-hq.webp") !important;
   width: 100% !important;
   height: 100% !important;
   min-height: 550px !important;
@@ -22,16 +22,15 @@
 }
 
 .benefits-family img {
-  content: url("../assets/benefits-family.jpg") !important;
+  content: url("../assets/benefits-family.webp") !important;
   width: 100% !important;
   height: 100% !important;
   margin: 0 !important;
   object-fit: cover !important;
-  object-position: center 45% !important;
+  object-position: center center !important;
   transform: none !important;
 }
 
-/* Por ahora dejamos la franja del PDF sin foto para no mostrar una imagen comprimida */
 .quote-brand-story-final > div:first-child {
   padding-right: 120px !important;
 }
@@ -40,6 +39,9 @@
   .portal-family img{
     min-height:285px !important;
     height:285px !important;
+    object-position:center center !important;
+  }
+  .benefits-family img{
     object-position:center center !important;
   }
 }
