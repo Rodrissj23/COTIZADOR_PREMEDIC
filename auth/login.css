@@ -52,12 +52,13 @@ button,input{font:inherit}
   transform:rotate(14deg);
 }
 .login-visual img{
+  content:url("../assets/login-family-hq.webp");
   width:100%;
   height:100%;
   min-height:640px;
   display:block;
   object-fit:cover;
-  object-position:center 46%;
+  object-position:center center;
   transform:none;
 }
 .login-visual-overlay{
@@ -144,18 +145,11 @@ button,input{font:inherit}
   .login-page{padding:12px}
   .login-shell{grid-template-columns:1fr;min-height:auto;border-radius:20px}
   .login-visual{min-height:245px}
-  .login-visual img{width:100%;min-height:245px;height:245px;transform:none;object-position:center 46%}
+  .login-visual img{width:100%;min-height:245px;height:245px;transform:none;object-position:center 48%}
   .login-visual-copy{left:22px;right:22px;bottom:20px}
   .login-visual-copy strong{font-size:22px}
   .login-panel{padding:34px 26px 26px}
   .login-brand{margin-bottom:30px}
   .login-brand img{width:230px}
   .login-copy h1{font-size:31px}
-}
-
-/* Fotografía Premedic actualizada */
-.login-visual img{
-  content:url("../assets/login-family.webp");
-  object-fit:cover;
-  object-position:center center;
 }
