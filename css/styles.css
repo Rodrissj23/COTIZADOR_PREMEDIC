@@ -11,27 +11,27 @@
 
 /* Reemplazo puntual de las fotos existentes de Premedic */
 .portal-family img {
-  content: url("../assets/portal-family-hq.webp") !important;
+  content: url("../assets/portal-family.jpg") !important;
   width: 100% !important;
   height: 100% !important;
   min-height: 550px !important;
   margin: 0 !important;
   object-fit: cover !important;
-  object-position: 70% center !important;
+  object-position: center center !important;
   transform: none !important;
 }
 
 .benefits-family img {
-  content: url("../assets/benefits-family.webp") !important;
+  content: url("../assets/benefits-family.jpg") !important;
   width: 100% !important;
   height: 100% !important;
   margin: 0 !important;
   object-fit: cover !important;
-  object-position: 72% center !important;
+  object-position: center center !important;
   transform: none !important;
 }
 
-/* No agregamos fotos nuevas: se conserva la estructura original del PDF */
+/* Se conserva la estructura original del PDF */
 .quote-brand-story-final > div:first-child {
   padding-right: 120px !important;
 }
@@ -40,9 +40,9 @@
   .portal-family img{
     min-height:285px !important;
     height:285px !important;
-    object-position:68% center !important;
+    object-position:center center !important;
   }
   .benefits-family img{
-    object-position:70% center !important;
+    object-position:center center !important;
   }
 }
