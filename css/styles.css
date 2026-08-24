@@ -17,7 +17,7 @@
   min-height: 550px !important;
   margin: 0 !important;
   object-fit: cover !important;
-  object-position: center center !important;
+  object-position: 74% center !important;
   transform: none !important;
 }
 
@@ -27,7 +27,7 @@
   height: 100% !important;
   margin: 0 !important;
   object-fit: cover !important;
-  object-position: center center !important;
+  object-position: 72% center !important;
   transform: none !important;
 }
 
@@ -40,9 +40,9 @@
   .portal-family img{
     min-height:285px !important;
     height:285px !important;
-    object-position:center center !important;
+    object-position:72% center !important;
   }
   .benefits-family img{
-    object-position:center center !important;
+    object-position:72% center !important;
   }
 }
