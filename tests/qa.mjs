@@ -10,7 +10,7 @@ const eq = (actual, expected, message='') => assert(Object.is(actual, expected),
 const near = (actual, expected, tolerance=0.01, message='') => assert(Math.abs(actual-expected) <= tolerance, `${message} esperado≈${expected} actual=${actual}`.trim());
 async function test(name, fn) { try { await fn(); pass(name); } catch (error) { fail(name, error); } }
 
-const jsFiles = ['js/precios-premedic.js','js/motor-premedic.js','js/cotizacion.js','js/app.js','js/portal.js'];
+const jsFiles = ['js/precios-premedic.js','js/motor-premedic.js','js/cotizacion.js','js/pmo-quote.js','js/app.js','js/portal.js'];
 for (const file of jsFiles) {
   await test(`Sintaxis JavaScript ${file}`, async () => {
     new Function(fs.readFileSync(file, 'utf8'));
@@ -22,6 +22,7 @@ vm.createContext(context);
 vm.runInContext(fs.readFileSync('js/precios-premedic.js','utf8'), context, { filename:'precios-premedic.js' });
 vm.runInContext(fs.readFileSync('js/motor-premedic.js','utf8'), context, { filename:'motor-premedic.js' });
 vm.runInContext(fs.readFileSync('js/cotizacion.js','utf8'), context, { filename:'cotizacion.js' });
+vm.runInContext(fs.readFileSync('js/pmo-quote.js','utf8'), context, { filename:'pmo-quote.js' });
 const { PREMEDIC_DATA:data, PremedicMotor:motor, PremedicQuote:formal } = context.window;
 
 const state = overrides => ({
@@ -138,13 +139,23 @@ await test('Documento formal tiene 4 páginas, vigencia y DNI opcional', async()
   assert(!html2.includes('No informado'),'imprime DNI faltante');
 });
 
-await test('PMO formal no debe heredar contenido específico de C-100', async()=>{
+await test('PMO formal no hereda contenido específico de C-100', async()=>{
   const s=state({modalidad:'desregulado',aporteRecibo:30000});
   const r=motor.quote(s); assert(r.plans.some(p=>p.esPMO),'PMO no disponible para prueba');
   const html=formal.renderQuote({state:s,result:r,selectedPlan:'PMO',quoteId:'PM-PMO'});
+  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,4);
   assert(html.includes('Plan PMO'),'no identifica PMO');
+  assert(html.includes('Aporte computable por persona'),'no explica elegibilidad PMO');
+  assert(html.includes('Valor del plan</span><strong>$ 0'),'no muestra valor PMO $0');
   assert(!html.includes('Laboratorio de rutina, ECG y EEG'),'PMO heredó cobertura C-100');
   assert(!html.includes('Diagnóstico esencial'),'PMO heredó beneficios C-100');
+});
+
+await test('Index carga el override PMO antes de la aplicación', async()=>{
+  const index=fs.readFileSync('index.html','utf8');
+  const pmo=index.indexOf('js/pmo-quote.js');
+  const app=index.indexOf('js/app.js');
+  assert(pmo>0 && app>pmo,'pmo-quote.js no carga antes de app.js');
 });
 
 await test('Portal no usa MutationObserver global ni parches destructivos', async()=>{
