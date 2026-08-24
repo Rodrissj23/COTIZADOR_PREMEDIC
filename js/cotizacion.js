@@ -101,7 +101,7 @@ window.PremedicQuote = (() => {
             <h2>Más que un plan de salud.</h2>
             <p>Cobertura, atención y herramientas pensadas para acompañarte todos los días.</p>
           </div>
-          <div class="benefits-family" aria-hidden="true"><img src="https://images.pexels.com/photos/19957212/pexels-photo-19957212.jpeg?cs=srgb&dl=pexels-tessy-agbonome-521343232-19957212.jpg&fm=jpg" alt="" referrerpolicy="no-referrer"></div>
+          <div class="benefits-family" aria-hidden="true"><img src="assets/benefits-family.jpg" alt=""></div>
         </header>
 
         <div class="benefits-grid benefits-grid-editorial">
