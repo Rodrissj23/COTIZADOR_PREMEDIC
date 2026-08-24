@@ -9,42 +9,37 @@
 @import url("./styles/part09.css");
 @import url("./styles/part10.css");
 
-/* Fotografías Premedic actualizadas */
+/* Fotos Premedic: usar originales en alta calidad, sin ampliaciones forzadas */
 .portal-family img {
-  content: url("../assets/portal-family.webp");
-  object-fit: cover;
-  object-position: 68% center;
+  content: url("../assets/portal-family.jpg") !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 550px !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  transform: none !important;
 }
 
 .benefits-family img {
-  content: url("../assets/benefits-family.webp");
-  object-fit: cover;
-  object-position: 68% center;
+  content: url("../assets/benefits-family.jpg") !important;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  object-fit: cover !important;
+  object-position: center 45% !important;
+  transform: none !important;
 }
 
-/* Cuarta foto: franja institucional de la página 1 del PDF */
+/* Por ahora dejamos la franja del PDF sin foto para no mostrar una imagen comprimida */
 .quote-brand-story-final > div:first-child {
-  padding-right: 245px !important;
-}
-.quote-brand-story-art {
-  width: 260px !important;
-  background:
-    linear-gradient(90deg, #f4faf8 0%, rgba(244,250,248,.7) 18%, rgba(244,250,248,.08) 52%, transparent 72%),
-    url("../assets/story-family.webp") 62% center / cover no-repeat !important;
-}
-.quote-brand-story-art::before,
-.quote-brand-story-art::after,
-.quote-brand-story-art span,
-.quote-brand-story-art i {
-  display: none !important;
+  padding-right: 120px !important;
 }
 
-@media(max-width:560px){
-  .quote-brand-story-final > div:first-child {
-    padding-right: 135px !important;
-  }
-  .quote-brand-story-art {
-    width: 150px !important;
-    background-position: 60% center !important;
+@media(max-width:820px){
+  .portal-family img{
+    min-height:285px !important;
+    height:285px !important;
+    object-position:center center !important;
   }
 }
