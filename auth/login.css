@@ -152,3 +152,10 @@ button,input{font:inherit}
   .login-brand img{width:230px}
   .login-copy h1{font-size:31px}
 }
+
+/* Fotografía Premedic actualizada */
+.login-visual img{
+  content:url("../assets/login-family.webp");
+  object-fit:cover;
+  object-position:center center;
+}
