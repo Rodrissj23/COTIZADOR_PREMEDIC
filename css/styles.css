@@ -21,3 +21,30 @@
   object-fit: cover;
   object-position: 68% center;
 }
+
+/* Cuarta foto: franja institucional de la página 1 del PDF */
+.quote-brand-story-final > div:first-child {
+  padding-right: 245px !important;
+}
+.quote-brand-story-art {
+  width: 260px !important;
+  background:
+    linear-gradient(90deg, #f4faf8 0%, rgba(244,250,248,.7) 18%, rgba(244,250,248,.08) 52%, transparent 72%),
+    url("../assets/story-family.webp") 62% center / cover no-repeat !important;
+}
+.quote-brand-story-art::before,
+.quote-brand-story-art::after,
+.quote-brand-story-art span,
+.quote-brand-story-art i {
+  display: none !important;
+}
+
+@media(max-width:560px){
+  .quote-brand-story-final > div:first-child {
+    padding-right: 135px !important;
+  }
+  .quote-brand-story-art {
+    width: 150px !important;
+    background-position: 60% center !important;
+  }
+}
