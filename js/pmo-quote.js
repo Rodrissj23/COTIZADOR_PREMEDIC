@@ -21,6 +21,8 @@
     day: '2-digit', month: '2-digit', year: 'numeric'
   }).format(date);
 
+  const pmoIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v5c0 4.4 2.7 7.9 7 10 4.3-2.1 7-5.6 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg>';
+
   function proposalData(state, result) {
     const rows = [];
     if (state.dni?.trim()) rows.push(['DNI', state.dni.trim()]);
@@ -41,8 +43,10 @@
 
   function pmoInfoPage(quoteId) {
     const items = [
-      ['Elegibilidad por aportes', 'La opción PMO se habilita cuando el aporte computable alcanza el mínimo definido por persona.'],
+      ['Elegibilidad por aportes', 'La opción PMO se habilita cuando el aporte computable por persona alcanza $ 15.000.'],
       ['Valor a abonar', 'Con la condición de aportes cumplida, el cotizador informa un valor mensual a abonar de $ 0.'],
+      ['Aporte del titular', 'El cálculo utiliza un único aporte informado desde el recibo de sueldo del titular.'],
+      ['Sin tope adicional', 'La fórmula de aportes de Premedic se aplica sin un tope adicional de base dentro de este cotizador.'],
       ['Alcance de cobertura', 'Las prestaciones, prestadores, autorizaciones y condiciones se rigen por la documentación oficial vigente de Premedic.'],
       ['Confirmación comercial', 'La afiliación y el alcance definitivo quedan sujetos a validación de datos y condiciones de contratación.']
     ];
@@ -60,6 +64,7 @@
         <div class="benefits-grid benefits-grid-editorial">
           ${items.map(([title, copy], index) => `
             <article class="benefit-card benefit-row">
+              <div class="benefit-icon">${pmoIcon}</div>
               <div class="benefit-row-copy">
                 <div class="benefit-number">0${index + 1}</div>
                 <h3>${esc(title)}</h3>
@@ -81,11 +86,11 @@
 
   function pmoConditionsPage(quoteId) {
     const rows = [
-      ['Condición de acceso', 'Aportes', 'Aporte computable por persona igual o superior al mínimo vigente del cotizador.'],
-      ['Valor mensual', 'Cubierto', 'El valor a abonar informado por esta opción es $ 0 cuando se cumple la condición de aportes.'],
-      ['Cobertura médica', 'Según PMO', 'Prestaciones y alcance conforme a la documentación oficial vigente aplicable.'],
-      ['Prestadores', 'Según cartilla', 'Disponibilidad y cartilla sujetas a la documentación y condiciones vigentes de Premedic.'],
-      ['Afiliación', 'Sujeta a validación', 'La incorporación definitiva requiere validación de datos y condiciones comerciales.']
+      ['PMO', 'Condición de acceso', 'Aportes', 'Aporte computable por persona igual o superior a $ 15.000.'],
+      ['PMO', 'Valor mensual', 'Cubierto', 'El valor a abonar informado por esta opción es $ 0 cuando se cumple la condición de aportes.'],
+      ['PMO', 'Cobertura médica', 'Según PMO', 'Prestaciones y alcance conforme a la documentación oficial vigente aplicable.'],
+      ['PMO', 'Prestadores', 'Según cartilla', 'Disponibilidad y cartilla sujetas a la documentación y condiciones vigentes de Premedic.'],
+      ['PMO', 'Afiliación', 'Sujeta a validación', 'La incorporación definitiva requiere validación de datos y condiciones comerciales.']
     ];
     return `
       <section class="quote-sheet quote-page quote-coverage-page">
@@ -169,13 +174,22 @@
                 <div class="quote-economic-row"><span>Aporte computable por persona</span><strong>${window.PremedicMotor.money(result.aportePorPersona)}</strong></div>
                 <div class="quote-economic-row"><span>Valor del plan</span><strong>$ 0</strong></div>
               </div>
-              <div class="quote-covered-note">La opción PMO quedó habilitada porque el aporte computable por persona alcanza el mínimo definido.</div>
+              <div class="quote-covered-note">La opción PMO quedó habilitada porque el aporte computable por persona alcanza $ 15.000.</div>
             </div>
             <div class="quote-total-card quote-total-card-v3 quote-total-card-final">
               <span>Total a abonar</span><b>Plan PMO</b><strong>$ 0</strong><small>Valor mensual a abonar</small><em>Cubierto por aportes</em>
             </div>
           </section>
           ${advisorStrip(state)}
+          <section class="quote-highlights quote-highlights-final" aria-label="Datos destacados de la propuesta">
+            <article><div class="quote-highlight-icon">${pmoIcon}</div><div class="quote-highlight-copy"><strong>≥ $15.000</strong><span>Aporte computable por persona</span></div></article>
+            <article><div class="quote-highlight-icon">${pmoIcon}</div><div class="quote-highlight-copy"><strong>$ 0</strong><span>Valor mensual PMO</span></div></article>
+            <article><div class="quote-highlight-icon">${pmoIcon}</div><div class="quote-highlight-copy"><strong>72 hs</strong><span>Vigencia de la propuesta</span></div></article>
+          </section>
+          <section class="quote-brand-story quote-brand-story-final">
+            <div><span>PREMEDIC</span><strong>Una alternativa habilitada por tus aportes.</strong><small>El alcance médico y las condiciones definitivas se rigen por la documentación oficial vigente.</small></div>
+            <div class="quote-brand-story-art" aria-hidden="true"><span></span><i></i></div>
+          </section>
           <section class="quote-conditions quote-conditions-final">
             <div><span>Tarifa aplicada</span><strong>Vigencia ${esc(window.PremedicMotor.data.vigencia)}</strong></div>
             <p>La opción PMO se habilita por el nivel de aportes informado. Prestaciones, prestadores y condiciones de afiliación se rigen por la documentación oficial vigente de Premedic.</p>
