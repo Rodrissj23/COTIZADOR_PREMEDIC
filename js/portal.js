@@ -74,6 +74,54 @@
   observer.observe(document.body, { childList: true, subtree: true });
   limpiarAporteComputable();
 
+  // Permitir escribir manualmente la cantidad de hijos sin que el campo se
+  // restablezca a 1 al borrar. El cálculo original sigue reaccionando al
+  // evento input, así que no se modifica la lógica del cotizador.
+  const cantidadHijos = document.getElementById('cantidadHijos');
+  if (cantidadHijos) {
+    let campoVaciado = false;
+
+    const aplicarCantidad = value => {
+      const numero = Math.max(1, Math.min(10, Number(value) || 1));
+      cantidadHijos.value = String(numero);
+      cantidadHijos.dispatchEvent(new Event('input', { bubbles: true }));
+      cantidadHijos.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+
+    cantidadHijos.addEventListener('keydown', event => {
+      if (event.key === 'Backspace' || event.key === 'Delete') {
+        event.preventDefault();
+        cantidadHijos.value = '';
+        campoVaciado = true;
+        return;
+      }
+
+      if (/^[0-9]$/.test(event.key)) {
+        event.preventDefault();
+        let siguiente;
+
+        if (campoVaciado || cantidadHijos.value === '') {
+          siguiente = event.key;
+          campoVaciado = false;
+        } else if (cantidadHijos.value === '1' && event.key === '0') {
+          siguiente = '10';
+        } else {
+          // Al escribir sobre el valor existente, reemplazarlo. Así se puede
+          // pasar de 1 a 2, 3, etc. sin usar las flechas del input.
+          siguiente = event.key;
+        }
+
+        aplicarCantidad(siguiente);
+      }
+    });
+
+    cantidadHijos.addEventListener('paste', event => {
+      event.preventDefault();
+      const texto = (event.clipboardData?.getData('text') || '').replace(/\D/g, '');
+      if (texto) aplicarCantidad(texto);
+    });
+  }
+
   logoutBtn?.addEventListener('click', async () => {
     try {
       await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
