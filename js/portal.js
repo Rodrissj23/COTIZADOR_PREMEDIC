@@ -48,8 +48,16 @@
         if (detail && detail.textContent !== detailTexto) {
           detail.textContent = detailTexto;
         }
-        const valueRow = pmo.querySelector('.breakdown-line');
-        if (valueRow) valueRow.remove();
+
+        let breakdown = pmo.querySelector('.breakdown');
+        if (!breakdown) {
+          breakdown = document.createElement('div');
+          breakdown.className = 'breakdown breakdown-compact';
+          detail?.before(breakdown);
+        }
+        if (breakdown) {
+          breakdown.innerHTML = '<div class="breakdown-line"><span>Valor del plan</span><strong>$ 0</strong></div>';
+        }
       }
     }
   }
