@@ -82,24 +82,63 @@ window.PremedicQuote = (() => {
     return `<section class="quote-advisor-strip quote-advisor-strip-v3 quote-advisor-dynamic cols-${items.length}">${items.map(([label,value]) => `<div><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('')}</section>`;
   }
 
-  function renderBenefitsPage(quoteId) {
-    const benefits = [
-      ['hospital', 'Más de 90 Clínicas y Sanatorios', 'Amplia cartilla médica con más de 2.500 profesionales de acceso directo.'],
-      ['network', 'Más de 400 Centros Médicos', 'Red de atención con múltiples especialidades para facilitar el acceso a turnos.'],
-      ['shield', 'Planes sin bonos ni coseguros', 'Sin coseguros en consultas pediátricas, clínicas y ginecológicas. En planes 300, 400 y 500, sin coseguros en todas las especialidades.'],
-      ['tooth', 'Centros Odontológicos', 'Red odontológica y centros Smile Group para facilitar el acceso a turnos.'],
-      ['diagnostic', 'Diagnóstico y Tratamiento', 'Centros de diagnóstico y tratamiento con gestión de autorizaciones desde la app.'],
-      ['video', 'Médico por Videollamada 24 hs', 'Consultas médicas sin cargo por videollamada y recepción de órdenes desde el celular.']
-    ];
+  function planBenefits(plan) {
+    const benefitsByPlan = {
+      'C-100': [
+        ['video', 'Atención desde el ingreso', 'Guardia, atención domiciliaria y videoconsulta sin cargo, sin tope y sin límite.'],
+        ['diagnostic', 'Diagnóstico esencial', 'Laboratorio de rutina, electrocardiograma y electroencefalograma sin cargo.'],
+        ['shield', 'Farmacia todos los días', '40% en medicamentos bajo receta y 70% en medicación crónica, según normativa.'],
+        ['hospital', 'Urgencias y traslados', 'Ambulancia y traslados derivados de urgencias o emergencias sin cargo.'],
+        ['network', 'Todo desde la app', 'Cartilla digital, credencial, autorizaciones, facturas y medios de pago en el celular.'],
+        ['tooth', 'Bienestar y asistencia', 'Asistencia nacional y en países limítrofes, más beneficios digitales de Nume.']
+      ],
+      '200': [
+        ['video', 'Atención ágil', 'Guardia, atención domiciliaria y videoconsulta sin cargo desde el ingreso.'],
+        ['diagnostic', 'Más diagnóstico sin cargo', 'Radiología simple, mamografías, PAP, ECG y estudios de rutina incluidos.'],
+        ['tooth', 'Odontología integral', 'Consultas, urgencias, prevención, endodoncia y operatoria según alcance del plan.'],
+        ['shield', 'Salud mental y rehabilitación', 'Hasta 15 sesiones anuales de foniatría o psicología y kinesiología incluida.'],
+        ['hospital', 'Farmacia y emergencias', '40% en medicamentos, 70% en crónicos y cobertura de ambulancia ante urgencias.'],
+        ['network', 'App y asistencia al viajero', 'Gestiones digitales y asistencia nacional y en países limítrofes.']
+      ],
+      '300': [
+        ['shield', 'Consultas sin coseguro', 'Atención en consultorio, domicilio, guardia y videoconsulta sin cargo.'],
+        ['diagnostic', 'Alta complejidad incluida', 'Hasta 2 TAC y 2 resonancias por año, por persona y por estudio, sin cargo.'],
+        ['tooth', 'Cobertura odontológica', 'Atención preventiva, endodoncia, operatoria, cirugía bucal y periodoncia.'],
+        ['network', 'Más acompañamiento', 'Hasta 20 sesiones anuales de foniatría, psicología o psiquiatría por persona.'],
+        ['hospital', 'Farmacia y emergencias', '40% en medicamentos, 70% en crónicos y ambulancia ante urgencias.'],
+        ['video', 'Salud conectada', 'App Premedic, videoconsulta y asistencia nacional y en países limítrofes.']
+      ],
+      '400': [
+        ['shield', 'Consultas sin coseguro', 'Consultorio, domicilio, guardia y videoconsulta sin cargo, sin tope y sin límite.'],
+        ['diagnostic', 'Diagnóstico superior', 'Hasta 3 TAC y 3 resonancias por año, por persona y por estudio, sin cargo.'],
+        ['hospital', 'Habitación individual', 'Internación clínica, quirúrgica y maternidad con habitación individual.'],
+        ['network', 'Salud mental ampliada', 'Hasta 30 sesiones anuales de foniatría, psicología o psiquiatría por persona.'],
+        ['tooth', 'Beneficio odontológico', 'Cobertura odontológica integral y blanqueamiento según condiciones del plan.'],
+        ['video', 'Farmacia, app y asistencia', '40% en medicamentos, 70% en crónicos, gestiones digitales y asistencia al viajero.']
+      ],
+      '500': [
+        ['shield', 'Consultas sin coseguro', 'Consultorio, domicilio, guardia y videoconsulta sin cargo, sin tope y sin límite.'],
+        ['diagnostic', 'Diagnóstico superior', 'Hasta 3 TAC y 3 resonancias por año, por persona y por estudio, sin cargo.'],
+        ['hospital', 'Habitación individual', 'Internación clínica, quirúrgica y maternidad con habitación individual.'],
+        ['network', 'Máximo acompañamiento', 'Hasta 35 sesiones anuales de foniatría, psicología o psiquiatría por persona.'],
+        ['tooth', 'Extras del Plan 500', 'Blanqueamiento, un par de lentes y ecografía 4D según condiciones de cartilla.'],
+        ['video', 'Farmacia, app y asistencia', '40% en medicamentos, 70% en crónicos, gestiones digitales y asistencia al viajero.']
+      ]
+    };
+    return benefitsByPlan[plan] || benefitsByPlan['C-100'];
+  }
+
+  function renderBenefitsPage(plan, quoteId) {
+    const benefits = planBenefits(plan);
 
     return `
       <section class="quote-sheet quote-page quote-benefits-page">
         <header class="benefits-header benefits-header-editorial">
           <div class="benefits-header-copy">
             <div class="benefits-brand"><img src="assets/premedic-logo-oficial.png" alt="Premedic" class="quote-brand-logo benefits-brand-logo"></div>
-            <span>Beneficios principales</span>
-            <h2>Más que un plan de salud.</h2>
-            <p>Cobertura, atención y herramientas pensadas para acompañarte todos los días.</p>
+            <span>Lo mejor de tu cobertura</span>
+            <h2>Lo destacado del Plan ${esc(plan)}.</h2>
+            <p>Una selección simple de los beneficios que más valor suman en el día a día.</p>
           </div>
           <div class="benefits-family" aria-hidden="true"><img src="assets/benefits-family.jpg" alt=""></div>
         </header>
@@ -123,7 +162,7 @@ window.PremedicQuote = (() => {
         </div>
 
         <footer class="quote-footer benefits-footer quote-footer-clean">
-          <div class="quote-legal">Beneficios sujetos a condiciones, alcance de plan, cartilla vigente y normativa aplicable.</div>
+          <div class="quote-legal">Resumen comercial. Topes, carencias, prestadores y condiciones se rigen por la cartilla vigente del Plan ${esc(plan)}.</div>
           <div class="quote-footer-side"><span>Herramienta comercial · Grupo Zeroka</span><b>${esc(quoteId)}</b></div>
         </footer>
       </section>
@@ -232,7 +271,7 @@ window.PremedicQuote = (() => {
       </section>
     `;
 
-    return `<article class="quote-document">${pageOne}${renderBenefitsPage(quoteId)}</article>`;
+    return `<article class="quote-document">${pageOne}${renderBenefitsPage(selected.plan, quoteId)}</article>`;
   }
 
   return { renderQuote, makeId };
