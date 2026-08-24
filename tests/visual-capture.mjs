@@ -7,6 +7,13 @@ const out=path.resolve('qa-artifacts');
 fs.mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({headless:true});
 
+async function saveCurrentPdf(page, fileName){
+  const downloadPromise=page.waitForEvent('download',{timeout:60000});
+  await page.locator('#guardarPdfBtn').click();
+  const download=await downloadPromise;
+  await download.saveAs(path.join(out,fileName));
+}
+
 async function desktop(){
   const page=await browser.newPage({viewport:{width:1440,height:1000},acceptDownloads:true});
   await page.goto(`${BASE}/index.html`,{waitUntil:'networkidle'});
@@ -21,6 +28,7 @@ async function desktop(){
   await page.locator('#verCotizacionBtn').click();
   await page.screenshot({path:path.join(out,'03-preview-plan300.png'),fullPage:false});
   await page.locator('#cerrarPreviewBtn').click();
+  await saveCurrentPdf(page,'08-plan300.pdf');
 
   await page.locator('#modalidad').selectOption('desregulado');
   await page.locator('#aporteRecibo').fill('30000');
@@ -30,11 +38,7 @@ async function desktop(){
   await page.locator('#verCotizacionBtn').click();
   await page.screenshot({path:path.join(out,'05-preview-pmo.png'),fullPage:false});
   await page.locator('#cerrarPreviewBtn').click();
-
-  const downloadPromise=page.waitForEvent('download',{timeout:60000});
-  await page.locator('#guardarPdfBtn').click();
-  const download=await downloadPromise;
-  await download.saveAs(path.join(out,'Cotizacion Premedic (Cliente Auditoria).pdf'));
+  await saveCurrentPdf(page,'09-pmo.pdf');
   await page.close();
 }
 
