@@ -27,7 +27,10 @@
 
   function limpiarAporteComputable() {
     const aporteCopy = document.querySelector('.contribution-copy p');
-    if (aporteCopy) aporteCopy.textContent = 'Ingresá el aporte del recibo para calcular los planes disponibles.';
+    const aporteTexto = 'Ingresá el aporte del recibo para calcular los planes disponibles.';
+    if (aporteCopy && aporteCopy.textContent !== aporteTexto) {
+      aporteCopy.textContent = aporteTexto;
+    }
 
     document.getElementById('sumAporteCalculadoRow')?.classList.add('hidden');
     document.getElementById('notasModalidad')?.classList.add('hidden');
@@ -41,7 +44,10 @@
       if (pmo && resultados.firstElementChild !== pmo) resultados.prepend(pmo);
       if (pmo) {
         const detail = pmo.querySelector('.plan-detail');
-        if (detail) detail.textContent = 'PMO · cubierto íntegramente con los aportes del recibo';
+        const detailTexto = 'PMO · cubierto íntegramente con los aportes del recibo';
+        if (detail && detail.textContent !== detailTexto) {
+          detail.textContent = detailTexto;
+        }
         const valueRow = pmo.querySelector('.breakdown-line');
         if (valueRow) valueRow.remove();
       }
@@ -56,7 +62,15 @@
   `;
   document.head.appendChild(style);
 
-  const observer = new MutationObserver(limpiarAporteComputable);
+  let limpiezaPendiente = false;
+  const observer = new MutationObserver(() => {
+    if (limpiezaPendiente) return;
+    limpiezaPendiente = true;
+    requestAnimationFrame(() => {
+      limpiezaPendiente = false;
+      limpiarAporteComputable();
+    });
+  });
   observer.observe(document.body, { childList: true, subtree: true });
   limpiarAporteComputable();
 
