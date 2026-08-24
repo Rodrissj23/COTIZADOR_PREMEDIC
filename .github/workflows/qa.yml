@@ -39,6 +39,8 @@ jobs:
         run: |
           node tests/browser-qa.mjs
           node tests/login-browser.mjs
+      - name: Smoke test production
+        run: node tests/prod-smoke.mjs
       - name: Capture visual QA artifacts
         run: node tests/visual-capture.mjs
       - name: Upload visual QA artifacts
