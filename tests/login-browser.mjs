@@ -15,7 +15,7 @@ for(const viewport of [{name:'desktop',width:1440,height:900},{name:'mobile',wid
     const dims=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));
     assert(dims.scroll<=dims.client+2,`overflow ${JSON.stringify(dims)}`);
     await page.locator('#password').fill('prueba');
-    await page.locator('#showPassword').click();
+    await page.locator('#togglePassword').click();
     assert(await page.locator('#password').getAttribute('type')==='text','botón Ver no funciona');
     assert(errors.length===0,errors.join(' | '));
     await page.close();
