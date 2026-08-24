@@ -1,5 +1,6 @@
 window.PremedicMotor = (() => {
   const data = window.PREMEDIC_DATA;
+  const PMO_MINIMO_POR_PERSONA = 15000;
 
   function money(value) {
     return '$ ' + Number(value).toLocaleString('es-AR', { maximumFractionDigits: 2, minimumFractionDigits: Number(value) % 1 === 0 ? 0 : 2 });
@@ -14,6 +15,15 @@ window.PremedicMotor = (() => {
 
   function aporteComputable(aporte) {
     return (Number(aporte || 0) / 3) * 7.65;
+  }
+
+  function cantidadPersonas(state) {
+    const hijos = Array.isArray(state.hijos) ? state.hijos.length : 0;
+    if (state.composicion === 'individual') return 1;
+    if (state.composicion === 'pareja') return 2;
+    if (state.composicion === 'titular_hijos') return 1 + hijos;
+    if (state.composicion === 'pareja_hijos') return 2 + hijos;
+    return 1;
   }
 
   function validate(state) {
@@ -127,6 +137,28 @@ window.PremedicMotor = (() => {
         ...calculatePlan(zonePlans[name], state, refAge)
       }));
 
+    const aporteTotal = state.modalidad === 'desregulado' ? aporteComputable(state.aporteRecibo) : 0;
+    const personas = cantidadPersonas(state);
+    const aportePorPersona = personas > 0 ? aporteTotal / personas : 0;
+    const pmoDisponible = state.modalidad === 'desregulado' && aportePorPersona >= PMO_MINIMO_POR_PERSONA;
+
+    if (pmoDisponible) {
+      plans.push({
+        plan: 'PMO',
+        band,
+        base: 0,
+        baseLabel: 'PMO · cubierto íntegramente con aportes',
+        extras: [],
+        totalAdicionales: 0,
+        bruto: 0,
+        aporteComputable: 0,
+        neto: 0,
+        cubiertoPorAporte: true,
+        esPMO: true,
+        aportePorPersona
+      });
+    }
+
     return {
       ok: true,
       refAge,
@@ -135,7 +167,10 @@ window.PremedicMotor = (() => {
       compositionLabel: buildCaseLabel(state),
       plans,
       aporteRecibo: state.modalidad === 'desregulado' ? Number(state.aporteRecibo) : 0,
-      aporteComputable: state.modalidad === 'desregulado' ? aporteComputable(state.aporteRecibo) : 0
+      aporteComputable: aporteTotal,
+      cantidadPersonas: personas,
+      aportePorPersona,
+      pmoDisponible
     };
   }
 
