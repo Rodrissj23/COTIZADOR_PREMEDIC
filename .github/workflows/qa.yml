@@ -24,6 +24,7 @@ jobs:
         run: |
           node tests/qa.mjs
           node tests/tariff-structure.mjs
+          node tests/formal-quote.mjs
       - name: Install browser QA
         run: |
           npm install --no-save playwright@1.55.0
