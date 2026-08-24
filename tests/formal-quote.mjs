@@ -28,6 +28,11 @@ test('Cotización formal PMO completa y prudente',()=>{
   assert(html.includes('Plan PMO'),'no identifica PMO');
   assert(html.includes('$ 0'),'no muestra $0');
   assert(html.includes('documentación oficial vigente'),'no contiene aclaración documental');
+  assert(html.includes('Condición de acceso'),'tabla PMO no contiene concepto de acceso');
+  assert(html.includes('Aporte computable por persona igual o superior a $ 15.000.'),'tabla PMO perdió condición principal');
+  assert(html.includes('Aporte del titular'),'página informativa PMO perdió regla de aporte único');
+  assert(html.includes('Sin tope adicional'),'página informativa PMO perdió regla sin tope');
+  assert((html.match(/class="benefit-card benefit-row"/g)||[]).length===6,'PMO no tiene seis bloques informativos');
   assert(!html.includes('Diagnóstico esencial'),'heredó C-100');
   assert(!html.includes('undefined'),'contiene undefined');
 });
