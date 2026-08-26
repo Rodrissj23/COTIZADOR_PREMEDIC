@@ -67,7 +67,24 @@ window.PremedicMotor = (() => {
     return map[state.composicion] || state.composicion;
   }
 
-  function calculatePlan(plan, state, refAge) {
+  function getPromotionResult(bruto, state, planName) {
+    const promos = window.PremedicPromos;
+    if (!promos) {
+      return {
+        promo: { id: 'ninguna', label: 'Sin promoción', tipo: 'none', valor: 0 },
+        descuento: 0,
+        subtotal: bruto,
+        aporteMonotributo: 0
+      };
+    }
+    return promos.aplicarPromocion(bruto, {
+      modalidad: state.modalidad,
+      zona: state.zona,
+      plan: planName
+    });
+  }
+
+  function calculatePlan(planName, plan, state, refAge) {
     const band = tramoIndex(refAge);
     let base = 0;
     let baseLabel = '';
@@ -103,8 +120,14 @@ window.PremedicMotor = (() => {
     }));
     const totalAdicionales = extraItems.reduce((sum, item) => sum + item.valor, 0);
     const bruto = base + totalAdicionales;
+
+    // Las promociones comerciales son excluyentes entre sí. Primero se aplica
+    // la única promoción seleccionada y luego, en Desregulado, se descuentan
+    // los aportes del recibo (que no son una promoción comercial).
+    const promoResult = getPromotionResult(bruto, state, planName);
+    const subtotalPromocionado = promoResult.subtotal;
     const aporteComp = state.modalidad === 'desregulado' ? aporteComputable(state.aporteRecibo) : 0;
-    const neto = Math.max(0, bruto - aporteComp);
+    const neto = Math.max(0, subtotalPromocionado - aporteComp);
 
     return {
       band,
@@ -113,9 +136,13 @@ window.PremedicMotor = (() => {
       extras: extraItems,
       totalAdicionales,
       bruto,
+      promocion: promoResult.promo,
+      descuentoPromocion: promoResult.descuento,
+      aporteMonotributo: promoResult.aporteMonotributo,
+      subtotalPromocionado,
       aporteComputable: aporteComp,
       neto,
-      cubiertoPorAporte: state.modalidad === 'desregulado' && aporteComp >= bruto
+      cubiertoPorAporte: state.modalidad === 'desregulado' && aporteComp >= subtotalPromocionado
     };
   }
 
@@ -128,13 +155,14 @@ window.PremedicMotor = (() => {
       : state.edadTitular;
 
     const band = tramoIndex(refAge);
-    const zonePlans = data.tarifas[state.modalidad][state.zona];
+    const pricingZone = window.PremedicPromos?.pricingZone(state.zona) || (state.zona === 'amba' ? 'amba' : 'interior');
+    const zonePlans = data.tarifas[state.modalidad][pricingZone];
     const canonicalPlanOrder = ['C-100', '200', '300', '400', '500'];
     const plans = Object.keys(zonePlans)
       .sort((a, b) => canonicalPlanOrder.indexOf(a) - canonicalPlanOrder.indexOf(b))
       .map(name => ({
         plan: name,
-        ...calculatePlan(zonePlans[name], state, refAge)
+        ...calculatePlan(name, zonePlans[name], state, refAge)
       }));
 
     const aporteTotal = state.modalidad === 'desregulado' ? aporteComputable(state.aporteRecibo) : 0;
@@ -151,6 +179,10 @@ window.PremedicMotor = (() => {
         extras: [],
         totalAdicionales: 0,
         bruto: 0,
+        promocion: { id: 'ninguna', label: 'Sin promoción', tipo: 'none', valor: 0 },
+        descuentoPromocion: 0,
+        aporteMonotributo: 0,
+        subtotalPromocionado: 0,
         aporteComputable: 0,
         neto: 0,
         cubiertoPorAporte: true,
@@ -166,6 +198,9 @@ window.PremedicMotor = (() => {
       bandLabel: data.tramos[band],
       compositionLabel: buildCaseLabel(state),
       plans,
+      promocion: window.PremedicPromos?.getPromo() || null,
+      categoriaMonotributo: window.PremedicPromos?.state.categoriaMonotributo || null,
+      aporteMonotributo: window.PremedicPromos?.aporteMonotributo() || 0,
       aporteRecibo: state.modalidad === 'desregulado' ? Number(state.aporteRecibo) : 0,
       aporteComputable: aporteTotal,
       cantidadPersonas: personas,
