@@ -177,7 +177,7 @@
     });
 
     if (resultados) {
-      new MutationObserver(() => queueMicrotask(decorateResults)).observe(resultados, { childList: true, subtree: true });
+      new MutationObserver(() => queueMicrotask(decorateResults)).observe(resultados, { childList: true });
     }
 
     const style = document.createElement('style');
