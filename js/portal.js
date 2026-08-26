@@ -50,6 +50,7 @@
     const aporteWrap = document.getElementById('aporteWrap');
     const nombre = document.getElementById('nombre');
     const resultados = document.getElementById('resultados');
+    const cotizarBtn = document.getElementById('cotizarBtn');
     if (!promoApi || !zona || !modalidad || !aporteWrap) return;
 
     const zonasExtra = [
@@ -176,9 +177,9 @@
       invalidateQuote();
     });
 
-    if (resultados) {
-      new MutationObserver(() => queueMicrotask(decorateResults)).observe(resultados, { childList: true });
-    }
+    // app.js registra primero el cálculo. Este listener corre después y agrega
+    // únicamente el detalle visual de la promoción aplicada.
+    cotizarBtn?.addEventListener('click', () => queueMicrotask(decorateResults));
 
     const style = document.createElement('style');
     style.textContent = `
