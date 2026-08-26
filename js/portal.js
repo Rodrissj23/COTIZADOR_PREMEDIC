@@ -68,12 +68,12 @@
     panel.className = 'premedic-promo-panel';
     panel.innerHTML = `
       <div class="premedic-promo-copy">
-        <span>Promoción / beneficio</span>
+        <span>Beneficio aplicable</span>
         <strong>Elegí una sola opción</strong>
-        <p>Las promociones no son acumulables y se filtran según modalidad y zona.</p>
+        <p>Los beneficios no son acumulables y se filtran según modalidad y zona. Monotributo está disponible únicamente en Directo.</p>
       </div>
       <label class="field premedic-promo-field">
-        <span>Promoción aplicable</span>
+        <span>Beneficio</span>
         <select id="promocionPremedic"></select>
       </label>
       <label id="monotributoCategoriaWrap" class="field premedic-promo-field hidden">
@@ -150,7 +150,7 @@
         row.className = 'breakdown-line discount promo-breakdown-line';
         const label = plan.promocion?.id === 'monotributo'
           ? `Aporte monotributo · Cat. ${promoApi.state.categoriaMonotributo}`
-          : plan.promocion?.label || 'Promoción';
+          : plan.promocion?.label || 'Beneficio';
         row.innerHTML = `<span>${label}</span><strong>-${window.PremedicMotor.money(plan.descuentoPromocion)}</strong>`;
         breakdown.prepend(row);
       });
@@ -178,7 +178,7 @@
     });
 
     // app.js registra primero el cálculo. Este listener corre después y agrega
-    // únicamente el detalle visual de la promoción aplicada.
+    // únicamente el detalle visual del beneficio aplicado.
     cotizarBtn?.addEventListener('click', () => queueMicrotask(decorateResults));
 
     const style = document.createElement('style');
