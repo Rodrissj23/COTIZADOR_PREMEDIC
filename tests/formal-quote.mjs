@@ -17,9 +17,11 @@ for(const plan of ['C-100','200','300','400','500']) test(`Cotización comercial
   promos.state.promoId='ninguna';
   const result=motor.quote(base);assert(result.ok,result.error);assert(result.plans.some(item=>item.plan===plan),`plan ${plan} no disponible`);
   const html=formal.renderQuote({state:base,result,selectedPlan:plan,quoteId:`PM-${plan}`});
-  assert((html.match(/class="quote-sheet quote-page/g)||[]).length===2,'no genera portada + resumen');
+  assert((html.match(/class="quote-sheet quote-page/g)||[]).length===3,'no genera portada + resumen + beneficios');
   assert(html.includes('premedic-pdf-cover'),'falta portada');
   assert(html.includes('premedic-pdf-summary'),'falta resumen');
+  assert(html.includes('premedic-pdf-benefits'),'falta hoja de beneficios');
+  assert(html.includes('assets/premedic-beneficios-familia.webp'),'falta foto institucional de beneficios');
   for(const label of ['Grupo familiar','Zona','Valor detalle','Filiar a cargo','Aportes a descontar','Descuento promocional','Descuento multiproducto','IVA','TOTAL']) {
     assert(html.includes(label),`falta campo ${label}`);
   }
@@ -63,7 +65,7 @@ test('PMO usa portada y resumen comunes con total $0',()=>{
   const state={...base,modalidad:'desregulado',aporteRecibo:30000};
   const result=motor.quote(state);assert(result.pmoDisponible,'PMO no habilitado');
   const html=formal.renderQuote({state,result,selectedPlan:'PMO',quoteId:'PM-PMO'});
-  assert((html.match(/class="quote-sheet quote-page/g)||[]).length===2,'PMO no genera dos páginas');
+  assert((html.match(/class="quote-sheet quote-page/g)||[]).length===3,'PMO no genera tres páginas');
   assert(html.includes('>PMO</strong>'),'no identifica PMO');
   assert(html.includes('>$ 0</strong>'),'no muestra $0');
   assert(!html.includes('Diagnóstico esencial'),'heredó C-100');

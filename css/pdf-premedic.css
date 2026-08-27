@@ -1,4 +1,4 @@
-/* PDF Premedic: portada + resumen comercial tipo Swiss, con identidad propia. */
+/* PDF Premedic: portada + resumen comercial tipo Swiss + beneficios, con identidad propia. */
 .premedic-pdf-document{display:grid;gap:24px}
 .premedic-pdf-page{position:relative;width:794px!important;height:1123px!important;min-height:1123px!important;margin:0 auto;overflow:hidden;border-radius:0!important;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
 .premedic-pdf-page *{box-sizing:border-box}
@@ -52,6 +52,33 @@
 .premedic-summary-logo{position:absolute;left:62px;right:62px;bottom:25px;display:flex;align-items:flex-end;justify-content:space-between}
 .premedic-summary-logo img{display:block;width:185px;height:auto}
 .premedic-summary-logo b{color:#6c817c;font-size:8px;font-weight:650;letter-spacing:.4px}
+
+.premedic-pdf-benefits{background:#f3f8f6;color:#263c37}
+.premedic-benefits-hero{position:relative;height:405px;overflow:hidden;background:#087f76}
+.premedic-benefits-hero>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center center}
+.premedic-benefits-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(4,89,82,.96) 0%,rgba(5,111,102,.88) 35%,rgba(5,111,102,.38) 58%,rgba(5,111,102,.03) 82%)}
+.premedic-benefits-brand{position:absolute;left:54px;top:43px;display:flex;align-items:center;width:204px;height:66px;padding:14px 18px;border-radius:13px;background:#fff;box-shadow:0 12px 30px rgba(0,49,45,.16)}
+.premedic-benefits-brand img{display:block;width:168px;height:auto}
+.premedic-benefits-heading{position:absolute;left:54px;top:145px;width:395px;color:#fff}
+.premedic-benefits-heading>span{display:block;margin-bottom:12px;color:#c9f1e8;font-size:9px;font-weight:800;letter-spacing:1.8px}
+.premedic-benefits-heading h2{margin:0;font-size:55px;line-height:.96;letter-spacing:-2.4px;color:#fff}
+.premedic-benefits-heading p{width:340px;margin:18px 0 0;color:#e2f7f2;font-size:16px;line-height:1.38}
+.premedic-benefits-body{position:relative;height:718px;padding:42px 54px 38px}
+.premedic-benefit-featured{display:grid;grid-template-columns:74px 1fr;gap:22px;align-items:center;min-height:142px;padding:25px 30px;border-radius:22px;background:#087f76;color:#fff;box-shadow:0 18px 38px rgba(6,102,94,.14)}
+.premedic-benefit-featured span{display:block;margin-bottom:5px;color:#bfeae2;font-size:8px;font-weight:800;letter-spacing:1.5px}
+.premedic-benefit-featured strong{display:block;font-size:25px;line-height:1.12}
+.premedic-benefit-featured p{margin:8px 0 0;color:#e0f4f0;font-size:13px;line-height:1.38}
+.premedic-benefit-icon{display:flex;align-items:center;justify-content:center;width:54px;height:54px;flex:0 0 54px;border-radius:16px;background:#dff2ed;color:#087f76}
+.premedic-benefit-icon.is-featured{width:74px;height:74px;border-radius:21px;background:#fff;color:#078b82}
+.premedic-benefit-icon svg{display:block;width:28px;height:28px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.premedic-benefit-icon.is-featured svg{width:35px;height:35px}
+.premedic-benefits-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+.premedic-benefit-card{display:grid;grid-template-columns:54px 1fr;gap:16px;align-items:start;min-height:142px;padding:22px 20px;border:1px solid #dce9e5;border-radius:19px;background:#fff;box-shadow:0 9px 24px rgba(30,75,67,.055)}
+.premedic-benefit-card strong{display:block;color:#263d38;font-size:15px;line-height:1.16}
+.premedic-benefit-card p{margin:7px 0 0;color:#61736f;font-size:11.5px;line-height:1.38}
+.premedic-benefits-note{margin:19px 4px 0;color:#6c7d79;font-size:9px;line-height:1.35}
+.premedic-benefits-footer{position:absolute;left:54px;right:54px;bottom:24px;display:flex;align-items:center;justify-content:space-between;padding-top:13px;border-top:1px solid #d8e6e2;color:#67807a;font-size:8px;letter-spacing:.65px}
+.premedic-benefits-footer b{font-weight:650}
 
 @media(max-width:860px){
   .premedic-pdf-document{overflow-x:auto}

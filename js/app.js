@@ -481,7 +481,7 @@
 
       const pages = [...stage.querySelectorAll('.quote-page')];
       if (!pages.length) throw new Error('No se encontraron páginas para exportar.');
-      if (pages.length !== 2) throw new Error(`La propuesta comercial debería tener 2 páginas y generó ${pages.length}.`);
+      if (pages.length !== 3) throw new Error(`La propuesta comercial debería tener 3 páginas y generó ${pages.length}.`);
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });

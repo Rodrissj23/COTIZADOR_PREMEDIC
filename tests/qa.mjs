@@ -129,13 +129,17 @@ await test('Umbral PMO considera todos los integrantes', async()=>{
   assert(twoOk.pmoDisponible,'PMO no habilitado al superar umbral familiar'); eq(twoOk.cantidadPersonas,2);
 });
 
-await test('Documento comercial tiene portada y resumen, sin cierre ni cobertura recreada', async()=>{
+await test('Documento comercial tiene portada, resumen y beneficios, sin cierre ni cobertura recreada', async()=>{
   const s=state({modalidad:'desregulado',aporteRecibo:30000,dni:'30111222'});
   const r=motor.quote(s); const html=formal.renderQuote({state:s,result:r,selectedPlan:'300',quoteId:'PM-QA'});
-  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,2);
+  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,3);
   assert(html.includes('72 hs hábiles'),'no contiene vigencia');
   assert(html.includes('premedic-pdf-cover'),'falta portada Premedic');
   assert(html.includes('premedic-pdf-summary'),'falta resumen comercial');
+  assert(html.includes('premedic-pdf-benefits'),'falta hoja comercial de beneficios');
+  assert(html.includes('APP Premedic Móvil'),'falta beneficio oficial de la app');
+  assert(html.includes('Llamando al Doctor'),'falta beneficio oficial de telemedicina');
+  assert(html.includes('Asistencia al viajero'),'falta beneficio oficial de asistencia');
   assert(!html.includes('quote-closing-page'),'incluye hoja de cierre');
   assert(!html.includes('quote-coverage-page'),'incluye cobertura recreada');
   const s2=state({dni:''}); const r2=motor.quote(s2); const html2=formal.renderQuote({state:s2,result:r2,selectedPlan:'200',quoteId:'PM-QA2'});
@@ -146,7 +150,7 @@ await test('PMO usa el mismo resumen oficial y no hereda contenido específico d
   const s=state({modalidad:'desregulado',aporteRecibo:30000});
   const r=motor.quote(s); assert(r.plans.some(p=>p.esPMO),'PMO no disponible para prueba');
   const html=formal.renderQuote({state:s,result:r,selectedPlan:'PMO',quoteId:'PM-PMO'});
-  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,2);
+  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,3);
   assert(html.includes('>PMO</strong>'),'no identifica PMO');
   assert(html.includes('>$ 0</strong>'),'no muestra total PMO $0');
   assert(!html.includes('Laboratorio de rutina, ECG y EEG'),'PMO heredó cobertura C-100');

@@ -72,9 +72,11 @@ for(const scenario of cases){
   await card.locator('.elegir-plan').click();
   await page.locator('#verCotizacionBtn').click();
 
-  assert(await page.locator('#previewContent .quote-page').count()===2,`${scenario.plan}: propuesta comercial no tiene 2 páginas`);
+  assert(await page.locator('#previewContent .quote-page').count()===3,`${scenario.plan}: propuesta comercial no tiene 3 páginas`);
   assert(await page.locator('#previewContent .premedic-pdf-cover').count()===1,`${scenario.plan}: falta portada`);
   assert(await page.locator('#previewContent .premedic-pdf-summary').count()===1,`${scenario.plan}: falta resumen`);
+  assert(await page.locator('#previewContent .premedic-pdf-benefits').count()===1,`${scenario.plan}: falta hoja de beneficios`);
+  assert(await page.locator('#previewContent .premedic-benefits-hero>img').getAttribute('src')==='assets/premedic-beneficios-familia.webp',`${scenario.plan}: foto de beneficios incorrecta`);
   assert(await page.locator('#previewContent .quote-closing-page').count()===0,`${scenario.plan}: incluye cierre`);
 
   const labels=await page.locator('.premedic-summary-row>b').allTextContents();
@@ -127,16 +129,18 @@ for(const scenario of cases){
   const bytes=fs.readFileSync(output);
   assert(bytes.length>scenario.coveragePages*70000,`${scenario.plan}: PDF demasiado pequeño (${bytes.length})`);
   const doc=await PDFDocument.load(bytes);
-  assert(doc.getPageCount()===2+scenario.coveragePages,`${scenario.plan}: ${doc.getPageCount()} páginas, esperadas ${2+scenario.coveragePages}`);
+  assert(doc.getPageCount()===3+scenario.coveragePages,`${scenario.plan}: ${doc.getPageCount()} páginas, esperadas ${3+scenario.coveragePages}`);
   const first=doc.getPage(0).getSize();
   assert(Math.abs(first.width-595.28)<1&&Math.abs(first.height-841.89)<1,`${scenario.plan}: portada no es A4 vertical`);
-  const coverage=doc.getPage(2).getSize();
+  const benefits=doc.getPage(2).getSize();
+  assert(Math.abs(benefits.width-595.28)<1&&Math.abs(benefits.height-841.89)<1,`${scenario.plan}: beneficios no es A4 vertical`);
+  const coverage=doc.getPage(3).getSize();
   const orientation=coverage.width>coverage.height?'landscape':'portrait';
   assert(orientation===scenario.coverageOrientation,`${scenario.plan}: orientación ${orientation}, esperada ${scenario.coverageOrientation}`);
   assert(errors.length===0,`${scenario.plan}: ${errors.join(' | ')}`);
 
   passed++;
-  console.log(`PASS  ${scenario.plan}: portada + resumen + ${scenario.coveragePages} páginas oficiales (${scenario.file})`);
+  console.log(`PASS  ${scenario.plan}: portada + resumen + beneficios + ${scenario.coveragePages} páginas oficiales (${scenario.file})`);
   await page.close();
 }
 

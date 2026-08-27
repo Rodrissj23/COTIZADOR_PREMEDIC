@@ -138,10 +138,59 @@ window.PremedicQuote = (() => {
       </section>`;
   }
 
+  function benefitIcon(name) {
+    const paths = {
+      app: '<rect x="7" y="3" width="10" height="18" rx="2"/><path d="M10 6h4M11 18h2"/>',
+      authorization: '<path d="M12 3 5 6v5c0 4.8 2.9 8.1 7 10 4.1-1.9 7-5.2 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+      doctor: '<path d="M8 4v4a4 4 0 0 0 8 0V4M6 4h2M16 4h2"/><path d="M12 12v2a5 5 0 0 0 5 5h1"/><circle cx="19" cy="19" r="2"/>',
+      payments: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h3"/>',
+      travel: '<path d="m3 11 18-7-7 18-3-8-8-3Z"/><path d="m11 14 4-4"/>'
+    };
+    return `<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.app}</svg>`;
+  }
+
+  function benefitCard(icon, title, text) {
+    return `
+      <div class="premedic-benefit-card">
+        <div class="premedic-benefit-icon">${benefitIcon(icon)}</div>
+        <div><strong>${esc(title)}</strong><p>${esc(text)}</p></div>
+      </div>`;
+  }
+
+  function benefitsPage({ quoteId }) {
+    return `
+      <section class="quote-sheet quote-page premedic-pdf-page premedic-pdf-benefits">
+        <div class="premedic-benefits-hero">
+          <img src="assets/premedic-beneficios-familia.webp" alt="Familia compartiendo un momento de bienestar">
+          <div class="premedic-benefits-shade"></div>
+          <div class="premedic-benefits-brand"><img src="assets/premedic-logo-oficial.png" alt="Premedic"></div>
+          <div class="premedic-benefits-heading">
+            <span>BIENESTAR CERCA TUYO</span>
+            <h2>Beneficios<br>Premedic</h2>
+            <p>Todo lo que tenés para cuidar tu salud, también desde donde estés.</p>
+          </div>
+        </div>
+        <div class="premedic-benefits-body">
+          <div class="premedic-benefit-featured">
+            <div class="premedic-benefit-icon is-featured">${benefitIcon('app')}</div>
+            <div><span>SERVICIOS DIGITALES</span><strong>APP Premedic Móvil</strong><p>Consultá tu cartilla digital y accedé a tu credencial virtual desde la aplicación.</p></div>
+          </div>
+          <div class="premedic-benefits-grid">
+            ${benefitCard('authorization', 'Autorizaciones digitales', 'Solicitá tus autorizaciones de forma online desde la aplicación.')}
+            ${benefitCard('doctor', 'Llamando al Doctor', 'Accedé al servicio de videoconsulta de Premedic.')}
+            ${benefitCard('payments', 'Facturas y medios de pago', 'Visualizá tus facturas y consultá los medios de pago disponibles.')}
+            ${benefitCard('travel', 'Asistencia al viajero', 'Contás con un servicio de asistencia sujeto a las condiciones vigentes del plan.')}
+          </div>
+          <p class="premedic-benefits-note">Los servicios, su disponibilidad y sus condiciones se rigen por la documentación oficial vigente de Premedic y por el plan contratado.</p>
+          <footer class="premedic-benefits-footer"><span>PREMEDIC · BENEFICIOS GENERALES</span><b>${esc(quoteId)}</b></footer>
+        </div>
+      </section>`;
+  }
+
   function renderQuote({ state, result, selectedPlan, quoteId }) {
     const selected = result.plans.find(plan => plan.plan === selectedPlan);
     if (!selected) return '';
-    return `<article class="quote-document premedic-pdf-document">${coverPage({ state, selected, quoteId })}${summaryPage({ state, result, selected, quoteId })}</article>`;
+    return `<article class="quote-document premedic-pdf-document">${coverPage({ state, selected, quoteId })}${summaryPage({ state, result, selected, quoteId })}${benefitsPage({ quoteId })}</article>`;
   }
 
   return { renderQuote, makeId, supportsOfficialPdf: true };

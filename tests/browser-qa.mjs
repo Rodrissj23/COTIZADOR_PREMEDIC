@@ -90,7 +90,7 @@ await test('Cambiar edad invalida plan seleccionado',async()=>{
   await page.close();
 });
 
-await test('Preview formal genera portada y resumen, sin hoja de cierre',async()=>{
+await test('Preview formal genera portada, resumen y beneficios, sin hoja de cierre',async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
   await page.locator('#nombre').fill('Preview QA');
@@ -99,9 +99,10 @@ await test('Preview formal genera portada y resumen, sin hoja de cierre',async()
   await page.locator('.plan-card[data-plan="300"] .elegir-plan').click();
   await page.locator('#verCotizacionBtn').click();
   assert(await page.locator('#previewDialog').isVisible(),'dialog no visible');
-  assert(await page.locator('#previewContent .quote-page').count()===2,'preview no tiene 2 páginas');
+  assert(await page.locator('#previewContent .quote-page').count()===3,'preview no tiene 3 páginas');
   assert(await page.locator('#previewContent .premedic-pdf-cover').count()===1,'falta portada');
   assert(await page.locator('#previewContent .premedic-pdf-summary').count()===1,'falta resumen');
+  assert(await page.locator('#previewContent .premedic-pdf-benefits').count()===1,'falta beneficios');
   assert(await page.locator('#previewContent .quote-closing-page').count()===0,'aparece hoja de cierre');
   await page.close();
 });

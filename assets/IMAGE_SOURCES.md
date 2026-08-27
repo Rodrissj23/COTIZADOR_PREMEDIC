@@ -6,4 +6,6 @@ Las fotografías externas usadas por el cotizador provienen de Pexels y figuran 
 - Portal — Kampus Production: https://www.pexels.com/photo/a-family-smiling-together-7983214/
 - PDF / beneficios — Tessy Agbonome: https://www.pexels.com/photo/smiling-black-doctor-talking-on-video-call-on-cellphone-19957212/
 
+La fotografía `premedic-beneficios-familia.webp`, usada en la nueva página 3 del PDF, fue generada específicamente para este proyecto con OpenAI ImageGen. No contiene logos, textos ni marcas de terceros.
+
 La página 1 del PDF no repite una fotografía: usa arte geométrico de marca.
