@@ -129,24 +129,26 @@ await test('Umbral PMO considera todos los integrantes', async()=>{
   assert(twoOk.pmoDisponible,'PMO no habilitado al superar umbral familiar'); eq(twoOk.cantidadPersonas,2);
 });
 
-await test('Documento formal tiene 4 páginas, vigencia y DNI opcional', async()=>{
+await test('Documento comercial tiene portada y resumen, sin cierre ni cobertura recreada', async()=>{
   const s=state({modalidad:'desregulado',aporteRecibo:30000,dni:'30111222'});
   const r=motor.quote(s); const html=formal.renderQuote({state:s,result:r,selectedPlan:'300',quoteId:'PM-QA'});
-  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,4);
+  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,2);
   assert(html.includes('72 hs hábiles'),'no contiene vigencia');
-  assert(html.includes('30111222'),'no contiene DNI informado');
+  assert(html.includes('premedic-pdf-cover'),'falta portada Premedic');
+  assert(html.includes('premedic-pdf-summary'),'falta resumen comercial');
+  assert(!html.includes('quote-closing-page'),'incluye hoja de cierre');
+  assert(!html.includes('quote-coverage-page'),'incluye cobertura recreada');
   const s2=state({dni:''}); const r2=motor.quote(s2); const html2=formal.renderQuote({state:s2,result:r2,selectedPlan:'200',quoteId:'PM-QA2'});
   assert(!html2.includes('No informado'),'imprime DNI faltante');
 });
 
-await test('PMO formal no hereda contenido específico de C-100', async()=>{
+await test('PMO usa el mismo resumen oficial y no hereda contenido específico de C-100', async()=>{
   const s=state({modalidad:'desregulado',aporteRecibo:30000});
   const r=motor.quote(s); assert(r.plans.some(p=>p.esPMO),'PMO no disponible para prueba');
   const html=formal.renderQuote({state:s,result:r,selectedPlan:'PMO',quoteId:'PM-PMO'});
-  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,4);
-  assert(html.includes('Plan PMO'),'no identifica PMO');
-  assert(html.includes('Aporte computable por persona'),'no explica elegibilidad PMO');
-  assert(html.includes('Valor del plan</span><strong>$ 0'),'no muestra valor PMO $0');
+  eq((html.match(/class="quote-sheet quote-page/g)||[]).length,2);
+  assert(html.includes('>PMO</strong>'),'no identifica PMO');
+  assert(html.includes('>$ 0</strong>'),'no muestra total PMO $0');
   assert(!html.includes('Laboratorio de rutina, ECG y EEG'),'PMO heredó cobertura C-100');
   assert(!html.includes('Diagnóstico esencial'),'PMO heredó beneficios C-100');
 });
@@ -168,7 +170,9 @@ await test('App descarga PDF directo y no usa window.print', async()=>{
   const app=fs.readFileSync('js/app.js','utf8');
   assert(app.includes('html2canvas'),'no integra captura PDF');
   assert(app.includes('jspdf'),'no integra jsPDF');
-  assert(app.includes('doc.save(`Cotizacion Premedic ('),'nombre de descarga no configurado');
+  assert(app.includes('savePdfBytes(finalBytes, `Cotizacion Premedic ('),'nombre de descarga no configurado');
+  assert(app.includes('outputDoc.embedPage(sourcePage)'),'los alcances no se integran como páginas PDF');
+  assert(app.includes('scale = Math.min('),'el ajuste no preserva proporción');
   assert(!app.includes('window.print()'),'todavía usa diálogo de impresión');
 });
 

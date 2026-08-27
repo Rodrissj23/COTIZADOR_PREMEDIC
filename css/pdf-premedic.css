@@ -1,0 +1,63 @@
+/* PDF Premedic: portada + resumen comercial tipo Swiss, con identidad propia. */
+.premedic-pdf-document{display:grid;gap:24px}
+.premedic-pdf-page{position:relative;width:794px!important;height:1123px!important;min-height:1123px!important;margin:0 auto;overflow:hidden;border-radius:0!important;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+.premedic-pdf-page *{box-sizing:border-box}
+
+.premedic-pdf-cover{background:linear-gradient(145deg,#055f59 0%,#087f76 52%,#11a193 100%);color:#fff}
+.premedic-pdf-cover::before{content:"";position:absolute;inset:34px;border:1px solid rgba(255,255,255,.2);border-radius:0 0 110px 0}
+.premedic-cover-panel{position:absolute;inset:56px 58px 52px;padding:48px 52px 40px;border-radius:0 0 100px 0;background:linear-gradient(150deg,rgba(4,83,78,.96),rgba(6,119,110,.9));box-shadow:0 26px 70px rgba(0,47,43,.18)}
+.premedic-cover-logo{display:flex;align-items:center;width:265px;min-height:86px;padding:19px 24px;border-radius:18px;background:#fff;box-shadow:0 14px 34px rgba(0,42,38,.14)}
+.premedic-cover-logo img{display:block;width:218px;height:auto}
+.premedic-cover-copy{position:relative;z-index:2;margin-top:92px;max-width:575px}
+.premedic-cover-copy>span{display:block;margin-bottom:18px;color:#c8f2e9;font-size:11px;font-weight:800;letter-spacing:2.1px}
+.premedic-cover-copy h1{margin:0;font-size:66px;line-height:.98;letter-spacing:-3.2px;color:#fff;font-weight:750}
+.premedic-cover-copy p{margin:28px 0 0;max-width:460px;color:#d7f4ef;font-size:18px;line-height:1.42}
+.premedic-cover-card{position:absolute;z-index:2;left:52px;right:52px;bottom:94px;display:grid;grid-template-columns:.7fr 1.35fr 1.3fr;overflow:hidden;border:1px solid rgba(255,255,255,.2);border-radius:18px;background:rgba(255,255,255,.09);backdrop-filter:blur(4px)}
+.premedic-cover-card>div{display:grid;align-content:center;gap:7px;min-height:110px;padding:18px 20px;border-left:1px solid rgba(255,255,255,.17)}
+.premedic-cover-card>div:first-child{border-left:0}
+.premedic-cover-card span{color:#bdece3;font-size:8px;font-weight:800;letter-spacing:1.2px}
+.premedic-cover-card strong{color:#fff;font-size:16px;line-height:1.25}
+.premedic-cover-card>div:first-child strong{font-size:28px}
+.premedic-cover-footer{position:absolute;left:52px;right:52px;bottom:42px;display:flex;justify-content:space-between;color:rgba(255,255,255,.67);font-size:8px;letter-spacing:.6px}
+.premedic-cover-footer b{font-weight:600}
+.premedic-cover-orbit{position:absolute;border:1px solid rgba(255,255,255,.14);border-radius:50%}
+.premedic-cover-orbit.orbit-one{width:470px;height:470px;right:-180px;top:-130px}
+.premedic-cover-orbit.orbit-two{width:260px;height:260px;left:-100px;bottom:145px;background:rgba(212,244,185,.045)}
+.premedic-cover-dots{position:absolute;right:83px;top:390px;width:104px;height:82px;opacity:.22;background-image:radial-gradient(circle,#fff 1.5px,transparent 1.8px);background-size:15px 15px}
+
+.premedic-pdf-summary{background:#087f76;color:#293c38}
+.premedic-summary-orbit{position:absolute;border-radius:50%;background:rgba(202,242,232,.12)}
+.premedic-summary-orbit.summary-orbit-one{width:330px;height:330px;left:-178px;top:-108px}
+.premedic-summary-orbit.summary-orbit-two{width:390px;height:390px;right:-230px;bottom:95px;background:rgba(4,70,65,.2)}
+.premedic-summary-panel{position:absolute;left:58px;right:58px;top:40px;bottom:40px;overflow:hidden;border-radius:0 0 88px 0;background:#eef7f4}
+.premedic-summary-title{display:flex;align-items:center;gap:10px;width:540px;height:111px;padding:0 70px;border-radius:0 0 38px 0;background:#075f59;color:#fff}
+.premedic-summary-title span{font-size:29px;font-weight:400}
+.premedic-summary-title strong{font-size:30px;font-weight:800}
+.premedic-summary-plan{height:141px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.premedic-summary-plan span{font-size:18px;letter-spacing:.5px;color:#4f625e}
+.premedic-summary-plan strong{margin-top:7px;font-size:54px;line-height:.9;letter-spacing:-1.8px;color:#263c37}
+.premedic-summary-table{width:574px;margin:0 auto;border:1px solid rgba(72,103,96,.16);border-bottom:0}
+.premedic-summary-row{margin:0}
+.premedic-summary-row>b{height:31px;display:flex;align-items:center;justify-content:center;padding:0 12px;background:#b9d2cc;color:#263b37;text-align:center;font-size:22px;line-height:1;font-weight:750}
+.premedic-summary-row>span{height:34px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 12px;background:#eef7f4;color:#2f403d;text-align:center;font-size:23px;line-height:1.05;font-weight:400}
+.premedic-summary-row>span.is-medium{font-size:20px}
+.premedic-summary-row>span.is-long{font-size:17px}
+.premedic-summary-row.has-note>span{height:48px}
+.premedic-summary-row small{display:block;margin-top:4px;color:#576b66;font-size:9.5px;line-height:1.1;font-weight:400}
+.premedic-summary-total{width:574px;margin:0 auto;border:1px solid rgba(72,103,96,.16);border-top:0;text-align:center}
+.premedic-summary-total b{height:38px;display:flex;align-items:center;justify-content:center;background:#078b82;color:#fff;font-size:24px;line-height:1;font-weight:800}
+.premedic-summary-total strong{height:50px;display:flex;align-items:center;justify-content:center;background:#eef7f4;color:#203a35;font-size:32px;line-height:1;font-weight:800}
+.premedic-summary-legal{position:absolute;left:62px;right:62px;bottom:88px;color:#4f625e;font-size:10.7px;line-height:1.28}
+.premedic-summary-legal p{margin:0 0 4px}
+.premedic-summary-logo{position:absolute;left:62px;right:62px;bottom:25px;display:flex;align-items:flex-end;justify-content:space-between}
+.premedic-summary-logo img{display:block;width:185px;height:auto}
+.premedic-summary-logo b{color:#6c817c;font-size:8px;font-weight:650;letter-spacing:.4px}
+
+@media(max-width:860px){
+  .premedic-pdf-document{overflow-x:auto}
+  .premedic-pdf-page{width:794px!important;height:1123px!important;min-height:1123px!important}
+}
+
+@media print{
+  #printArea .premedic-pdf-page{display:block!important;width:210mm!important;height:297mm!important;min-height:297mm!important;margin:0!important;border-radius:0!important;box-shadow:none!important}
+}

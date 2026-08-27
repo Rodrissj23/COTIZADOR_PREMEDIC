@@ -27,6 +27,15 @@
   let selectedPlan = null;
   let quoteId = null;
   let pdfBusy = false;
+  const COVERAGE_FILES = Object.freeze({
+    PMO: 'PREMEDIC PMO.pdf',
+    'C-100': 'PLAN C100-2_merged.pdf',
+    C100: 'PLAN C100-2_merged.pdf',
+    200: 'PLAN 200-2_merged.pdf',
+    300: 'PREMEDIC PLAN 300.pdf',
+    400: 'PLAN 400-7_merged.pdf',
+    500: 'PLAN 500-2_merged.pdf'
+  });
 
   els.vigenciaBadge.textContent = `Vigencia ${data.vigencia}`;
   // No existe un máximo comercial de hijos definido por el motor.
@@ -350,8 +359,9 @@
 
   async function ensurePdfLibraries() {
     await Promise.all([
-      loadExternalScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js', () => typeof window.html2canvas === 'function'),
-      loadExternalScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js', () => Boolean(window.jspdf?.jsPDF))
+      loadExternalScript('assets/vendor/html2canvas.min.js', () => typeof window.html2canvas === 'function'),
+      loadExternalScript('assets/vendor/jspdf.umd.min.js', () => Boolean(window.jspdf?.jsPDF)),
+      loadExternalScript('assets/vendor/pdf-lib.min.js', () => Boolean(window.PDFLib?.PDFDocument))
     ]);
   }
 
@@ -372,6 +382,79 @@
       button.disabled = busy;
       button.textContent = busy ? 'Generando PDF...' : 'Descargar PDF';
     });
+  }
+
+  function looksLikePdf(bytes) {
+    return bytes?.length > 4 && bytes[0] === 0x25 && bytes[1] === 0x50 && bytes[2] === 0x44 && bytes[3] === 0x46;
+  }
+
+  function normalizedPlanKey(value) {
+    return String(value || '')
+      .trim()
+      .toUpperCase()
+      .replace(/^PREMEDIC\s+/, '')
+      .replace(/^PLAN\s+/, '')
+      .replace(/\s+/g, '');
+  }
+
+  async function getCoverageBytes(planName) {
+    const key = normalizedPlanKey(planName);
+    const fileName = COVERAGE_FILES[key];
+    if (!fileName) throw new Error(`No existe un alcance oficial configurado para el Plan ${planName}.`);
+    const response = await fetch(`assets/coverage/${encodeURIComponent(fileName)}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`No se pudo cargar el alcance oficial del Plan ${planName}.`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    if (!looksLikePdf(bytes) || bytes.length < 100000) {
+      throw new Error(`El alcance oficial del Plan ${planName} está vacío o dañado.`);
+    }
+    return bytes;
+  }
+
+  async function mergeQuoteAndCoverage(quoteBytes, coverageBytes) {
+    const { PDFDocument, rgb } = window.PDFLib || {};
+    if (!PDFDocument || !rgb) throw new Error('No se pudo cargar el módulo de armado final del PDF.');
+
+    const quoteDoc = await PDFDocument.load(quoteBytes);
+    const coverageDoc = await PDFDocument.load(coverageBytes);
+    const outputDoc = await PDFDocument.create();
+
+    const quotePages = await outputDoc.copyPages(quoteDoc, quoteDoc.getPageIndices());
+    quotePages.forEach(page => outputDoc.addPage(page));
+
+    // Cada alcance se monta como página PDF, sin rasterizar. La orientación A4
+    // acompaña a la fuente y una única escala uniforme preserva su aspect ratio.
+    for (const sourcePage of coverageDoc.getPages()) {
+      const sourceSize = sourcePage.getSize();
+      const landscape = sourceSize.width > sourceSize.height;
+      const targetWidth = landscape ? 841.89 : 595.28;
+      const targetHeight = landscape ? 595.28 : 841.89;
+      const scale = Math.min(targetWidth / sourceSize.width, targetHeight / sourceSize.height);
+      const drawWidth = sourceSize.width * scale;
+      const drawHeight = sourceSize.height * scale;
+      const page = outputDoc.addPage([targetWidth, targetHeight]);
+      page.drawRectangle({ x: 0, y: 0, width: targetWidth, height: targetHeight, color: rgb(1, 1, 1) });
+      const embedded = await outputDoc.embedPage(sourcePage);
+      page.drawPage(embedded, {
+        x: (targetWidth - drawWidth) / 2,
+        y: (targetHeight - drawHeight) / 2,
+        width: drawWidth,
+        height: drawHeight
+      });
+    }
+
+    return outputDoc.save();
+  }
+
+  function savePdfBytes(bytes, fileName) {
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   }
 
   async function downloadQuotePDF() {
@@ -398,6 +481,7 @@
 
       const pages = [...stage.querySelectorAll('.quote-page')];
       if (!pages.length) throw new Error('No se encontraron páginas para exportar.');
+      if (pages.length !== 2) throw new Error(`La propuesta comercial debería tener 2 páginas y generó ${pages.length}.`);
 
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait', compress: true });
@@ -410,14 +494,17 @@
           imageTimeout: 10000
         });
         if (index > 0) doc.addPage('a4', 'portrait');
-        doc.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+        doc.addImage(canvas.toDataURL('image/jpeg', 0.97), 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
       }
 
+      const quoteBytes = new Uint8Array(doc.output('arraybuffer'));
+      const coverageBytes = await getCoverageBytes(selectedPlan);
+      const finalBytes = await mergeQuoteAndCoverage(quoteBytes, coverageBytes);
       const safeName = (displayName(els.nombre.value) || 'Cliente').replace(/[\\/:*?"<>|]/g, '').trim() || 'Cliente';
-      doc.save(`Cotizacion Premedic (${safeName}).pdf`);
+      savePdfBytes(finalBytes, `Cotizacion Premedic (${safeName}).pdf`);
     } catch (error) {
       console.error(error);
-      showAlert('No pudimos generar el PDF directo. Revisá la conexión y volvé a intentarlo.');
+      showAlert(error?.message || 'No pudimos generar el PDF directo. Recargá la página y volvé a intentarlo.');
     } finally {
       stage?.remove();
       pdfBusy = false;

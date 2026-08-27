@@ -1,6 +1,9 @@
 (() => {
   const baseQuote = window.PremedicQuote;
   if (!baseQuote?.renderQuote) return;
+  // La cotización unificada ya contempla PMO con la misma portada y resumen
+  // que el resto de los planes. Se conserva este archivo por compatibilidad.
+  if (baseQuote.supportsOfficialPdf) return;
 
   const originalRenderQuote = baseQuote.renderQuote;
   const esc = value => String(value ?? '')

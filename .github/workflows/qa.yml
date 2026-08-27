@@ -26,9 +26,10 @@ jobs:
           node tests/tariff-structure.mjs
           node tests/formal-quote.mjs
           node tests/promociones-qa.mjs
+          node tests/coverage-assets-qa.mjs
       - name: Install browser QA
         run: |
-          npm install --no-save playwright@1.55.0
+          npm install --no-save playwright@1.55.0 pdf-lib@1.17.1
           npx playwright install --with-deps chromium
       - name: Start local site
         run: |
@@ -39,6 +40,7 @@ jobs:
       - name: Run browser and PDF audit
         run: |
           node tests/browser-qa.mjs
+          node tests/pdf-official-qa.mjs
           node tests/login-browser.mjs
       - name: Smoke test production
         run: node tests/prod-smoke.mjs
