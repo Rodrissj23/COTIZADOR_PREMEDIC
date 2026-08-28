@@ -17,6 +17,9 @@ await test('Portal abre el cotizador sin trabas y sin errores JS',async()=>{
   page.on('pageerror',e=>errors.push(e.message));
   await page.goto(`${BASE}/index.html`,{waitUntil:'networkidle'});
   assert(await page.locator('#portalScreen').isVisible(),'portal no visible');
+  const portalLogo=page.locator('.portal-brand-logo');
+  assert((await portalLogo.getAttribute('src'))==='assets/premedic-logo-oficial.svg','portal no usa el logo vectorial');
+  assert(await portalLogo.evaluate(img=>img.complete&&img.naturalWidth>0),'logo vectorial del portal no cargó');
   const start=Date.now();
   await page.locator('#abrirCotizadorBtn').click();
   await page.locator('#cotizadorApp').waitFor({state:'visible'});
@@ -111,6 +114,9 @@ await test('Preview formal genera portada, resumen y beneficios, sin hoja de cie
   assert(await page.locator('#previewContent .premedic-pdf-cover').count()===1,'falta portada');
   assert(await page.locator('#previewContent .premedic-pdf-summary').count()===1,'falta resumen');
   assert(await page.locator('#previewContent .premedic-pdf-benefits').count()===1,'falta beneficios');
+  const logos=page.locator('#previewContent img[src="assets/premedic-logo-oficial.svg"]');
+  assert(await logos.count()===3,'las tres páginas comerciales no usan el logo vectorial');
+  assert(await logos.evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0)),'algún logo vectorial del PDF no cargó');
   assert(await page.locator('#previewContent .quote-closing-page').count()===0,'aparece hoja de cierre');
   await page.close();
 });

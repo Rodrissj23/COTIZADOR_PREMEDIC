@@ -10,6 +10,9 @@ for(const viewport of [{name:'desktop',width:1440,height:900},{name:'mobile',wid
     const errors=[];page.on('pageerror',e=>errors.push(e.message));
     await page.goto(`${BASE}/login.html?next=%2F`,{waitUntil:'networkidle'});
     assert(await page.locator('#loginForm').isVisible(),'formulario no visible');
+    const logo=page.locator('.login-brand img');
+    assert((await logo.getAttribute('src'))==='assets/premedic-logo-oficial.svg','login no usa el logo vectorial');
+    assert(await logo.evaluate(img=>img.complete&&img.naturalWidth>0),'logo vectorial del login no cargó');
     assert(await page.locator('input[name="username"]').isVisible(),'usuario no visible');
     assert(await page.locator('#password').isVisible(),'contraseña no visible');
     const dims=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth}));

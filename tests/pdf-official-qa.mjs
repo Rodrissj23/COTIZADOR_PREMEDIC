@@ -76,6 +76,9 @@ for(const scenario of cases){
   assert(await page.locator('#previewContent .premedic-pdf-cover').count()===1,`${scenario.plan}: falta portada`);
   assert(await page.locator('#previewContent .premedic-pdf-summary').count()===1,`${scenario.plan}: falta resumen`);
   assert(await page.locator('#previewContent .premedic-pdf-benefits').count()===1,`${scenario.plan}: falta hoja de beneficios`);
+  const logos=page.locator('#previewContent img[src="assets/premedic-logo-oficial.svg"]');
+  assert(await logos.count()===3,`${scenario.plan}: las páginas comerciales no usan los tres logos vectoriales`);
+  assert(await logos.evaluateAll(images=>images.every(img=>img.complete&&img.naturalWidth>0)),`${scenario.plan}: algún logo vectorial no cargó`);
   assert(await page.locator('#previewContent .premedic-benefits-hero>img').getAttribute('src')==='assets/premedic-beneficios-familia.webp',`${scenario.plan}: foto de beneficios incorrecta`);
   assert(await page.locator('#previewContent .quote-closing-page').count()===0,`${scenario.plan}: incluye cierre`);
 

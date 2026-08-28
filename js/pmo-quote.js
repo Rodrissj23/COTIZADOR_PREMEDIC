@@ -57,7 +57,7 @@
       <section class="quote-sheet quote-page quote-benefits-page">
         <header class="benefits-header benefits-header-editorial">
           <div class="benefits-header-copy">
-            <div class="benefits-brand"><img src="assets/premedic-logo-oficial.png" alt="Premedic" class="quote-brand-logo benefits-brand-logo"></div>
+            <div class="benefits-brand"><img src="assets/premedic-logo-oficial.svg" alt="Premedic" class="quote-brand-logo benefits-brand-logo"></div>
             <span>Opción por aportes</span>
             <h2>Plan PMO.</h2>
             <p>Información comercial sobre la alternativa habilitada por el nivel de aportes informado.</p>
@@ -103,7 +103,7 @@
             <h2>PMO · condiciones de la propuesta</h2>
             <p>Se muestran únicamente las condiciones que el cotizador puede afirmar con la información actualmente validada.</p>
           </div>
-          <img src="assets/premedic-logo-oficial.png" alt="Premedic" class="coverage-brand-logo">
+          <img src="assets/premedic-logo-oficial.svg" alt="Premedic" class="coverage-brand-logo">
         </header>
         <div class="coverage-table-head-premedic"><span>Concepto</span><span>Resultado</span><span>Condición principal</span></div>
         <div class="coverage-groups-premedic">
@@ -129,7 +129,7 @@
         <div class="closing-orbit closing-orbit-b"></div>
         <div class="closing-orbit closing-orbit-c"></div>
         <div class="closing-premedic-lockup">
-          <div class="closing-logo-card"><img src="assets/premedic-logo-oficial.png" alt="Premedic"></div>
+          <div class="closing-logo-card"><img src="assets/premedic-logo-oficial.svg" alt="Premedic"></div>
           <span>Tu propuesta · Plan PMO</span>
           <h2>Tu salud,<br>más cerca.</h2>
           <p>Gracias por elegir una propuesta Premedic.</p>
@@ -149,7 +149,7 @@
         <header class="quote-editorial-header quote-editorial-header-clean">
           <div class="quote-editorial-top">
             <div class="quote-brand-lockup">
-              <img src="assets/premedic-logo-oficial.png" alt="Premedic" class="quote-brand-logo quote-brand-logo-header">
+              <img src="assets/premedic-logo-oficial.svg" alt="Premedic" class="quote-brand-logo quote-brand-logo-header">
               <em>Cotización comercial</em>
             </div>
             <div class="quote-meta quote-meta-light">

@@ -91,7 +91,7 @@ window.PremedicQuote = (() => {
         <div class="premedic-cover-orbit orbit-two"></div>
         <div class="premedic-cover-dots" aria-hidden="true"></div>
         <div class="premedic-cover-panel">
-          <div class="premedic-cover-logo"><img src="assets/premedic-logo-oficial.png" alt="Premedic"></div>
+          <div class="premedic-cover-logo"><img src="assets/premedic-logo-oficial.svg" alt="Premedic"></div>
           <div class="premedic-cover-copy">
             <span>NUEVA COTIZACIÓN</span>
             <h1>Hola, ${esc(firstName)}.<br>Tu cobertura,<br>más cerca.</h1>
@@ -133,7 +133,7 @@ window.PremedicQuote = (() => {
             <p>*Los datos exhibidos en este reporte son una aproximación de los valores finales y pueden variar por ajustes de precios o por la fidelidad de los datos brindados al cotizador.</p>
             <p>*Precios correspondientes al tarifario ${esc(window.PremedicMotor.data.vigencia)} · propuesta válida por 72 hs hábiles.</p>
           </div>
-          <div class="premedic-summary-logo"><img src="assets/premedic-logo-oficial.png" alt="Premedic"><b>${esc(quoteId)}</b></div>
+          <div class="premedic-summary-logo"><img src="assets/premedic-logo-oficial.svg" alt="Premedic"><b>${esc(quoteId)}</b></div>
         </div>
       </section>`;
   }
@@ -163,7 +163,7 @@ window.PremedicQuote = (() => {
         <div class="premedic-benefits-hero">
           <img src="assets/premedic-beneficios-familia.webp" alt="Familia compartiendo un momento de bienestar">
           <div class="premedic-benefits-shade"></div>
-          <div class="premedic-benefits-brand"><img src="assets/premedic-logo-oficial.png" alt="Premedic"></div>
+          <div class="premedic-benefits-brand"><img src="assets/premedic-logo-oficial.svg" alt="Premedic"></div>
           <div class="premedic-benefits-heading">
             <span>BIENESTAR CERCA TUYO</span>
             <h2>Beneficios<br>Premedic</h2>

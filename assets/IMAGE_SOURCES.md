@@ -9,3 +9,5 @@ Las fotografías externas usadas por el cotizador provienen de Pexels y figuran 
 La fotografía `premedic-beneficios-familia.webp`, usada en la nueva página 3 del PDF, fue generada específicamente para este proyecto con OpenAI ImageGen. No contiene logos, textos ni marcas de terceros.
 
 La página 1 del PDF no repite una fotografía: usa arte geométrico de marca.
+
+El logotipo `premedic-logo-oficial.svg` es el recurso vectorial publicado por el portal oficial de afiliados de Premedic: https://afiliados.grupopremedic.com.ar/img/logo.svg

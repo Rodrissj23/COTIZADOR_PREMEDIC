@@ -164,6 +164,19 @@ await test('Index carga el override PMO antes de la aplicación', async()=>{
   assert(pmo>0 && app>pmo,'pmo-quote.js no carga antes de app.js');
 });
 
+await test('Todos los logos usan el recurso vectorial oficial', async()=>{
+  const files=['login.html','index.html','js/cotizacion.js','js/pmo-quote.js'];
+  for (const file of files) {
+    const source=fs.readFileSync(file,'utf8');
+    assert(!source.includes('premedic-logo-oficial.png'),`${file} todavía referencia el logo rasterizado`);
+    assert(source.includes('premedic-logo-oficial.svg'),`${file} no usa el logo vectorial`);
+  }
+  const svg=fs.readFileSync('assets/premedic-logo-oficial.svg','utf8');
+  assert(svg.includes('viewBox="0 0 146 34"'),'el SVG no conserva su viewBox oficial');
+  assert(svg.includes('<path'),'el SVG no contiene trazados vectoriales');
+  assert(!svg.includes('<image'),'el SVG incrusta una imagen rasterizada');
+});
+
 await test('Portal no usa MutationObserver global ni parches destructivos', async()=>{
   const portal=fs.readFileSync('js/portal.js','utf8');
   assert(!portal.includes('MutationObserver'),'sigue existiendo MutationObserver');
