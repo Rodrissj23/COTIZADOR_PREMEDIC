@@ -202,7 +202,7 @@
       els.notasModalidad.classList.add('hidden');
       return;
     }
-    els.notasModalidad.innerHTML = 'En <strong>Desregulado</strong> el sistema descuenta automáticamente el aporte computable calculado como <strong>(aporte del recibo ÷ 3) × 7,65</strong>. Si el aporte cubre totalmente el plan, el total a abonar se muestra en <strong>$ 0</strong>. Cuando el aporte computable por persona alcanza <strong>$ 15.000</strong>, también se habilita la opción <strong>PMO</strong>.';
+    els.notasModalidad.innerHTML = 'Los valores mostrados ya incluyen el <strong>aporte descontado automáticamente</strong>.';
     els.notasModalidad.classList.remove('hidden');
   }
 
@@ -236,7 +236,7 @@
         }
         if (state.modalidad === 'desregulado') {
           if (planResult.totalAdicionales === 0) detailRows.push(`<div class="breakdown-line"><span>Valor del plan</span><strong>${money(planResult.bruto)}</strong></div>`);
-          detailRows.push(`<div class="breakdown-line discount"><span>Aporte computable</span><strong>-${money(planResult.aporteComputable)}</strong></div>`);
+          detailRows.push(`<div class="breakdown-line discount"><span>Aporte aplicado</span><strong>-${money(planResult.aporteComputable)}</strong></div>`);
         }
       }
 
@@ -285,7 +285,17 @@
     if (!currentResult) return;
     selectedPlan = planName;
     quoteId = quoteId || makeId();
-    [...els.resultados.querySelectorAll('.plan-card')].forEach(card => card.classList.toggle('selected', card.dataset.plan === planName));
+    [...els.resultados.querySelectorAll('.plan-card')].forEach(card => {
+      const isSelected = card.dataset.plan === planName;
+      card.classList.toggle('selected', isSelected);
+      card.setAttribute('aria-selected', String(isSelected));
+      const button = card.querySelector('.elegir-plan');
+      if (button) {
+        button.classList.toggle('is-selected', isSelected);
+        button.setAttribute('aria-pressed', String(isSelected));
+        button.textContent = isSelected ? `✓ Plan ${card.dataset.plan} elegido` : `Elegir Plan ${card.dataset.plan}`;
+      }
+    });
     const selected = currentResult.plans.find(p => p.plan === planName);
     const state = getState();
     els.seleccionPlan.textContent = `Premedic ${planName}`;

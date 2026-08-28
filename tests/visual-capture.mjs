@@ -25,6 +25,7 @@ async function desktop(){
   await page.locator('#resultadosSection').waitFor({state:'visible'});
   await page.screenshot({path:path.join(out,'02-resultados-directo-desktop.png'),fullPage:true});
   await page.locator('.plan-card[data-plan="300"] .elegir-plan').click();
+  await page.screenshot({path:path.join(out,'02b-plan300-seleccionado-desktop.png'),fullPage:true});
   await page.locator('#verCotizacionBtn').click();
   await page.screenshot({path:path.join(out,'03-preview-plan300.png'),fullPage:false});
   await page.locator('#cerrarPreviewBtn').click();
@@ -51,6 +52,8 @@ async function mobile(){
   await page.locator('#edadTitular').fill('35');
   await page.locator('#cotizarBtn').click();
   await page.screenshot({path:path.join(out,'07-resultados-mobile.png'),fullPage:true});
+  await page.locator('.plan-card[data-plan="400"] .elegir-plan').click();
+  await page.screenshot({path:path.join(out,'07b-plan400-seleccionado-mobile.png'),fullPage:true});
   await page.close();
 }
 

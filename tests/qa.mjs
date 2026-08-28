@@ -180,6 +180,16 @@ await test('App descarga PDF directo y no usa window.print', async()=>{
   assert(!app.includes('window.print()'),'todavía usa diálogo de impresión');
 });
 
+await test('Selección visual clara y aporte sin fórmula técnica visible', async()=>{
+  const index=fs.readFileSync('index.html','utf8');
+  const app=fs.readFileSync('js/app.js','utf8');
+  const styles=fs.readFileSync('css/styles/part09.css','utf8');
+  assert(!index.includes('(aporte ÷ 3) × 7,65'),'index sigue mostrando la fórmula técnica');
+  assert(!app.includes('(aporte del recibo ÷ 3) × 7,65'),'resultados siguen mostrando la fórmula técnica');
+  assert(app.includes("button.textContent = isSelected ? `✓ Plan ${card.dataset.plan} elegido`"),'el botón no confirma la selección');
+  assert(styles.includes('.plan-card.plan-card-refined.selected'),'falta estilo destacado para el plan elegido');
+});
+
 await test('Middleware protege JS y restringe functions públicas', async()=>{
   const cf=fs.readFileSync('functions/_middleware.js','utf8');
   const netlify=fs.readFileSync('netlify/edge-functions/auth.js','utf8');

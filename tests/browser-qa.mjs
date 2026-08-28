@@ -64,6 +64,10 @@ await test('Desregulado mantiene aporte visible y PMO aparece primero con valor 
   assert((await first.locator('.breakdown-line').innerText()).includes('Valor del plan'),'PMO no muestra Valor del plan');
   assert((await first.locator('.breakdown-line').innerText()).includes('$ 0'),'Valor del plan PMO no muestra $0');
   assert(await page.locator('#sumAporteCalculadoRow').isVisible(),'aporte computable fue ocultado');
+  const contributionCopy=await page.locator('#aporteWrap').innerText();
+  assert(!contributionCopy.includes('÷')&&!contributionCopy.includes('7,65'),'la explicación técnica del aporte sigue visible');
+  const contributionNote=await page.locator('#notasModalidad').innerText();
+  assert(!contributionNote.includes('÷')&&!contributionNote.includes('7,65'),'la leyenda técnica del aporte sigue visible en resultados');
   await page.close();
 });
 
@@ -84,6 +88,10 @@ await test('Cambiar edad invalida plan seleccionado',async()=>{
   await page.locator('#edadTitular').fill('35');
   await page.locator('#cotizarBtn').click();
   await page.locator('.plan-card[data-plan="200"] .elegir-plan').click();
+  const selectedCard=page.locator('.plan-card[data-plan="200"]');
+  assert(await selectedCard.evaluate(card=>card.classList.contains('selected')),'la tarjeta elegida no quedó seleccionada');
+  assert((await selectedCard.locator('.elegir-plan').innerText()).includes('elegido'),'el botón no confirma el plan elegido');
+  assert(await page.locator('.plan-card.selected').count()===1,'hay más de un plan marcado como elegido');
   assert(await page.locator('#seleccionSection').isVisible(),'selección no visible');
   await page.locator('#edadTitular').fill('36');
   assert(!(await page.locator('#seleccionSection').isVisible()),'selección vieja quedó visible');

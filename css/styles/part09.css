@@ -87,7 +87,17 @@
 }
 .plan-card.plan-card-refined:last-child:nth-child(odd){grid-column:auto;width:auto;justify-self:stretch}
 .plan-card.plan-card-refined:hover{border-color:#b9dcd6;box-shadow:0 8px 20px rgba(7,139,130,.055);transform:translateY(-1px)}
-.plan-card.selected{border-color:#78c7bc;box-shadow:0 0 0 2px rgba(7,139,130,.055)}
+.plan-card.plan-card-refined.selected{
+  border:2px solid #078b82;
+  background:linear-gradient(180deg,#e5f6f2 0%,#f4fbf9 100%);
+  box-shadow:0 0 0 3px rgba(7,139,130,.12),0 14px 30px rgba(7,139,130,.14);
+  transform:translateY(-2px)
+}
+.plan-card.plan-card-refined.selected .plan-brand,
+.plan-card.plan-card-refined.selected .plan-name,
+.plan-card.plan-card-refined.selected .plan-price{color:#056b63}
+.plan-card.plan-card-refined.selected .breakdown.breakdown-compact{background:rgba(255,255,255,.72)}
+.plan-card.plan-card-refined.selected .elegir-plan.is-selected{background:#056b63;border-color:#056b63;color:#fff;box-shadow:none}
 .plan-card-top{padding:14px 14px 7px;align-items:flex-start}
 .plan-brand{font-size:8px;letter-spacing:.1em}
 .plan-name{margin-top:4px;font-size:21px}
