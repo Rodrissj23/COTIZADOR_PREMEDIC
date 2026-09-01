@@ -125,6 +125,7 @@
     els.seleccionSection.classList.add('hidden');
     els.mensaje.classList.add('hidden');
     renderLiveSummary();
+    window.dispatchEvent(new CustomEvent('premedic:plan-selected', { detail: { plan: null } }));
   }
 
   function showAlert(text) {
@@ -302,6 +303,7 @@
     els.seleccionPrecio.textContent = `${money(selected.neto)} / mes`;
     els.seleccionDetalle.textContent = `${displayName(state.nombre)} · ${state.modalidad === 'directo' ? 'Directo' : 'Desregulado'} · ${detailText(selected)}`;
     els.seleccionSection.classList.remove('hidden');
+    window.dispatchEvent(new CustomEvent('premedic:plan-selected', { detail: { plan: planName } }));
     els.seleccionSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
@@ -561,6 +563,13 @@
   });
 
   els.cotizarBtn.addEventListener('click', calculate);
+  window.addEventListener('premedic:recalculate', event => {
+    const planToRestore = event.detail?.plan || null;
+    calculate();
+    if (planToRestore && currentResult?.plans.some(plan => plan.plan === planToRestore)) {
+      selectPlan(planToRestore);
+    }
+  });
   els.limpiarBtn.addEventListener('click', clearForm);
   els.verCotizacionBtn.addEventListener('click', openPreview);
   els.guardarPdfBtn.addEventListener('click', downloadQuotePDF);

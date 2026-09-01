@@ -60,6 +60,17 @@ test('Monotributo conserva categoría e importe reales',()=>{
   assert(html.includes(motor.money(selected.neto)),'total monotributo incorrecto');
 });
 
+test('FLASH25 queda identificado como campaña permanente en el PDF',()=>{
+  promos.state.promoId='flash25';
+  const state={...base,fechaCotizacion:'2026-09-11'};
+  const result=motor.quote(state);const selected=result.plans.find(plan=>plan.plan==='300');
+  const html=formal.renderQuote({state,result,selectedPlan:'300',quoteId:'PM-FLASH25'});
+  assert(html.includes('Campaña aplicada'),'no identifica la fila de campaña');
+  assert(html.includes('FLASH25 — 25% permanente'),'no identifica FLASH25 permanente');
+  assert(html.includes(`- ${motor.money(selected.descuentoPromocion)}`),'no muestra el importe descontado');
+  assert(html.includes(motor.money(selected.neto)),'no muestra el precio final');
+});
+
 test('PMO usa portada y resumen comunes con total $0',()=>{
   promos.state.promoId='ninguna';
   const state={...base,modalidad:'desregulado',aporteRecibo:30000};

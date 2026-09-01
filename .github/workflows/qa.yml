@@ -40,6 +40,7 @@ jobs:
       - name: Run browser and PDF audit
         run: |
           node tests/browser-qa.mjs
+          node tests/flash25-browser-qa.mjs
           node tests/pdf-official-qa.mjs
           node tests/login-browser.mjs
       - name: Smoke test production

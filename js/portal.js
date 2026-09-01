@@ -48,7 +48,6 @@
     const zona = document.getElementById('zona');
     const modalidad = document.getElementById('modalidad');
     const aporteWrap = document.getElementById('aporteWrap');
-    const nombre = document.getElementById('nombre');
     const resultados = document.getElementById('resultados');
     const cotizarBtn = document.getElementById('cotizarBtn');
     if (!promoApi || !zona || !modalidad || !aporteWrap) return;
@@ -88,13 +87,14 @@
     const categoriaWrap = document.getElementById('monotributoCategoriaWrap');
     const categoriaSelect = document.getElementById('categoriaMonotributo');
     const aporteInfo = document.getElementById('aporteMonotributoInfo');
+    let selectedPlan = null;
 
     Object.entries(promoApi.MONOTRIBUTO_APORTES).forEach(([cat, aporte]) => {
       categoriaSelect.add(new Option(`Categoría ${cat} · ${window.PremedicMotor.money(aporte)}`, cat));
     });
 
     function invalidateQuote() {
-      nombre?.dispatchEvent(new Event('input', { bubbles: true }));
+      zona.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
     function updateMonotributoUI() {
@@ -106,8 +106,8 @@
       }
     }
 
-    function populatePromos() {
-      const disponibles = promoApi.promosDisponibles(modalidad.value, zona.value);
+    function populatePromos(plan = selectedPlan) {
+      const disponibles = promoApi.promosDisponibles(modalidad.value, zona.value, plan);
       const previous = promoApi.state.promoId;
       promoSelect.innerHTML = '';
       disponibles.forEach(p => promoSelect.add(new Option(p.label, p.id)));
@@ -115,6 +115,9 @@
       promoApi.state.promoId = promoSelect.value;
       updateMonotributoUI();
       decorateResults();
+      if (plan && previous !== 'ninguna' && promoSelect.value !== previous) {
+        queueMicrotask(() => window.dispatchEvent(new CustomEvent('premedic:recalculate', { detail: { plan } })));
+      }
     }
 
     function getCurrentState() {
@@ -177,8 +180,19 @@
       invalidateQuote();
     });
 
+    window.addEventListener('premedic:plan-selected', event => {
+      selectedPlan = event.detail?.plan || null;
+      populatePromos(selectedPlan);
+    });
+
+    window.addEventListener('focus', () => populatePromos(selectedPlan));
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) populatePromos(selectedPlan);
+    });
+
     // app.js registra primero el cálculo. Este listener corre después y agrega
     // únicamente el detalle visual del beneficio aplicado.
+    cotizarBtn?.addEventListener('click', () => populatePromos(selectedPlan), true);
     cotizarBtn?.addEventListener('click', () => queueMicrotask(decorateResults));
 
     const style = document.createElement('style');

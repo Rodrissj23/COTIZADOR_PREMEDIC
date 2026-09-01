@@ -55,21 +55,30 @@ window.PremedicQuote = (() => {
   }
 
   function promotionDetail(selected, result) {
-    if (!selected.descuentoPromocion) return { value: money(0), note: '' };
+    if (!selected.descuentoPromocion) return { label: 'Descuento promocional', value: money(0), note: '' };
     const promo = selected.promocion || {};
+    if (promo.id === 'flash25') {
+      return {
+        label: 'Campaña aplicada',
+        value: 'FLASH25 — 25% permanente',
+        note: `- ${money(selected.descuentoPromocion)}`
+      };
+    }
     if (promo.tipo === 'porcentaje') {
       return {
+        label: 'Descuento promocional',
         value: `${promo.valor}% - ${money(selected.descuentoPromocion)}`,
         note: promo.label || 'Beneficio comercial aplicado'
       };
     }
     if (promo.id === 'monotributo') {
       return {
+        label: 'Descuento promocional',
         value: `Monotributo Cat. ${result.categoriaMonotributo || '-'} - ${money(selected.descuentoPromocion)}`,
         note: 'Aporte correspondiente a la categoría seleccionada'
       };
     }
-    return { value: `- ${money(selected.descuentoPromocion)}`, note: promo.label || '' };
+    return { label: 'Descuento promocional', value: `- ${money(selected.descuentoPromocion)}`, note: promo.label || '' };
   }
 
   function summaryRow(label, value, note = '') {
@@ -115,7 +124,7 @@ window.PremedicQuote = (() => {
       ['Valor detalle', money(selected.base), ''],
       ['Filiar a cargo', money(selected.totalAdicionales), ''],
       ['Aportes a descontar', selected.aporteComputable ? `- ${money(selected.aporteComputable)}` : money(0), ''],
-      ['Descuento promocional', promo.value, promo.note],
+      [promo.label, promo.value, promo.note],
       ['Descuento multiproducto', money(0), ''],
       ['IVA', 'Incluido', '']
     ];

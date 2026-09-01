@@ -80,7 +80,8 @@ window.PremedicMotor = (() => {
     return promos.aplicarPromocion(bruto, {
       modalidad: state.modalidad,
       zona: state.zona,
-      plan: planName
+      plan: planName,
+      fecha: state.fechaCotizacion
     });
   }
 
