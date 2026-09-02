@@ -64,6 +64,24 @@ await test('FLASH25 aparece hasta el 11/09 para AMBA Directo y planes habilitado
   await page.close();
 });
 
+await test('Seleccionar FLASH25 después de cotizar recalcula los precios inmediatamente', async () => {
+  const page = await pageAt('2026-09-11');
+  await page.locator('#nombre').fill('Flash Recalculo QA');
+  await page.locator('#edadTitular').fill('35');
+  await page.locator('#cotizarBtn').click();
+  const original = await page.locator('.plan-card[data-plan="300"] .plan-price').innerText();
+  await page.locator('#promocionPremedic').selectOption('flash25');
+  await page.locator('#resultadosSection').waitFor({ state: 'visible' });
+  const discounted = await page.locator('.plan-card[data-plan="300"] .plan-price').innerText();
+  assert(discounted !== original, 'el precio no cambió al seleccionar FLASH25');
+  const expected = await page.evaluate(() => window.PremedicMotor.money(window.PremedicMotor.quote({
+    nombre: 'Flash Recalculo QA', zona: 'amba', modalidad: 'directo', composicion: 'individual',
+    aporteRecibo: '', edadTitular: 35, edadPareja: null, hijos: []
+  }).plans.find(item => item.plan === '300').neto));
+  assert(discounted.trim() === expected, `precio FLASH25 incorrecto: ${discounted} != ${expected}`);
+  await page.close();
+});
+
 await test('Cambiar a plan incompatible elimina FLASH25 automáticamente', async () => {
   const page = await pageAt('2026-09-11');
   await page.locator('#nombre').fill('Flash Plan QA');

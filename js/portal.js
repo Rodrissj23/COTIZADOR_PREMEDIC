@@ -97,6 +97,14 @@
       zona.dispatchEvent(new Event('input', { bubbles: true }));
     }
 
+    function recalculateQuoteAfterBenefitChange() {
+      if (resultados?.children.length) {
+        window.dispatchEvent(new CustomEvent('premedic:recalculate', { detail: { plan: selectedPlan } }));
+        return;
+      }
+      invalidateQuote();
+    }
+
     function updateMonotributoUI() {
       const isMono = promoSelect.value === 'monotributo';
       categoriaWrap.classList.toggle('hidden', !isMono);
@@ -162,13 +170,13 @@
     promoSelect.addEventListener('change', () => {
       promoApi.state.promoId = promoSelect.value;
       updateMonotributoUI();
-      invalidateQuote();
+      recalculateQuoteAfterBenefitChange();
     });
 
     categoriaSelect.addEventListener('change', () => {
       promoApi.state.categoriaMonotributo = categoriaSelect.value;
       updateMonotributoUI();
-      invalidateQuote();
+      recalculateQuoteAfterBenefitChange();
     });
 
     zona.addEventListener('change', () => {
@@ -207,7 +215,7 @@
   }
 
   const promoScript = document.createElement('script');
-  promoScript.src = 'js/promociones-premedic.js';
+  promoScript.src = 'js/promociones-premedic.js?v=20260902-1';
   promoScript.onload = initPromociones;
   document.head.appendChild(promoScript);
 })();
