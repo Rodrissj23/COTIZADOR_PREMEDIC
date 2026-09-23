@@ -37,7 +37,7 @@ await test('Directo AMBA edad 35 muestra 5 planes y precio correcto del 200',asy
   await page.locator('#resultadosSection').waitFor({state:'visible'});
   assert(await page.locator('#resultados .plan-card').count()===5,'no hay 5 planes');
   const price=(await page.locator('.plan-card[data-plan="200"] .plan-price').innerText()).replace(/\s/g,'');
-  assert(price.includes('$113.707'),`precio 200 inesperado ${price}`);
+  assert(price.includes('$115.982'),`precio 200 inesperado ${price}`);
   await page.close();
 });
 

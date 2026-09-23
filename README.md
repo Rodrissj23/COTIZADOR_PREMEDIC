@@ -3,9 +3,9 @@
 Cotizador comercial web de Premedic en HTML, CSS y JavaScript.
 
 ## Estado
-Versión funcional auditada para Septiembre 2026.
+Versión funcional auditada para Octubre 2026.
 
-> La lógica comercial, navegación, PMO, aportes, responsive, autenticación y generación de PDF cuentan con QA automático. La comparación final contra las listas oficiales de precios y los PDFs oficiales de beneficios queda pendiente hasta disponer nuevamente de esas fuentes.
+> Tarifas de octubre de 2026 verificadas contra las nóminas oficiales de Directos y Desregulados para AMBA e Interior. La lógica comercial, navegación, PMO, aportes, responsive, autenticación y generación de PDF cuentan con QA automático.
 
 ## Reglas incluidas
 - Planes: C-100, 200, 300, 400, 500 y PMO.
