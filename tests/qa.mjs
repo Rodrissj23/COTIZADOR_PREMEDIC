@@ -31,8 +31,8 @@ const state = overrides => ({
   ...overrides
 });
 
-await test('Vigencia Septiembre 2026 y cuatro tramos oficiales configurados', async()=>{
-  eq(data.vigencia,'Septiembre 2026');
+await test('Vigencia Octubre 2026 y cuatro tramos oficiales configurados', async()=>{
+  eq(data.vigencia,'Octubre 2026');
   eq(data.edadMaxima,59);
   eq(data.tramos.length,4);
   eq(data.tramos[0],'1 a 29 años');
@@ -67,18 +67,18 @@ await test('Edad 60 queda fuera del rango comercial', async()=>{
 await test('Pareja usa la edad del mayor', async()=>{
   const r=motor.quote(state({composicion:'pareja',edadTitular:29,edadPareja:45}));
   assert(r.ok,r.error); eq(r.refAge,45); eq(r.band,2);
-  eq(r.plans.find(p=>p.plan==='200').base,239113,'matrimonio Plan 200 banda 40-49');
+  eq(r.plans.find(p=>p.plan==='200').base,243895,'matrimonio Plan 200 banda 40-49');
 });
 
 await test('Titular + hijos suma adicionales por edad', async()=>{
   const r=motor.quote(state({composicion:'titular_hijos',hijos:[0,8]}));
   assert(r.ok,r.error);
   const p=r.plans.find(x=>x.plan==='200');
-  eq(p.base,90579); eq(p.totalAdicionales,188066+60565); eq(p.bruto,90579+188066+60565);
+  eq(p.base,92390); eq(p.totalAdicionales,191828+61776); eq(p.bruto,92390+191828+61776);
 });
 
 await test('Pareja + 1/2/3 hijos usa tarifa familiar específica', async()=>{
-  const expected={1:225694,2:267325,3:301750};
+  const expected={1:230208,2:272672,3:307785};
   for (const count of [1,2,3]) {
     const r=motor.quote(state({composicion:'pareja_hijos',edadPareja:29,hijos:Array(count).fill(8)}));
     assert(r.ok,r.error); eq(r.plans.find(x=>x.plan==='200').base,expected[count],`${count} hijos`);
@@ -89,7 +89,7 @@ await test('Desde el cuarto hijo se agrega adicional', async()=>{
   const r=motor.quote(state({composicion:'pareja_hijos',edadPareja:29,hijos:[8,7,6,5,0]}));
   assert(r.ok,r.error);
   const p=r.plans.find(x=>x.plan==='200');
-  eq(p.base,301750); eq(p.totalAdicionales,60565+188066); eq(p.extras.length,2);
+  eq(p.base,307785); eq(p.totalAdicionales,61776+191828); eq(p.extras.length,2);
 });
 
 await test('Hijo de 24 años entra y de 25 queda fuera', async()=>{
