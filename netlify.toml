@@ -12,6 +12,11 @@
   to = "/.netlify/functions/logout"
   status = 200
 
+[[redirects]]
+  from = "/api/control-config"
+  to = "/.netlify/functions/control-config"
+  status = 200
+
 [[edge_functions]]
   function = "auth"
   path = "/*"
