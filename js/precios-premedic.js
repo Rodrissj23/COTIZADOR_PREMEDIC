@@ -1,4 +1,4 @@
-(()=>{const s=document.createElement('script');s.src='js/zeroka-control-config.js?v=20260928-1';s.async=true;document.head.appendChild(s);})();
+(()=>{if(typeof document==='undefined')return;const s=document.createElement('script');s.src='js/zeroka-control-config.js?v=20260928-1';s.async=true;document.head.appendChild(s);})();
 
 window.PREMEDIC_DATA = {
   vigencia: 'Octubre 2026',
