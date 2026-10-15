@@ -28,8 +28,8 @@ async function optionValues(page) {
   return page.locator('#promocionPremedic option').evaluateAll(options => options.map(option => option.value));
 }
 
-await test('FLASH25 aparece hasta el 11/09 para AMBA Directo y planes habilitados', async () => {
-  const page = await pageAt('2026-09-11');
+await test('FLASH25 aparece hasta el 21/10 para AMBA Directo y planes habilitados', async () => {
+  const page = await pageAt('2026-10-21');
   assert((await optionValues(page)).includes('flash25'), 'FLASH25 no aparece en AMBA Directo');
   await page.locator('#nombre').fill('Flash Directo QA');
   await page.locator('#edadTitular').fill('35');
@@ -65,7 +65,7 @@ await test('FLASH25 aparece hasta el 11/09 para AMBA Directo y planes habilitado
 });
 
 await test('Seleccionar FLASH25 después de cotizar recalcula los precios inmediatamente', async () => {
-  const page = await pageAt('2026-09-11');
+  const page = await pageAt('2026-10-21');
   await page.locator('#nombre').fill('Flash Recalculo QA');
   await page.locator('#edadTitular').fill('35');
   await page.locator('#cotizarBtn').click();
@@ -83,7 +83,7 @@ await test('Seleccionar FLASH25 después de cotizar recalcula los precios inmedi
 });
 
 await test('Cambiar a plan incompatible elimina FLASH25 automáticamente', async () => {
-  const page = await pageAt('2026-09-11');
+  const page = await pageAt('2026-10-21');
   await page.locator('#nombre').fill('Flash Plan QA');
   await page.locator('#edadTitular').fill('35');
   await page.locator('#promocionPremedic').selectOption('flash25');
@@ -102,7 +102,7 @@ await test('Cambiar a plan incompatible elimina FLASH25 automáticamente', async
 });
 
 await test('Cambiar AMBA a Interior elimina FLASH25 automáticamente', async () => {
-  const page = await pageAt('2026-09-11');
+  const page = await pageAt('2026-10-21');
   await page.locator('#promocionPremedic').selectOption('flash25');
   await page.locator('#zona').selectOption('interior');
   assert(!(await optionValues(page)).includes('flash25'), 'FLASH25 sigue disponible en Interior');
@@ -110,8 +110,8 @@ await test('Cambiar AMBA a Interior elimina FLASH25 automáticamente', async () 
   await page.close();
 });
 
-await test('El 12/09/2026 FLASH25 ya no puede seleccionarse', async () => {
-  const page = await pageAt('2026-09-12');
+await test('El 22/10/2026 FLASH25 ya no puede seleccionarse', async () => {
+  const page = await pageAt('2026-10-22');
   assert(!(await optionValues(page)).includes('flash25'), 'FLASH25 aparece fuera de vigencia');
   await page.close();
 });
