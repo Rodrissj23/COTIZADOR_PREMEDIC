@@ -33,7 +33,7 @@ function quote({ modalidad='directo', zona='amba', edad=35, aporteRecibo=0, prom
 {
   for (const modalidad of ['directo', 'desregulado']) {
     for (const planName of ['300', '400', '500']) {
-      const result = quote({ modalidad, zona:'amba', promo:'flash25', aporteRecibo: modalidad === 'desregulado' ? 10000 : 0, fechaCotizacion:'2026-09-11' });
+      const result = quote({ modalidad, zona:'amba', promo:'flash25', aporteRecibo: modalidad === 'desregulado' ? 10000 : 0, fechaCotizacion:'2026-10-21' });
       const p = plan(result, planName);
       close(p.descuentoPromocion, p.bruto * 0.25, `FLASH25 ${modalidad} Plan ${planName}`);
       const aporte = modalidad === 'desregulado' ? PremedicMotor.aporteComputable(10000) : 0;
@@ -42,15 +42,15 @@ function quote({ modalidad='directo', zona='amba', edad=35, aporteRecibo=0, prom
   }
 
   for (const planName of ['C-100', '200']) {
-    assert.equal(plan(quote({ promo:'flash25', fechaCotizacion:'2026-09-11' }), planName).descuentoPromocion, 0);
+    assert.equal(plan(quote({ promo:'flash25', fechaCotizacion:'2026-10-21' }), planName).descuentoPromocion, 0);
   }
-  assert.equal(plan(quote({ zona:'interior', promo:'flash25', fechaCotizacion:'2026-09-11' }), '300').descuentoPromocion, 0);
-  assert.ok(PremedicPromos.promosDisponibles('directo', 'amba', '300', '2026-09-11').some(p => p.id === 'flash25'));
-  assert.ok(PremedicPromos.promosDisponibles('desregulado', 'amba', '500', '2026-09-11').some(p => p.id === 'flash25'));
-  assert.ok(!PremedicPromos.promosDisponibles('directo', 'amba', '300', '2026-09-12').some(p => p.id === 'flash25'));
-  assert.ok(!PremedicPromos.promosDisponibles('directo', 'interior', '300', '2026-09-11').some(p => p.id === 'flash25'));
-  assert.ok(!PremedicPromos.promosDisponibles('directo', 'amba', '200', '2026-09-11').some(p => p.id === 'flash25'));
-  assert.ok(!PremedicPromos.promosDisponibles('monotributo', 'amba', '300', '2026-09-11').some(p => p.id === 'flash25'));
+  assert.equal(plan(quote({ zona:'interior', promo:'flash25', fechaCotizacion:'2026-10-21' }), '300').descuentoPromocion, 0);
+  assert.ok(PremedicPromos.promosDisponibles('directo', 'amba', '300', '2026-10-21').some(p => p.id === 'flash25'));
+  assert.ok(PremedicPromos.promosDisponibles('desregulado', 'amba', '500', '2026-10-21').some(p => p.id === 'flash25'));
+  assert.ok(!PremedicPromos.promosDisponibles('directo', 'amba', '300', '2026-10-22').some(p => p.id === 'flash25'));
+  assert.ok(!PremedicPromos.promosDisponibles('directo', 'interior', '300', '2026-10-21').some(p => p.id === 'flash25'));
+  assert.ok(!PremedicPromos.promosDisponibles('directo', 'amba', '200', '2026-10-21').some(p => p.id === 'flash25'));
+  assert.ok(!PremedicPromos.promosDisponibles('monotributo', 'amba', '300', '2026-10-21').some(p => p.id === 'flash25'));
 }
 
 function plan(result, name) {
