@@ -62,7 +62,7 @@ test('Monotributo conserva categoría e importe reales',()=>{
 
 test('FLASH25 queda identificado como campaña permanente en el PDF',()=>{
   promos.state.promoId='flash25';
-  const state={...base,fechaCotizacion:'2026-09-11'};
+  const state={...base,fechaCotizacion:'2026-10-21'};
   const result=motor.quote(state);const selected=result.plans.find(plan=>plan.plan==='300');
   const html=formal.renderQuote({state,result,selectedPlan:'300',quoteId:'PM-FLASH25'});
   assert(html.includes('Campaña aplicada'),'no identifica la fila de campaña');
