@@ -27,6 +27,7 @@ jobs:
           node tests/noviembre-amba.mjs
           node tests/formal-quote.mjs
           node tests/promociones-qa.mjs
+          node tests/control-qa.mjs
           node tests/coverage-assets-qa.mjs
       - name: Install browser QA
         run: |
@@ -42,6 +43,7 @@ jobs:
         run: |
           node tests/browser-qa.mjs
           node tests/flash25-browser-qa.mjs
+          node tests/control-browser-qa.mjs
           node tests/pdf-official-qa.mjs
           node tests/login-browser.mjs
       - name: Smoke test production

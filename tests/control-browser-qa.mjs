@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {chromium} from 'playwright';
+const fixture=JSON.parse(fs.readFileSync('tests/control-publication.fixture.json','utf8'));
+const browser=await chromium.launch({headless:true});
+try {
+  const config=structuredClone(fixture);
+  const promo=config.promotions.find(p=>p.codigo==='FLASH25');
+  config.promotions=[promo];promo.label='<img src=x onerror="window.injected=true"> · 25% permanente';
+  config.data.tarifas.directo.amba['300'].individual[1]+=10000;
+  for(const group of Object.values(config.data.tarifas.directo)) delete group['500'];
+  const page=await browser.newPage({acceptDownloads:true});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await page.clock.install({time:new Date('2026-10-16T12:00:00-03:00')});
+  await page.route('**/config/premedic-publicada.js',route=>route.fulfill({contentType:'text/javascript',body:`window.ZEROKA_PREMEDIC_PUBLICATION = ${JSON.stringify(config)};`}));
+  await page.goto('http://127.0.0.1:4173/index.html#cotizador',{waitUntil:'networkidle'});
+  await page.locator('#nombre').fill('Integración Control');await page.locator('#edadTitular').fill('35');
+  await page.locator('#promocionPremedic').selectOption(promo.id);
+  await page.locator('#cotizarBtn').click();
+  await page.locator('.plan-card').first().waitFor();
+  const names=await page.locator('.plan-card').evaluateAll(cards=>cards.map(c=>c.dataset.plan));
+  assert(names.includes('300'));assert(!names.includes('500'));
+  const result=await page.evaluate(()=>window.PremedicMotor.quote({nombre:'QA',edadTitular:35,composicion:'individual',hijos:[],modalidad:'directo',zona:'amba'}));
+  const plan=result.plans.find(p=>p.plan==='300');assert.equal(plan.bruto,config.data.tarifas.directo.amba['300'].individual[1]);assert.equal(plan.neto,plan.bruto*.75);
+  assert.equal(await page.locator('.promo-breakdown-line img').count(),0);assert.equal(await page.evaluate(()=>!!window.injected),false);
+  assert((await page.locator('.promo-breakdown-line').first().innerText()).includes('<img'));
+  assert.deepEqual(errors,[]);
+  await page.close();
+  const broken=await browser.newPage();
+  await broken.route('**/config/premedic-publicada.js',r=>r.fulfill({contentType:'text/javascript',body:'window.ZEROKA_PREMEDIC_PUBLICATION = {};'}));
+  await broken.goto('http://127.0.0.1:4173/index.html#cotizador',{waitUntil:'networkidle'});
+  await broken.locator('#nombre').fill('Inválida');await broken.locator('#edadTitular').fill('35');await broken.locator('#cotizarBtn').click();
+  assert((await broken.locator('#mensaje').innerText()).includes('configuración publicada'));
+  assert.equal(await broken.locator('.plan-card').count(),0);
+  await broken.close();
+  console.log('Control browser QA OK: publicación → precios, promoción, planes y bloqueo por archivo inválido; texto sin HTML.');
+} finally {await browser.close();}

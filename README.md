@@ -60,3 +60,7 @@ Para un cambio de vigencia:
 3. revisar beneficios sólo si cambió la documentación oficial;
 4. abrir un PR y esperar que `Premedic QA` quede en verde;
 5. revisar los artefactos visuales antes de publicar.
+
+## Administración desde Zeroka Control
+
+Ver [conexión, publicación y actualización de precios y promociones](docs/ZEROKA_CONTROL.md).

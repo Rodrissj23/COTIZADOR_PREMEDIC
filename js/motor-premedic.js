@@ -32,6 +32,8 @@ window.PremedicMotor = (() => {
   }
 
   function validate(state) {
+    if (window.PremedicControlError) return { ok: false, error: window.PremedicControlError };
+    if (window.PremedicControl && (!window.PremedicControl.modes.includes(state.modalidad) || !window.PremedicControl.zones.includes(state.zona))) return { ok: false, error: "Zona o modalidad no habilitada en Control." };
     if (!state.nombre?.trim()) {
       return { ok: false, error: 'Completá el nombre del cliente.' };
     }
@@ -86,6 +88,7 @@ window.PremedicMotor = (() => {
       modalidad: state.modalidad,
       zona: state.zona,
       plan: planName,
+      edad: ['pareja', 'pareja_hijos'].includes(state.composicion) ? Math.max(state.edadTitular, state.edadPareja) : state.edadTitular,
       fecha: state.fechaCotizacion
     });
   }
@@ -162,7 +165,7 @@ window.PremedicMotor = (() => {
 
     const band = tramoIndex(refAge);
     const pricingZone = window.PremedicPromos?.pricingZone(state.zona) || (state.zona === 'amba' ? 'amba' : 'interior');
-    const zonePlans = data.tarifas[state.modalidad][pricingZone];
+    const zonePlans = data.tarifas[state.modalidad]?.[pricingZone] || {};
     const canonicalPlanOrder = ['C-100', '200', '300', '400', '500'];
     const plans = Object.keys(zonePlans)
       .sort((a, b) => canonicalPlanOrder.indexOf(a) - canonicalPlanOrder.indexOf(b))
