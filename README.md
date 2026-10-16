@@ -20,7 +20,7 @@ Actualización del 16/10/2026: 110 importes de Desregulados AMBA contrastados co
 - Hijos contemplados hasta 24 años y 11 meses.
 - Menor de 1 año utiliza el adicional específico de la lista.
 - Pareja + 1/2/3 hijos usa la tarifa familiar específica; desde el cuarto hijo se agregan adicionales.
-- Desregulado: aporte computable = `(aporte del recibo ÷ 3) × 7,65`.
+- Desregulado: el campo «Aporte a descontar» recibe el aporte ya calculado, igual que el cotizador original, y lo descuenta directamente. El identificador interno `aporteRecibo` se conserva por compatibilidad.
 - Premedic no aplica tope adicional de aporte/base en este motor.
 - El aporte se descuenta del valor del plan y el resultado nunca puede ser negativo.
 - PMO se habilita cuando `aporte computable total ÷ cantidad de integrantes >= $15.000`.
