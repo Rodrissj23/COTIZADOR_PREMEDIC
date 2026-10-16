@@ -39,5 +39,5 @@ for (const [mode, zone] of [['directo', 'amba'], ['directo', 'interior'], ['desr
 promos.state.promoId = 'tc15';
 const discounted = motor.quote({ ...base, edadTitular: 35, aporteRecibo: 30000 }).plans.find(p => p.plan === '200');
 assert.equal(discounted.bruto, 107690);
-assert.equal(discounted.neto, 61536.5);
+assert.equal(discounted.neto, 21636.5);
 console.log(`PASS Noviembre AMBA: 110 importes oficiales, ${checks} cotizaciones, adicionales, vigencias PDF y promociones conservadas.`);

@@ -19,8 +19,8 @@ window.PremedicMotor = (() => {
   }
 
   function aporteComputable(aporte) {
-    // El campo recibe el aporte ya calculado, igual que el cotizador original.
-    return Number(aporte || 0);
+    // Se ingresa el ítem de obra social del recibo; el original indica multiplicar por 2,33.
+    return Math.round(Number(aporte || 0) * 233) / 100;
   }
 
   function cantidadPersonas(state) {
@@ -60,7 +60,7 @@ window.PremedicMotor = (() => {
       }
     }
     if (state.modalidad === 'desregulado' && (state.aporteRecibo === null || state.aporteRecibo === '' || !Number.isFinite(Number(state.aporteRecibo)) || Number(state.aporteRecibo) < 0)) {
-      return { ok: false, error: 'Ingresá un aporte a descontar válido para calcular Desregulado.' };
+      return { ok: false, error: 'Ingresá un aporte del recibo válido para calcular Desregulado.' };
     }
     return { ok: true };
   }
@@ -133,7 +133,7 @@ window.PremedicMotor = (() => {
 
     // Las promociones comerciales son excluyentes entre sí. Primero se aplica
     // la única promoción seleccionada y luego, en Desregulado, se descuenta
-    // el aporte ya calculado (que no es una promoción comercial).
+    // el aporte computable obtenido del recibo (que no es una promoción comercial).
     const promoResult = getPromotionResult(bruto, state, planName);
     const subtotalPromocionado = promoResult.subtotal;
     const aporteComp = state.modalidad === 'desregulado' ? aporteComputable(state.aporteRecibo) : 0;
