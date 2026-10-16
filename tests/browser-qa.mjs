@@ -59,7 +59,7 @@ await test('Desregulado mantiene aporte visible y PMO aparece primero con valor 
   await page.locator('#nombre').fill('PMO QA');
   await page.locator('#edadTitular').fill('29');
   await page.locator('#modalidad').selectOption('desregulado');
-  await page.locator('#aporteRecibo').fill('5882.36');
+  await page.locator('#aporteRecibo').fill('15000');
   await page.locator('#cotizarBtn').click();
   const first=page.locator('#resultados .plan-card').first();
   assert(await first.getAttribute('data-plan')==='PMO','PMO no quedó primero');
@@ -170,6 +170,38 @@ await test('Desregulados AMBA usa noviembre y conserva octubre al cambiar de tab
   await page.locator('#zona').selectOption('amba');
   await page.locator('#modalidad').selectOption('directo');
   assert((await page.locator('#vigenciaBadge').innerText()).includes('Octubre 2026'),'Directo heredó noviembre');
+  await page.close();
+});
+
+await test('Aporte familiar ya calculado no se multiplica y coincide con la propuesta',async()=>{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
+  await page.locator('#nombre').fill('Prueba aporte familiar');
+  await page.locator('#modalidad').selectOption('desregulado');
+  assert(await page.getByLabel('Aporte a descontar',{exact:true}).isVisible(),'falta etiqueta de aporte calculado');
+  await page.locator('#aporteRecibo').fill('84619.61');
+  await page.locator('#edadTitular').fill('36');
+  await page.locator('#composicion').selectOption('pareja_hijos');
+  await page.locator('#edadPareja').fill('36');
+  await page.locator('#cantidadHijos').fill('2');
+  await page.locator('#cantidadHijos').press('Tab');
+  await page.locator('#edadesHijos input').nth(0).fill('10');
+  await page.locator('#edadesHijos input').nth(1).fill('14');
+  const ages=await page.locator('#edadesHijos input').evaluateAll(inputs=>inputs.map(input=>input.value));
+  assert(JSON.stringify(ages)===JSON.stringify(['10','14']),`edades incompletas ${JSON.stringify(ages)}`);
+  await page.locator('#cotizarBtn').click();
+  assert(await page.locator('.plan-card[data-plan="300"]').count()===1,`cotización rechazada: ${await page.locator('#mensaje').innerText()}`);
+  const card=page.locator('.plan-card[data-plan="300"]');
+  const text=await card.innerText();
+  assert(text.includes('421.693'),'base familiar incorrecta');
+  assert(text.includes('84.619,61'),'aporte reconvertido o ausente');
+  assert(text.includes('337.073,39'),'neto familiar incorrecto');
+  assert(!text.includes('205.912,99'),'persiste la doble conversión');
+  await card.locator('.elegir-plan').click();
+  await page.locator('#verCotizacionBtn').click();
+  const preview=await page.locator('#previewContent').innerText();
+  assert(preview.includes('- $ 84.619,61'),'propuesta no descuenta el aporte exacto');
+  assert(preview.includes('$ 337.073,39'),'propuesta no coincide con pantalla');
   await page.close();
 });
 

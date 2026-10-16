@@ -209,7 +209,7 @@
   }
 
   function detailText(planResult) {
-    if (planResult.esPMO) return 'PMO · cubierto íntegramente con los aportes del recibo';
+    if (planResult.esPMO) return 'PMO · cubierto íntegramente con los aportes informados';
     const parts = [planResult.baseLabel];
     const inf = planResult.extras.filter(x => x.tipo === 'Menor de 1 año').length;
     const u25 = planResult.extras.filter(x => x.tipo === 'Menor de 25 años').length;
