@@ -115,7 +115,9 @@
     }
 
     function populatePromos(plan = selectedPlan) {
-      const disponibles = promoApi.promosDisponibles(modalidad.value, zona.value, plan);
+      const state = getCurrentState();
+      const edad = ['pareja', 'pareja_hijos'].includes(state.composicion) ? Math.max(state.edadTitular, state.edadPareja) : state.edadTitular;
+      const disponibles = promoApi.promosDisponibles(modalidad.value, zona.value, plan, undefined, edad);
       const previous = promoApi.state.promoId;
       promoSelect.innerHTML = '';
       disponibles.forEach(p => promoSelect.add(new Option(p.label, p.id)));
@@ -162,7 +164,11 @@
         const label = plan.promocion?.id === 'monotributo'
           ? `Aporte monotributo · Cat. ${promoApi.state.categoriaMonotributo}`
           : plan.promocion?.label || 'Beneficio';
-        row.innerHTML = `<span>${label}</span><strong>-${window.PremedicMotor.money(plan.descuentoPromocion)}</strong>`;
+        const description = document.createElement('span');
+        description.textContent = label;
+        const amount = document.createElement('strong');
+        amount.textContent = `-${window.PremedicMotor.money(plan.descuentoPromocion)}`;
+        row.replaceChildren(description, amount);
         breakdown.prepend(row);
       });
     }
@@ -178,6 +184,10 @@
       updateMonotributoUI();
       recalculateQuoteAfterBenefitChange();
     });
+
+    for (const id of ['edadTitular', 'edadPareja', 'composicion']) {
+      document.getElementById(id)?.addEventListener('change', () => populatePromos(selectedPlan));
+    }
 
     zona.addEventListener('change', () => {
       populatePromos();
@@ -215,7 +225,7 @@
   }
 
   const promoScript = document.createElement('script');
-  promoScript.src = 'js/promociones-premedic.js?v=20260902-1';
+  promoScript.src = 'js/promociones-premedic.js?v=20261016-control1';
   promoScript.onload = initPromociones;
   document.head.appendChild(promoScript);
 })();

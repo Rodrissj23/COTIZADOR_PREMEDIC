@@ -1,0 +1,846 @@
+{
+  "schema_version": 1,
+  "publication_version": 1,
+  "snapshot_hash": "9467292cdbe88dd53e33d398b113325c5e070e5d399447f49a64888ef484e396",
+  "effective_date": "2026-10-16",
+  "zones": [
+    "amba",
+    "cordoba",
+    "interior",
+    "mendoza",
+    "misiones",
+    "tucuman"
+  ],
+  "modes": [
+    "desregulado",
+    "directo"
+  ],
+  "promotions": [
+    {
+      "id": "control-2",
+      "codigo": "CBU15",
+      "label": "Débito en CBU · 15%",
+      "modalidades": [
+        "desregulado",
+        "directo"
+      ],
+      "zonas": [
+        "amba",
+        "cordoba",
+        "interior",
+        "mendoza",
+        "misiones",
+        "tucuman"
+      ],
+      "planes": [
+        "200",
+        "300",
+        "400",
+        "500"
+      ],
+      "tipo": "porcentaje",
+      "valor": 15.0,
+      "vigenteDesde": "2026-10-16",
+      "vigenteHasta": null,
+      "edadDesde": null,
+      "edadHasta": null,
+      "permanente": false,
+      "duracion": "ONE_PAYMENT",
+      "meses": null
+    },
+    {
+      "id": "control-3",
+      "codigo": "EFECTIVO10",
+      "label": "Efectivo / débito / transferencia · 10%",
+      "modalidades": [
+        "desregulado",
+        "directo"
+      ],
+      "zonas": [
+        "amba",
+        "cordoba",
+        "interior",
+        "mendoza",
+        "misiones",
+        "tucuman"
+      ],
+      "planes": [
+        "200",
+        "300",
+        "400",
+        "500"
+      ],
+      "tipo": "porcentaje",
+      "valor": 10.0,
+      "vigenteDesde": "2026-10-16",
+      "vigenteHasta": null,
+      "edadDesde": null,
+      "edadHasta": null,
+      "permanente": false,
+      "duracion": "ONE_PAYMENT",
+      "meses": null
+    },
+    {
+      "id": "control-5",
+      "codigo": "FLASH25",
+      "label": "🔥 FLASH25 — 25% permanente · Válido hasta el 21/10/2026",
+      "modalidades": [
+        "desregulado",
+        "directo"
+      ],
+      "zonas": [
+        "amba"
+      ],
+      "planes": [
+        "300",
+        "400",
+        "500"
+      ],
+      "tipo": "porcentaje",
+      "valor": 25.0,
+      "vigenteDesde": "2026-10-14",
+      "vigenteHasta": "2026-10-21",
+      "edadDesde": null,
+      "edadHasta": null,
+      "permanente": true,
+      "duracion": "PERMANENT",
+      "meses": null
+    },
+    {
+      "id": "control-6",
+      "codigo": "INTERIOR25",
+      "label": "Promo 25% Interior Nuevo",
+      "modalidades": [
+        "desregulado",
+        "directo"
+      ],
+      "zonas": [
+        "mendoza",
+        "misiones",
+        "tucuman"
+      ],
+      "planes": [
+        "200",
+        "300",
+        "400",
+        "500",
+        "C-100"
+      ],
+      "tipo": "porcentaje",
+      "valor": 25.0,
+      "vigenteDesde": "2026-10-16",
+      "vigenteHasta": null,
+      "edadDesde": null,
+      "edadHasta": null,
+      "permanente": false,
+      "duracion": "ONE_PAYMENT",
+      "meses": null
+    },
+    {
+      "id": "control-4",
+      "codigo": "PROMO40",
+      "label": "Promo 40% AMBA / Córdoba",
+      "modalidades": [
+        "desregulado",
+        "directo"
+      ],
+      "zonas": [
+        "amba",
+        "cordoba"
+      ],
+      "planes": [
+        "200",
+        "300",
+        "400",
+        "500"
+      ],
+      "tipo": "porcentaje",
+      "valor": 40.0,
+      "vigenteDesde": "2026-10-16",
+      "vigenteHasta": null,
+      "edadDesde": null,
+      "edadHasta": null,
+      "permanente": false,
+      "duracion": "ONE_PAYMENT",
+      "meses": null
+    },
+    {
+      "id": "control-1",
+      "codigo": "TC15",
+      "label": "Débito automático en TC · 15%",
+      "modalidades": [
+        "desregulado",
+        "directo"
+      ],
+      "zonas": [
+        "amba",
+        "cordoba",
+        "interior",
+        "mendoza",
+        "misiones",
+        "tucuman"
+      ],
+      "planes": [
+        "200",
+        "300",
+        "400",
+        "500"
+      ],
+      "tipo": "porcentaje",
+      "valor": 15.0,
+      "vigenteDesde": "2026-10-16",
+      "vigenteHasta": null,
+      "edadDesde": null,
+      "edadHasta": null,
+      "permanente": false,
+      "duracion": "ONE_PAYMENT",
+      "meses": null
+    }
+  ],
+  "data": {
+    "vigencia": "Premedic · base del cotizador · 16/10/2026",
+    "vigencias": {
+      "directo": {
+        "amba": "Octubre 2026",
+        "interior": "Octubre 2026"
+      },
+      "desregulado": {
+        "amba": "Noviembre 2026",
+        "interior": "Octubre 2026"
+      }
+    },
+    "edadMaxima": 59,
+    "tramos": [
+      "1 a 29 años",
+      "30 a 39 años",
+      "40 a 49 años",
+      "50 a 59 años"
+    ],
+    "tarifas": {
+      "directo": {
+        "amba": {
+          "200": {
+            "adicionalMenor1": 191828.0,
+            "adicionalMenor25": 61776.0,
+            "individual": [
+              92390.0,
+              115982.0,
+              129220.0,
+              152379.0
+            ],
+            "matrimonio": [
+              187085.0,
+              214517.0,
+              243895.0,
+              287640.0
+            ],
+            "matrimonio1": [
+              230208.0,
+              262358.0,
+              296814.0,
+              349061.0
+            ],
+            "matrimonio2": [
+              272672.0,
+              312503.0,
+              344922.0,
+              402539.0
+            ],
+            "matrimonio3": [
+              307785.0,
+              353431.0,
+              383632.0,
+              438900.0
+            ]
+          },
+          "300": {
+            "adicionalMenor1": 215556.0,
+            "adicionalMenor25": 86904.0,
+            "individual": [
+              134964.0,
+              182367.0,
+              203955.0,
+              250944.0
+            ],
+            "matrimonio": [
+              278926.0,
+              314039.0,
+              368752.0,
+              466086.0
+            ],
+            "matrimonio1": [
+              317111.0,
+              383716.0,
+              445613.0,
+              557379.0
+            ],
+            "matrimonio2": [
+              374938.0,
+              454161.0,
+              508377.0,
+              621262.0
+            ],
+            "matrimonio3": [
+              407746.0,
+              494979.0,
+              556484.0,
+              678320.0
+            ]
+          },
+          "400": {
+            "adicionalMenor1": 258643.0,
+            "adicionalMenor25": 96670.0,
+            "individual": [
+              156581.0,
+              213200.0,
+              234498.0,
+              282605.0
+            ],
+            "matrimonio": [
+              315246.0,
+              367147.0,
+              423684.0,
+              526389.0
+            ],
+            "matrimonio1": [
+              384813.0,
+              448455.0,
+              512180.0,
+              628758.0
+            ],
+            "matrimonio2": [
+              435836.0,
+              532177.0,
+              584007.0,
+              701255.0
+            ],
+            "matrimonio3": [
+              473912.0,
+              579250.0,
+              608844.0,
+              765809.0
+            ]
+          },
+          "500": {
+            "adicionalMenor1": 374164.0,
+            "adicionalMenor25": 183244.0,
+            "individual": [
+              222417.0,
+              302737.0,
+              332951.0,
+              429502.0
+            ],
+            "matrimonio": [
+              447687.0,
+              521314.0,
+              643974.0,
+              816378.0
+            ],
+            "matrimonio1": [
+              596257.0,
+              652218.0,
+              794003.0,
+              1026487.0
+            ],
+            "matrimonio2": [
+              675590.0,
+              825038.0,
+              905322.0,
+              1086789.0
+            ],
+            "matrimonio3": [
+              734513.0,
+              897897.0,
+              943696.0,
+              1187144.0
+            ]
+          },
+          "C-100": {
+            "adicionalMenor1": 191828.0,
+            "adicionalMenor25": 45537.0,
+            "individual": [
+              68689.0,
+              92939.0,
+              103152.0,
+              120158.0
+            ],
+            "matrimonio": [
+              138805.0,
+              171284.0,
+              194781.0,
+              227114.0
+            ],
+            "matrimonio1": [
+              171723.0,
+              209140.0,
+              236400.0,
+              274886.0
+            ],
+            "matrimonio2": [
+              202995.0,
+              248642.0,
+              274326.0,
+              317064.0
+            ],
+            "matrimonio3": [
+              228232.0,
+              280901.0,
+              305652.0,
+              347048.0
+            ]
+          }
+        },
+        "interior": {
+          "200": {
+            "adicionalMenor1": 191828.0,
+            "adicionalMenor25": 61776.0,
+            "individual": [
+              92390.0,
+              115982.0,
+              129220.0,
+              152379.0
+            ],
+            "matrimonio": [
+              187085.0,
+              214517.0,
+              243895.0,
+              287640.0
+            ],
+            "matrimonio1": [
+              230208.0,
+              262358.0,
+              296814.0,
+              349061.0
+            ],
+            "matrimonio2": [
+              272672.0,
+              312503.0,
+              344922.0,
+              402539.0
+            ],
+            "matrimonio3": [
+              307785.0,
+              353431.0,
+              383632.0,
+              438900.0
+            ]
+          },
+          "300": {
+            "adicionalMenor1": 215556.0,
+            "adicionalMenor25": 86904.0,
+            "individual": [
+              134964.0,
+              182367.0,
+              203955.0,
+              250944.0
+            ],
+            "matrimonio": [
+              278926.0,
+              314039.0,
+              368752.0,
+              466086.0
+            ],
+            "matrimonio1": [
+              317111.0,
+              383716.0,
+              445613.0,
+              557379.0
+            ],
+            "matrimonio2": [
+              374938.0,
+              454161.0,
+              508377.0,
+              621262.0
+            ],
+            "matrimonio3": [
+              407746.0,
+              494979.0,
+              556484.0,
+              678320.0
+            ]
+          },
+          "400": {
+            "adicionalMenor1": 258643.0,
+            "adicionalMenor25": 96670.0,
+            "individual": [
+              156581.0,
+              213200.0,
+              234498.0,
+              282605.0
+            ],
+            "matrimonio": [
+              315246.0,
+              367147.0,
+              423684.0,
+              526389.0
+            ],
+            "matrimonio1": [
+              384813.0,
+              448455.0,
+              512180.0,
+              628758.0
+            ],
+            "matrimonio2": [
+              435836.0,
+              532177.0,
+              584007.0,
+              701255.0
+            ],
+            "matrimonio3": [
+              473912.0,
+              579250.0,
+              608844.0,
+              765809.0
+            ]
+          },
+          "500": {
+            "adicionalMenor1": 374164.0,
+            "adicionalMenor25": 183244.0,
+            "individual": [
+              222417.0,
+              302737.0,
+              332951.0,
+              429502.0
+            ],
+            "matrimonio": [
+              447687.0,
+              521314.0,
+              643974.0,
+              816378.0
+            ],
+            "matrimonio1": [
+              596257.0,
+              652218.0,
+              794003.0,
+              1026487.0
+            ],
+            "matrimonio2": [
+              675590.0,
+              825038.0,
+              905322.0,
+              1086789.0
+            ],
+            "matrimonio3": [
+              734513.0,
+              897897.0,
+              943696.0,
+              1187144.0
+            ]
+          }
+        }
+      },
+      "desregulado": {
+        "amba": {
+          "200": {
+            "adicionalMenor1": 178114.0,
+            "adicionalMenor25": 57360.0,
+            "individual": [
+              85785.0,
+              107690.0,
+              119982.0,
+              141485.0
+            ],
+            "matrimonio": [
+              173710.0,
+              199181.0,
+              226460.0,
+              267077.0
+            ],
+            "matrimonio1": [
+              213750.0,
+              243602.0,
+              275595.0,
+              324107.0
+            ],
+            "matrimonio2": [
+              253179.0,
+              290162.0,
+              320264.0,
+              373762.0
+            ],
+            "matrimonio3": [
+              285781.0,
+              328165.0,
+              356207.0,
+              407524.0
+            ]
+          },
+          "300": {
+            "adicionalMenor1": 200146.0,
+            "adicionalMenor25": 80691.0,
+            "individual": [
+              125316.0,
+              169329.0,
+              189374.0,
+              233004.0
+            ],
+            "matrimonio": [
+              258986.0,
+              291589.0,
+              342390.0,
+              432766.0
+            ],
+            "matrimonio1": [
+              294442.0,
+              356284.0,
+              413756.0,
+              517533.0
+            ],
+            "matrimonio2": [
+              348134.0,
+              421693.0,
+              472033.0,
+              576849.0
+            ],
+            "matrimonio3": [
+              378597.0,
+              459594.0,
+              516702.0,
+              629828.0
+            ]
+          },
+          "400": {
+            "adicionalMenor1": 240153.0,
+            "adicionalMenor25": 89759.0,
+            "individual": [
+              145387.0,
+              197958.0,
+              217734.0,
+              262402.0
+            ],
+            "matrimonio": [
+              292710.0,
+              340900.0,
+              393396.0,
+              488758.0
+            ],
+            "matrimonio1": [
+              357303.0,
+              416395.0,
+              475565.0,
+              583809.0
+            ],
+            "matrimonio2": [
+              404679.0,
+              494132.0,
+              542257.0,
+              651123.0
+            ],
+            "matrimonio3": [
+              440032.0,
+              537840.0,
+              565318.0,
+              711063.0
+            ]
+          },
+          "500": {
+            "adicionalMenor1": 347415.0,
+            "adicionalMenor25": 170144.0,
+            "individual": [
+              206517.0,
+              281095.0,
+              309149.0,
+              398798.0
+            ],
+            "matrimonio": [
+              415682.0,
+              484046.0,
+              597937.0,
+              758017.0
+            ],
+            "matrimonio1": [
+              553632.0,
+              605592.0,
+              737240.0,
+              953104.0
+            ],
+            "matrimonio2": [
+              627293.0,
+              766057.0,
+              840602.0,
+              1009096.0
+            ],
+            "matrimonio3": [
+              682004.0,
+              833708.0,
+              876233.0,
+              1102277.0
+            ]
+          },
+          "C-100": {
+            "adicionalMenor1": 178114.0,
+            "adicionalMenor25": 42281.0,
+            "individual": [
+              63779.0,
+              86295.0,
+              95778.0,
+              111568.0
+            ],
+            "matrimonio": [
+              128882.0,
+              159039.0,
+              180856.0,
+              210878.0
+            ],
+            "matrimonio1": [
+              159447.0,
+              194189.0,
+              219500.0,
+              255235.0
+            ],
+            "matrimonio2": [
+              188483.0,
+              230867.0,
+              254715.0,
+              294398.0
+            ],
+            "matrimonio3": [
+              211916.0,
+              260820.0,
+              283802.0,
+              322238.0
+            ]
+          }
+        },
+        "interior": {
+          "200": {
+            "adicionalMenor1": 173600.0,
+            "adicionalMenor25": 55906.0,
+            "individual": [
+              83611.0,
+              104961.0,
+              116941.0,
+              137899.0
+            ],
+            "matrimonio": [
+              169307.0,
+              194133.0,
+              220720.0,
+              260308.0
+            ],
+            "matrimonio1": [
+              208333.0,
+              237428.0,
+              268610.0,
+              315893.0
+            ],
+            "matrimonio2": [
+              246762.0,
+              282808.0,
+              312146.0,
+              364289.0
+            ],
+            "matrimonio3": [
+              278538.0,
+              319847.0,
+              347178.0,
+              397195.0
+            ]
+          },
+          "300": {
+            "adicionalMenor1": 195074.0,
+            "adicionalMenor25": 78646.0,
+            "individual": [
+              122140.0,
+              165038.0,
+              184574.0,
+              227098.0
+            ],
+            "matrimonio": [
+              252422.0,
+              284198.0,
+              333712.0,
+              421798.0
+            ],
+            "matrimonio1": [
+              286979.0,
+              347254.0,
+              403269.0,
+              504416.0
+            ],
+            "matrimonio2": [
+              339310.0,
+              411005.0,
+              460069.0,
+              562228.0
+            ],
+            "matrimonio3": [
+              369001.0,
+              447945.0,
+              503606.0,
+              613864.0
+            ]
+          },
+          "400": {
+            "adicionalMenor1": 234066.0,
+            "adicionalMenor25": 87484.0,
+            "individual": [
+              141702.0,
+              192941.0,
+              212215.0,
+              255752.0
+            ],
+            "matrimonio": [
+              285291.0,
+              332260.0,
+              383425.0,
+              476370.0
+            ],
+            "matrimonio1": [
+              348247.0,
+              405841.0,
+              463512.0,
+              569012.0
+            ],
+            "matrimonio2": [
+              394422.0,
+              481608.0,
+              528513.0,
+              634620.0
+            ],
+            "matrimonio3": [
+              428879.0,
+              524208.0,
+              550990.0,
+              693040.0
+            ]
+          },
+          "500": {
+            "adicionalMenor1": 338610.0,
+            "adicionalMenor25": 165832.0,
+            "individual": [
+              201282.0,
+              273970.0,
+              301313.0,
+              388690.0
+            ],
+            "matrimonio": [
+              405146.0,
+              471777.0,
+              582781.0,
+              738804.0
+            ],
+            "matrimonio1": [
+              539599.0,
+              590243.0,
+              718555.0,
+              928947.0
+            ],
+            "matrimonio2": [
+              611394.0,
+              746641.0,
+              819296.0,
+              983520.0
+            ],
+            "matrimonio3": [
+              664718.0,
+              812577.0,
+              854024.0,
+              1074339.0
+            ]
+          }
+        }
+      }
+    }
+  }
+}

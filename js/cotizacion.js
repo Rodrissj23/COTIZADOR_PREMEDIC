@@ -56,7 +56,9 @@ window.PremedicQuote = (() => {
 
   function promotionDetail(selected, result) {
     if (!selected.descuentoPromocion) return { label: 'Descuento promocional', value: money(0), note: '' };
-    const promo = selected.promocion || {};
+    const original = selected.promocion || {};
+    const duration = original.permanente ? ' · Permanente' : original.duracion === 'MONTHS' ? ` · ${original.meses} meses` : original.duracion === 'ONE_PAYMENT' ? ' · Un pago' : '';
+    const promo = {...original, label:(original.label || '') + duration};
     if (promo.id === 'flash25') {
       return {
         label: 'Campaña aplicada',
