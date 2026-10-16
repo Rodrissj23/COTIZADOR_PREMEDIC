@@ -148,6 +148,31 @@ await test('Mobile 390px no tiene overflow horizontal',async()=>{
   await page.close();
 });
 
+await test('Desregulados AMBA usa noviembre y conserva octubre al cambiar de tabla',async()=>{
+  const page=await browser.newPage({viewport:{width:1440,height:1000}});
+  await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
+  await page.locator('#nombre').fill('QA Noviembre');
+  await page.locator('#edadTitular').fill('35');
+  await page.locator('#modalidad').selectOption('desregulado');
+  await page.locator('#aporteRecibo').fill('0');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'badge no muestra noviembre');
+  await page.locator('#cotizarBtn').click();
+  const card=page.locator('.plan-card[data-plan="200"]');
+  assert((await card.innerText()).includes('107.690'),'Plan 200 no muestra precio de noviembre');
+  await card.locator('.elegir-plan').click();
+  await page.locator('#verCotizacionBtn').click();
+  assert((await page.locator('#previewContent').innerText()).includes('tarifario Noviembre 2026'),'propuesta no muestra noviembre');
+  await page.locator('#cerrarPreviewBtn').click();
+  await page.locator('#zona').selectOption('interior');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Octubre 2026'),'Interior heredó noviembre');
+  await page.locator('#cotizarBtn').click();
+  assert((await page.locator('.plan-card[data-plan="200"]').innerText()).includes('104.961'),'Interior perdió precio de octubre');
+  await page.locator('#zona').selectOption('amba');
+  await page.locator('#modalidad').selectOption('directo');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Octubre 2026'),'Directo heredó noviembre');
+  await page.close();
+});
+
 await browser.close();
 console.log(`\nResultado navegador: ${passed} PASS, ${failures.length} FAIL`);
 if(failures.length){console.error('\nFallos:');failures.forEach(f=>console.error(`- ${f}`));process.exit(1)}

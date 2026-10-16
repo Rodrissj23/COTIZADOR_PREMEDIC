@@ -24,6 +24,7 @@ jobs:
         run: |
           node tests/qa.mjs
           node tests/tariff-structure.mjs
+          node tests/noviembre-amba.mjs
           node tests/formal-quote.mjs
           node tests/promociones-qa.mjs
           node tests/coverage-assets-qa.mjs
