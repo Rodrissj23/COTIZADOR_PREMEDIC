@@ -1,5 +1,5 @@
 (() => {
-  const { data, money, quote } = window.PremedicMotor;
+  const { data, money, quote, vigenciaPara } = window.PremedicMotor;
   const { renderQuote, makeId } = window.PremedicQuote;
 
   const $ = id => document.getElementById(id);
@@ -78,6 +78,7 @@
 
   function renderLiveSummary() {
     const state = getState();
+    els.vigenciaBadge.textContent = `Vigencia ${vigenciaPara(state)}`;
     const hasData = Boolean(
       state.nombre.trim() || state.dni.trim() || state.edadTitular !== null ||
       state.modalidad !== 'directo' || state.zona !== 'amba' || state.composicion !== 'individual'

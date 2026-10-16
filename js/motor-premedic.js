@@ -2,6 +2,11 @@ window.PremedicMotor = (() => {
   const data = window.PREMEDIC_DATA;
   const PMO_MINIMO_POR_PERSONA = 15000;
 
+  function vigenciaPara(state) {
+    const zone = window.PremedicPromos?.pricingZone(state.zona) || (state.zona === 'amba' ? 'amba' : 'interior');
+    return data.vigencias?.[state.modalidad]?.[zone] || data.vigencia;
+  }
+
   function money(value) {
     return '$ ' + Number(value).toLocaleString('es-AR', { maximumFractionDigits: 2, minimumFractionDigits: Number(value) % 1 === 0 ? 0 : 2 });
   }
@@ -194,6 +199,7 @@ window.PremedicMotor = (() => {
 
     return {
       ok: true,
+      vigencia: vigenciaPara(state),
       refAge,
       band,
       bandLabel: data.tramos[band],
@@ -210,5 +216,5 @@ window.PremedicMotor = (() => {
     };
   }
 
-  return { data, money, quote, buildCaseLabel, aporteComputable };
+  return { data, vigenciaPara, money, quote, buildCaseLabel, aporteComputable };
 })();

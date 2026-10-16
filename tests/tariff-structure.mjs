@@ -70,8 +70,8 @@ ok('La progresión comercial C-100 → 200 → 300 → 400 → 500 no retrocede'
   }
 });
 
-ok('AMBA e Interior coinciden exactamente en 200-500',()=>{
-  for(const mode of ['directo','desregulado']) for(const name of plans){
+ok('Directo AMBA e Interior coinciden en 200-500',()=>{
+  for(const mode of ['directo']) for(const name of plans){
     assert(JSON.stringify(data.tarifas[mode].amba[name])===JSON.stringify(data.tarifas[mode].interior[name]),`${mode}/${name} difiere`);
   }
 });

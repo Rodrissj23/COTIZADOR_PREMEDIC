@@ -3,9 +3,11 @@
 Cotizador comercial web de Premedic en HTML, CSS y JavaScript.
 
 ## Estado
-Versión funcional auditada para Octubre 2026.
+Desregulados AMBA actualizado a noviembre 2026. Directos AMBA/Interior y Desregulados Interior conservan octubre 2026.
 
 > Tarifas de octubre de 2026 verificadas contra las nóminas oficiales de Directos y Desregulados para AMBA e Interior. La lógica comercial, navegación, PMO, aportes, responsive, autenticación y generación de PDF cuentan con QA automático.
+
+Actualización del 16/10/2026: 110 importes de Desregulados AMBA contrastados con la nómina de noviembre. Las promociones se conservan por indicación de Rodri, aunque la nómina contiene una nota de suspensión de bonificaciones.
 
 ## Reglas incluidas
 - Planes: C-100, 200, 300, 400, 500 y PMO.
@@ -54,7 +56,7 @@ El workflow `Premedic QA` verifica en cada cambio a `main`:
 ## Actualización mensual
 Para un cambio de vigencia:
 1. reemplazar los valores de `js/precios-premedic.js` contra la lista oficial;
-2. actualizar `vigencia`;
+2. actualizar `vigencias[modalidad][zona]` (o `vigencia` cuando todas las tablas compartan mes);
 3. revisar beneficios sólo si cambió la documentación oficial;
 4. abrir un PR y esperar que `Premedic QA` quede en verde;
 5. revisar los artefactos visuales antes de publicar.

@@ -93,10 +93,10 @@ function close(actual, expected, label) {
 // 4) Desregulado + TC 15% + aporte de recibo de $30.000.
 {
   const p = plan(quote({ modalidad:'desregulado', zona:'amba', promo:'tc15', aporteRecibo:30000 }), '200');
-  assert.equal(p.bruto, 104961);
-  close(p.descuentoPromocion, 15744.15, 'TC 15% Desregulado');
+  assert.equal(p.bruto, 107690);
+  close(p.descuentoPromocion, 16153.50, 'TC 15% Desregulado');
   close(p.aporteComputable, 76500, 'Aporte computable');
-  close(p.neto, 12716.85, 'Neto Desregulado TC15 + aporte');
+  close(p.neto, 15036.50, 'Neto Desregulado TC15 + aporte');
 }
 
 // Filtros de zona / segmento y exclusividad.

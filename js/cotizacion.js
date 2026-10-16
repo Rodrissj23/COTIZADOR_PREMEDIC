@@ -111,7 +111,7 @@ window.PremedicQuote = (() => {
             <div><span>GRUPO FAMILIAR</span><strong>${esc(familyLabel(state))}</strong></div>
             <div><span>ZONA · SEGMENTO</span><strong>${esc(zoneLabel(state.zona))} · ${esc(modeLabel(state, selected))}</strong></div>
           </div>
-          <div class="premedic-cover-footer"><span>Grupo Zeroka · Vigencia ${esc(window.PremedicMotor.data.vigencia)}</span><b>${esc(quoteId)}</b></div>
+          <div class="premedic-cover-footer"><span>Grupo Zeroka · Vigencia ${esc(window.PremedicMotor.vigenciaPara(state))}</span><b>${esc(quoteId)}</b></div>
         </div>
       </section>`;
   }
@@ -140,7 +140,7 @@ window.PremedicQuote = (() => {
           <div class="premedic-summary-total"><b>TOTAL</b><strong>${money(selected.neto)}</strong></div>
           <div class="premedic-summary-legal">
             <p>*Los datos exhibidos en este reporte son una aproximación de los valores finales y pueden variar por ajustes de precios o por la fidelidad de los datos brindados al cotizador.</p>
-            <p>*Precios correspondientes al tarifario ${esc(window.PremedicMotor.data.vigencia)} · propuesta válida por 72 hs hábiles.</p>
+            <p>*Precios correspondientes al tarifario ${esc(window.PremedicMotor.vigenciaPara(state))} · propuesta válida por 72 hs hábiles.</p>
           </div>
           <div class="premedic-summary-logo"><img src="assets/premedic-logo-oficial.svg" alt="Premedic"><b>${esc(quoteId)}</b></div>
         </div>

@@ -194,7 +194,7 @@
             <div class="quote-brand-story-art" aria-hidden="true"><span></span><i></i></div>
           </section>
           <section class="quote-conditions quote-conditions-final">
-            <div><span>Tarifa aplicada</span><strong>Vigencia ${esc(window.PremedicMotor.data.vigencia)}</strong></div>
+            <div><span>Tarifa aplicada</span><strong>Vigencia ${esc(window.PremedicMotor.vigenciaPara(state))}</strong></div>
             <p>La opción PMO se habilita por el nivel de aportes informado. Prestaciones, prestadores y condiciones de afiliación se rigen por la documentación oficial vigente de Premedic.</p>
           </section>
         </section>

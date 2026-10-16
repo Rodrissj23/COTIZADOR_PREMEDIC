@@ -46,8 +46,8 @@ await test('Hay cinco planes tarifados y C-100 solo AMBA', async()=>{
   assert(!('C-100' in data.tarifas.desregulado.interior),'C-100 aparece en Desregulado Interior');
 });
 
-await test('Planes 200-500 mantienen misma tabla AMBA/Interior por modalidad', async()=>{
-  for (const mode of ['directo','desregulado']) for (const plan of ['200','300','400','500']) {
+await test('Directo conserva la misma tabla AMBA/Interior de octubre', async()=>{
+  for (const mode of ['directo']) for (const plan of ['200','300','400','500']) {
     assert(JSON.stringify(data.tarifas[mode].amba[plan])===JSON.stringify(data.tarifas[mode].interior[plan]),`${mode} ${plan} difiere`);
   }
 });
