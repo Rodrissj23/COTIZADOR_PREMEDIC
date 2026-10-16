@@ -184,9 +184,13 @@ await test('Aporte familiar ya calculado no se multiplica y coincide con la prop
   await page.locator('#composicion').selectOption('pareja_hijos');
   await page.locator('#edadPareja').fill('36');
   await page.locator('#cantidadHijos').fill('2');
+  await page.locator('#cantidadHijos').press('Tab');
   await page.locator('#edadesHijos input').nth(0).fill('10');
   await page.locator('#edadesHijos input').nth(1).fill('14');
+  const ages=await page.locator('#edadesHijos input').evaluateAll(inputs=>inputs.map(input=>input.value));
+  assert(JSON.stringify(ages)===JSON.stringify(['10','14']),`edades incompletas ${JSON.stringify(ages)}`);
   await page.locator('#cotizarBtn').click();
+  assert(await page.locator('.plan-card[data-plan="300"]').count()===1,`cotización rechazada: ${await page.locator('#mensaje').innerText()}`);
   const card=page.locator('.plan-card[data-plan="300"]');
   const text=await card.innerText();
   assert(text.includes('421.693'),'base familiar incorrecta');
