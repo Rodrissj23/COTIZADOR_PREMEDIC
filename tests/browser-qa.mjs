@@ -59,7 +59,7 @@ await test('Desregulado mantiene aporte visible y PMO aparece primero con valor 
   await page.locator('#nombre').fill('PMO QA');
   await page.locator('#edadTitular').fill('29');
   await page.locator('#modalidad').selectOption('desregulado');
-  await page.locator('#aporteRecibo').fill('15000');
+  await page.locator('#aporteRecibo').fill('6437.77');
   await page.locator('#cotizarBtn').click();
   const first=page.locator('#resultados .plan-card').first();
   assert(await first.getAttribute('data-plan')==='PMO','PMO no quedó primero');
@@ -173,12 +173,12 @@ await test('Desregulados AMBA usa noviembre y conserva octubre al cambiar de tab
   await page.close();
 });
 
-await test('Aporte familiar ya calculado no se multiplica y coincide con la propuesta',async()=>{
+await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la propuesta',async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
   await page.locator('#nombre').fill('Prueba aporte familiar');
   await page.locator('#modalidad').selectOption('desregulado');
-  assert(await page.getByLabel('Aporte a descontar',{exact:true}).isVisible(),'falta etiqueta de aporte calculado');
+  assert(await page.getByLabel('Aporte del recibo',{exact:true}).isVisible(),'falta etiqueta del importe del recibo');
   await page.locator('#aporteRecibo').fill('84619.61');
   await page.locator('#edadTitular').fill('36');
   await page.locator('#composicion').selectOption('pareja_hijos');
@@ -194,14 +194,17 @@ await test('Aporte familiar ya calculado no se multiplica y coincide con la prop
   const card=page.locator('.plan-card[data-plan="300"]');
   const text=await card.innerText();
   assert(text.includes('421.693'),'base familiar incorrecta');
-  assert(text.includes('84.619,61'),'aporte reconvertido o ausente');
-  assert(text.includes('337.073,39'),'neto familiar incorrecto');
-  assert(!text.includes('205.912,99'),'persiste la doble conversión');
+  assert(text.includes('197.163,69'),'aporte computable incorrecto');
+  assert(text.includes('224.529,31'),'neto familiar incorrecto');
+  assert(!text.includes('205.912,99'),'persiste el factor anterior de 2,55');
+  assert(!text.includes('337.073,39'),'se descontó el importe del recibo sin convertirlo');
+  assert((await page.locator('#sumAporteRecibo').innerText()).includes('84.619,61'),'resumen no conserva el importe ingresado');
+  assert((await page.locator('#sumAporteCalculado').innerText()).includes('197.163,69'),'resumen no diferencia el aporte calculado');
   await card.locator('.elegir-plan').click();
   await page.locator('#verCotizacionBtn').click();
   const preview=await page.locator('#previewContent').innerText();
-  assert(preview.includes('- $ 84.619,61'),'propuesta no descuenta el aporte exacto');
-  assert(preview.includes('$ 337.073,39'),'propuesta no coincide con pantalla');
+  assert(preview.includes('- $ 197.163,69'),'propuesta no descuenta el aporte exacto');
+  assert(preview.includes('$ 224.529,31'),'propuesta no coincide con pantalla');
   await page.close();
 });
 

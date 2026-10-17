@@ -90,13 +90,13 @@ function close(actual, expected, label) {
   assert.equal(c100.descuentoPromocion, 0, 'Monotributo no debe aplicarse a C-100');
 }
 
-// 4) Desregulado + TC 15% + aporte ya calculado de $30.000.
+// 4) Desregulado + TC 15% + aporte del recibo de $30.000.
 {
   const p = plan(quote({ modalidad:'desregulado', zona:'amba', promo:'tc15', aporteRecibo:30000 }), '200');
   assert.equal(p.bruto, 107690);
   close(p.descuentoPromocion, 16153.50, 'TC 15% Desregulado');
-  close(p.aporteComputable, 30000, 'Aporte computable');
-  close(p.neto, 61536.50, 'Neto Desregulado TC15 + aporte');
+  close(p.aporteComputable, 69900, 'Aporte computable');
+  close(p.neto, 21636.50, 'Neto Desregulado TC15 + aporte');
 }
 
 // Filtros de zona / segmento y exclusividad.

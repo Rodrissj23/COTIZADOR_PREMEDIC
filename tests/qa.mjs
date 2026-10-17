@@ -97,20 +97,20 @@ await test('Hijo de 24 años entra y de 25 queda fuera', async()=>{
   assert(!motor.quote(state({composicion:'titular_hijos',hijos:[25]})).ok,'25 aceptado');
 });
 
-await test('Aporte ya calculado se descuenta directamente sin reconversión', async()=>{
-  near(motor.aporteComputable(30000),30000,0.001);
-  near(motor.aporteComputable(1000000),1000000,0.001);
+await test('Aporte del recibo se multiplica por 2,33 y se redondea a centavos', async()=>{
+  near(motor.aporteComputable(30000),69900,0.001);
+  near(motor.aporteComputable(1000000),2330000,0.001);
 });
 
-await test('Caso familiar de aporte $84.619,61 conserva importe y devuelve $337.073,39', async()=>{
+await test('Caso familiar convierte recibo $84.619,61 a aporte $197.163,69 y neto $224.529,31', async()=>{
   const r=motor.quote(state({modalidad:'desregulado',edadTitular:36,edadPareja:36,composicion:'pareja_hijos',hijos:[10,14],aporteRecibo:84619.61}));
   assert(r.ok,r.error);
   const p=r.plans.find(p=>p.plan==='300');
-  eq(p.base,421693); near(p.aporteComputable,84619.61); near(p.neto,337073.39);
-  near(r.aporteComputable,84619.61); near(r.aportePorPersona,21154.9025);
+  eq(p.base,421693); near(p.aporteComputable,197163.69); near(p.neto,224529.31);
+  near(r.aporteRecibo,84619.61); near(r.aporteComputable,197163.69); near(r.aportePorPersona,49290.9225);
   const html=formal.renderQuote({state:state({modalidad:'desregulado',edadTitular:36,edadPareja:36,composicion:'pareja_hijos',hijos:[10,14],aporteRecibo:84619.61}),result:r,selectedPlan:'300',quoteId:'QA-APORTE'});
-  assert(html.includes('- $ 84.619,61'),'aporte exacto ausente en propuesta');
-  assert(html.includes('$ 337.073,39'),'total familiar ausente en propuesta');
+  assert(html.includes('- $ 197.163,69'),'aporte exacto ausente en propuesta');
+  assert(html.includes('$ 224.529,31'),'total familiar ausente en propuesta');
 });
 
 await test('Desregulado acepta cero y rechaza aportes vacíos, negativos o no finitos',async()=>{
@@ -133,17 +133,17 @@ await test('Directo no usa aporte monetario', async()=>{
 });
 
 await test('PMO solo aparece en Desregulado con aporte por persona >= $15.000', async()=>{
-  const below=motor.quote(state({modalidad:'desregulado',aporteRecibo:14999.99}));
+  const below=motor.quote(state({modalidad:'desregulado',aporteRecibo:6437.76}));
   assert(below.ok,below.error); assert(!below.plans.some(p=>p.esPMO),'PMO apareció por debajo');
-  const atOrAbove=motor.quote(state({modalidad:'desregulado',aporteRecibo:15000}));
+  const atOrAbove=motor.quote(state({modalidad:'desregulado',aporteRecibo:6437.77}));
   assert(atOrAbove.ok,atOrAbove.error); const pmo=atOrAbove.plans.find(p=>p.esPMO); assert(pmo,'PMO no apareció'); eq(pmo.neto,0); eq(pmo.plan,'PMO');
   assert(!motor.quote(state({modalidad:'directo',aporteRecibo:999999})).plans.some(p=>p.esPMO),'PMO apareció en Directo');
 });
 
 await test('Umbral PMO considera todos los integrantes', async()=>{
-  const twoBelow=motor.quote(state({modalidad:'desregulado',composicion:'pareja',edadPareja:29,aporteRecibo:29999.99}));
+  const twoBelow=motor.quote(state({modalidad:'desregulado',composicion:'pareja',edadPareja:29,aporteRecibo:12875.53}));
   assert(!twoBelow.pmoDisponible,'PMO habilitado debajo del umbral familiar');
-  const twoOk=motor.quote(state({modalidad:'desregulado',composicion:'pareja',edadPareja:29,aporteRecibo:30000}));
+  const twoOk=motor.quote(state({modalidad:'desregulado',composicion:'pareja',edadPareja:29,aporteRecibo:12875.54}));
   assert(twoOk.pmoDisponible,'PMO no habilitado al superar umbral familiar'); eq(twoOk.cantidadPersonas,2);
 });
 

@@ -48,7 +48,7 @@
     const items = [
       ['Elegibilidad por aportes', 'La opción PMO se habilita cuando el aporte computable por persona alcanza $ 15.000.'],
       ['Valor a abonar', 'Con la condición de aportes cumplida, el cotizador informa un valor mensual a abonar de $ 0.'],
-      ['Aporte del titular', 'El cálculo utiliza el aporte ya calculado informado para el titular.'],
+      ['Aporte del titular', 'El cálculo utiliza el aporte de obra social del recibo del titular multiplicado por 2,33.'],
       ['Sin tope adicional', 'La fórmula de aportes de Premedic se aplica sin un tope adicional de base dentro de este cotizador.'],
       ['Alcance de cobertura', 'Las prestaciones, prestadores, autorizaciones y condiciones se rigen por la documentación oficial vigente de Premedic.'],
       ['Confirmación comercial', 'La afiliación y el alcance definitivo quedan sujetos a validación de datos y condiciones de contratación.']
