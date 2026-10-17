@@ -178,7 +178,7 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
   await page.locator('#nombre').fill('Prueba aporte familiar');
   await page.locator('#modalidad').selectOption('desregulado');
-  assert(await page.getByLabel('Aporte del recibo',{exact:true}).isVisible(),'falta etiqueta del importe del recibo');
+  assert(await page.getByLabel('Aporte de obra social del recibo',{exact:true}).isVisible(),'falta etiqueta del importe del recibo');
   await page.locator('#aporteRecibo').fill('84619.61');
   await page.locator('#edadTitular').fill('36');
   await page.locator('#composicion').selectOption('pareja_hijos');
