@@ -3,11 +3,9 @@
 Cotizador comercial web de Premedic en HTML, CSS y JavaScript.
 
 ## Estado
-Desregulados AMBA actualizado a noviembre 2026. Directos AMBA/Interior y Desregulados Interior conservan octubre 2026.
+Directos y Desregulados, AMBA e Interior, actualizados a noviembre de 2026.
 
-> Tarifas de octubre de 2026 verificadas contra las nóminas oficiales de Directos y Desregulados para AMBA e Interior. La lógica comercial, navegación, PMO, aportes, responsive, autenticación y generación de PDF cuentan con QA automático.
-
-Actualización del 16/10/2026: 110 importes de Desregulados AMBA contrastados con la nómina de noviembre. Las promociones se conservan por indicación de Rodri, aunque la nómina contiene una nota de suspensión de bonificaciones.
+Actualización del 19/10/2026: 396 importes contrastados con las cuatro nóminas enviadas. La nueva nómina Desregulados AMBA reemplaza la recibida el 16/10 porque sus valores difieren. Las promociones se conservan por indicación de Rodri, aunque las nóminas contienen una nota de suspensión de bonificaciones.
 
 ## Reglas incluidas
 - Planes: C-100, 200, 300, 400, 500 y PMO.

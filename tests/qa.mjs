@@ -31,8 +31,8 @@ const state = overrides => ({
   ...overrides
 });
 
-await test('Vigencia Octubre 2026 y cuatro tramos oficiales configurados', async()=>{
-  eq(data.vigencia,'Octubre 2026');
+await test('Vigencia Noviembre 2026 y cuatro tramos oficiales configurados', async()=>{
+  eq(data.vigencia,'Noviembre 2026');
   eq(data.edadMaxima,59);
   eq(data.tramos.length,4);
   eq(data.tramos[0],'1 a 29 años');
@@ -46,7 +46,7 @@ await test('Hay cinco planes tarifados y C-100 solo AMBA', async()=>{
   assert(!('C-100' in data.tarifas.desregulado.interior),'C-100 aparece en Desregulado Interior');
 });
 
-await test('Directo conserva la misma tabla AMBA/Interior de octubre', async()=>{
+await test('Directo conserva la misma tabla AMBA/Interior de noviembre', async()=>{
   for (const mode of ['directo']) for (const plan of ['200','300','400','500']) {
     assert(JSON.stringify(data.tarifas[mode].amba[plan])===JSON.stringify(data.tarifas[mode].interior[plan]),`${mode} ${plan} difiere`);
   }
@@ -67,18 +67,18 @@ await test('Edad 60 queda fuera del rango comercial', async()=>{
 await test('Pareja usa la edad del mayor', async()=>{
   const r=motor.quote(state({composicion:'pareja',edadTitular:29,edadPareja:45}));
   assert(r.ok,r.error); eq(r.refAge,45); eq(r.band,2);
-  eq(r.plans.find(p=>p.plan==='200').base,243895,'matrimonio Plan 200 banda 40-49');
+  eq(r.plans.find(p=>p.plan==='200').base,249750,'matrimonio Plan 200 banda 40-49');
 });
 
 await test('Titular + hijos suma adicionales por edad', async()=>{
   const r=motor.quote(state({composicion:'titular_hijos',hijos:[0,8]}));
   assert(r.ok,r.error);
   const p=r.plans.find(x=>x.plan==='200');
-  eq(p.base,92390); eq(p.totalAdicionales,191828+61776); eq(p.bruto,92390+191828+61776);
+  eq(p.base,94608); eq(p.totalAdicionales,196432+63259); eq(p.bruto,94608+196432+63259);
 });
 
 await test('Pareja + 1/2/3 hijos usa tarifa familiar específica', async()=>{
-  const expected={1:230208,2:272672,3:307785};
+  const expected={1:235733,2:279217,3:315172};
   for (const count of [1,2,3]) {
     const r=motor.quote(state({composicion:'pareja_hijos',edadPareja:29,hijos:Array(count).fill(8)}));
     assert(r.ok,r.error); eq(r.plans.find(x=>x.plan==='200').base,expected[count],`${count} hijos`);
@@ -89,7 +89,7 @@ await test('Desde el cuarto hijo se agrega adicional', async()=>{
   const r=motor.quote(state({composicion:'pareja_hijos',edadPareja:29,hijos:[8,7,6,5,0]}));
   assert(r.ok,r.error);
   const p=r.plans.find(x=>x.plan==='200');
-  eq(p.base,307785); eq(p.totalAdicionales,61776+191828); eq(p.extras.length,2);
+  eq(p.base,315172); eq(p.totalAdicionales,63259+196432); eq(p.extras.length,2);
 });
 
 await test('Hijo de 24 años entra y de 25 queda fuera', async()=>{
@@ -102,15 +102,15 @@ await test('Aporte del recibo se multiplica por 2,33 y se redondea a centavos', 
   near(motor.aporteComputable(1000000),2330000,0.001);
 });
 
-await test('Caso familiar convierte recibo $84.619,61 a aporte $197.163,69 y neto $224.529,31', async()=>{
+await test('Caso familiar convierte recibo $84.619,61 a aporte $197.163,69 y neto $223.706,31', async()=>{
   const r=motor.quote(state({modalidad:'desregulado',edadTitular:36,edadPareja:36,composicion:'pareja_hijos',hijos:[10,14],aporteRecibo:84619.61}));
   assert(r.ok,r.error);
   const p=r.plans.find(p=>p.plan==='300');
-  eq(p.base,421693); near(p.aporteComputable,197163.69); near(p.neto,224529.31);
+  eq(p.base,420870); near(p.aporteComputable,197163.69); near(p.neto,223706.31);
   near(r.aporteRecibo,84619.61); near(r.aporteComputable,197163.69); near(r.aportePorPersona,49290.9225);
   const html=formal.renderQuote({state:state({modalidad:'desregulado',edadTitular:36,edadPareja:36,composicion:'pareja_hijos',hijos:[10,14],aporteRecibo:84619.61}),result:r,selectedPlan:'300',quoteId:'QA-APORTE'});
   assert(html.includes('- $ 197.163,69'),'aporte exacto ausente en propuesta');
-  assert(html.includes('$ 224.529,31'),'total familiar ausente en propuesta');
+  assert(html.includes('$ 223.706,31'),'total familiar ausente en propuesta');
 });
 
 await test('Desregulado acepta cero y rechaza aportes vacíos, negativos o no finitos',async()=>{

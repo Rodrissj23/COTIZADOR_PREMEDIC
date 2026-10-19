@@ -66,17 +66,17 @@ function close(actual, expected, label) {
 // 1) Directo AMBA + Promo 40%.
 {
   const p = plan(quote({ modalidad:'directo', zona:'amba', promo:'promo40' }), '200');
-  assert.equal(p.bruto, 115982);
-  close(p.descuentoPromocion, 46392.80, '40% Plan 200');
-  close(p.neto, 69589.20, 'Neto 40% Plan 200');
+  assert.equal(p.bruto, 118765);
+  close(p.descuentoPromocion, 47506.00, '40% Plan 200');
+  close(p.neto, 71259.00, 'Neto 40% Plan 200');
 }
 
 // 2) Directo Mendoza + Promo 25% Interior Nuevo.
 {
   const p = plan(quote({ modalidad:'directo', zona:'mendoza', promo:'interior25' }), '200');
-  assert.equal(p.bruto, 115982);
-  close(p.descuentoPromocion, 28995.50, '25% Mendoza Plan 200');
-  close(p.neto, 86986.50, 'Neto 25% Mendoza Plan 200');
+  assert.equal(p.bruto, 118765);
+  close(p.descuentoPromocion, 29691.25, '25% Mendoza Plan 200');
+  close(p.neto, 89073.75, 'Neto 25% Mendoza Plan 200');
 }
 
 // 3) Directo Monotributo categoría D.
@@ -85,7 +85,7 @@ function close(actual, expected, label) {
   const p = plan(result, '200');
   assert.equal(PremedicPromos.aporteMonotributo('D'), 23520);
   assert.equal(p.descuentoPromocion, 23520);
-  assert.equal(p.neto, 92462);
+  assert.equal(p.neto, 95245);
   const c100 = plan(result, 'C-100');
   assert.equal(c100.descuentoPromocion, 0, 'Monotributo no debe aplicarse a C-100');
 }
@@ -93,10 +93,10 @@ function close(actual, expected, label) {
 // 4) Desregulado + TC 15% + aporte del recibo de $30.000.
 {
   const p = plan(quote({ modalidad:'desregulado', zona:'amba', promo:'tc15', aporteRecibo:30000 }), '200');
-  assert.equal(p.bruto, 107690);
-  close(p.descuentoPromocion, 16153.50, 'TC 15% Desregulado');
+  assert.equal(p.bruto, 107480);
+  close(p.descuentoPromocion, 16122.00, 'TC 15% Desregulado');
   close(p.aporteComputable, 69900, 'Aporte computable');
-  close(p.neto, 21636.50, 'Neto Desregulado TC15 + aporte');
+  close(p.neto, 21458.00, 'Neto Desregulado TC15 + aporte');
 }
 
 // Filtros de zona / segmento y exclusividad.
