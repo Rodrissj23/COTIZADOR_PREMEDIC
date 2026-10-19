@@ -37,7 +37,7 @@ await test('Directo AMBA edad 35 muestra 5 planes y precio correcto del 200',asy
   await page.locator('#resultadosSection').waitFor({state:'visible'});
   assert(await page.locator('#resultados .plan-card').count()===5,'no hay 5 planes');
   const price=(await page.locator('.plan-card[data-plan="200"] .plan-price').innerText()).replace(/\s/g,'');
-  assert(price.includes('$115.982'),`precio 200 inesperado ${price}`);
+  assert(price.includes('$118.765'),`precio 200 inesperado ${price}`);
   await page.close();
 });
 
@@ -148,7 +148,7 @@ await test('Mobile 390px no tiene overflow horizontal',async()=>{
   await page.close();
 });
 
-await test('Desregulados AMBA usa noviembre y conserva octubre al cambiar de tabla',async()=>{
+await test('Las cuatro tablas usan noviembre al cambiar de zona y modalidad',async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
   await page.locator('#nombre').fill('QA Noviembre');
@@ -158,18 +158,18 @@ await test('Desregulados AMBA usa noviembre y conserva octubre al cambiar de tab
   assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'badge no muestra noviembre');
   await page.locator('#cotizarBtn').click();
   const card=page.locator('.plan-card[data-plan="200"]');
-  assert((await card.innerText()).includes('107.690'),'Plan 200 no muestra precio de noviembre');
+  assert((await card.innerText()).includes('107.480'),'Plan 200 no muestra precio de noviembre');
   await card.locator('.elegir-plan').click();
   await page.locator('#verCotizacionBtn').click();
   assert((await page.locator('#previewContent').innerText()).includes('tarifario Noviembre 2026'),'propuesta no muestra noviembre');
   await page.locator('#cerrarPreviewBtn').click();
   await page.locator('#zona').selectOption('interior');
-  assert((await page.locator('#vigenciaBadge').innerText()).includes('Octubre 2026'),'Interior heredó noviembre');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'Interior no muestra noviembre');
   await page.locator('#cotizarBtn').click();
-  assert((await page.locator('.plan-card[data-plan="200"]').innerText()).includes('104.961'),'Interior perdió precio de octubre');
+  assert((await page.locator('.plan-card[data-plan="200"]').innerText()).includes('107.480'),'Interior perdió precio de noviembre');
   await page.locator('#zona').selectOption('amba');
   await page.locator('#modalidad').selectOption('directo');
-  assert((await page.locator('#vigenciaBadge').innerText()).includes('Octubre 2026'),'Directo heredó noviembre');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'Directo no muestra noviembre');
   await page.close();
 });
 
@@ -193,9 +193,9 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   assert(await page.locator('.plan-card[data-plan="300"]').count()===1,`cotización rechazada: ${await page.locator('#mensaje').innerText()}`);
   const card=page.locator('.plan-card[data-plan="300"]');
   const text=await card.innerText();
-  assert(text.includes('421.693'),'base familiar incorrecta');
+  assert(text.includes('420.870'),'base familiar incorrecta');
   assert(text.includes('197.163,69'),'aporte computable incorrecto');
-  assert(text.includes('224.529,31'),'neto familiar incorrecto');
+  assert(text.includes('223.706,31'),'neto familiar incorrecto');
   assert(!text.includes('205.912,99'),'persiste el factor anterior de 2,55');
   assert(!text.includes('337.073,39'),'se descontó el importe del recibo sin convertirlo');
   assert((await page.locator('#sumAporteRecibo').innerText()).includes('84.619,61'),'resumen no conserva el importe ingresado');
@@ -204,7 +204,7 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   await page.locator('#verCotizacionBtn').click();
   const preview=await page.locator('#previewContent').innerText();
   assert(preview.includes('- $ 197.163,69'),'propuesta no descuenta el aporte exacto');
-  assert(preview.includes('$ 224.529,31'),'propuesta no coincide con pantalla');
+  assert(preview.includes('$ 223.706,31'),'propuesta no coincide con pantalla');
   await page.close();
 });
 
