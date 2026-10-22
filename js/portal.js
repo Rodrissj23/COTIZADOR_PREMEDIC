@@ -100,6 +100,7 @@
     function recalculateQuoteAfterBenefitChange() {
       if (resultados?.children.length) {
         window.dispatchEvent(new CustomEvent('premedic:recalculate', { detail: { plan: selectedPlan } }));
+        decorateResults();
         return;
       }
       invalidateQuote();
@@ -125,7 +126,7 @@
       promoApi.state.promoId = promoSelect.value;
       updateMonotributoUI();
       decorateResults();
-      if (plan && previous !== 'ninguna' && promoSelect.value !== previous) {
+      if (resultados?.children.length && previous !== 'ninguna' && promoSelect.value !== previous) {
         queueMicrotask(() => window.dispatchEvent(new CustomEvent('premedic:recalculate', { detail: { plan } })));
       }
     }
@@ -185,6 +186,14 @@
       recalculateQuoteAfterBenefitChange();
     });
 
+    document.getElementById('limpiarBtn')?.addEventListener('click', () => {
+      promoApi.state.promoId = 'ninguna';
+      promoApi.state.categoriaMonotributo = 'A';
+      categoriaSelect.value = 'A';
+      selectedPlan = null;
+      populatePromos(null);
+    });
+
     for (const id of ['edadTitular', 'edadPareja', 'composicion']) {
       document.getElementById(id)?.addEventListener('change', () => populatePromos(selectedPlan));
     }
@@ -210,7 +219,10 @@
 
     // app.js registra primero el cálculo. Este listener corre después y agrega
     // únicamente el detalle visual del beneficio aplicado.
-    cotizarBtn?.addEventListener('click', () => populatePromos(selectedPlan), true);
+    cotizarBtn?.addEventListener('click', () => {
+      selectedPlan = null;
+      populatePromos(null);
+    }, true);
     cotizarBtn?.addEventListener('click', () => queueMicrotask(decorateResults));
 
     const style = document.createElement('style');
@@ -225,7 +237,7 @@
   }
 
   const promoScript = document.createElement('script');
-  promoScript.src = 'js/promociones-premedic.js?v=20261016-control1';
+  promoScript.src = 'js/promociones-premedic.js?v=20261022-flash25';
   promoScript.onload = initPromociones;
   document.head.appendChild(promoScript);
 })();

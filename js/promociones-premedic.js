@@ -20,7 +20,7 @@
     { id: 'cbu15', label: 'Débito en CBU · 15%', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 15 },
     { id: 'efectivo10', label: 'Efectivo / débito / transferencia · 10%', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 10 },
     { id: 'promo40', label: 'Promo 40% AMBA / Córdoba', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 40 },
-    { id: 'flash25', codigo: 'FLASH25', label: '🔥 FLASH25 — 25% permanente · Válido hasta el 21/10/2026', modalidades: ['directo', 'desregulado'], zonas: ['amba'], planes: ['300', '400', '500'], tipo: 'porcentaje', valor: 25, permanente: true, vigenteDesde: '2026-10-14', vigenteHasta: '2026-10-21' },
+    { id: 'flash25', codigo: 'FLASH25', label: '🔥 FLASH25 — 25% permanente · AMBA y Córdoba', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['300', '400', '500'], tipo: 'porcentaje', valor: 25, permanente: true, vigenteDesde: '2026-10-14', vigenteHasta: '2026-11-20', vigenteHastaPorModalidad: { directo: '2026-11-20', desregulado: '2026-10-31' } },
     { id: 'interior25', label: 'Promo 25% Interior Nuevo', modalidades: ['directo', 'desregulado'], zonas: ['mendoza', 'misiones', 'tucuman'], planes: ['C-100', '200', '300', '400', '500'], tipo: 'porcentaje', valor: 25 }
   ];
   const PROMOS = Object.freeze(window.PremedicControl
@@ -56,24 +56,30 @@
     return `${value.year}-${value.month}-${value.day}`;
   }
 
-  function promoVigente(promo, fecha) {
-    if (!promo.vigenteDesde && !promo.vigenteHasta) return true;
+  function promoVigente(promo, fecha, modalidad) {
+    const hasta = promo.vigenteHastaPorModalidad?.[modalidad] || promo.vigenteHasta;
+    if (!promo.vigenteDesde && !hasta) return true;
     const current = businessDate(fecha);
     return (!promo.vigenteDesde || current >= promo.vigenteDesde)
-      && (!promo.vigenteHasta || current <= promo.vigenteHasta);
+      && (!hasta || current <= hasta);
+  }
+
+  function promoPorModalidad(promo, modalidad) {
+    const hasta = promo.vigenteHastaPorModalidad?.[modalidad];
+    return hasta ? { ...promo, label: `${promo.label} · Válido hasta el ${hasta.split('-').reverse().join('/')}` } : promo;
   }
 
   function promoAplica({ promo = getPromo(), modalidad, zona, plan, fecha, edad }) {
     return promo.modalidades.includes(modalidad)
       && promo.zonas.includes(zona)
       && promo.planes.includes(plan)
-      && promoVigente(promo, fecha)
+      && promoVigente(promo, fecha, modalidad)
       && (promo.edadDesde == null || (Number.isFinite(edad) && edad >= promo.edadDesde))
       && (promo.edadHasta == null || (Number.isFinite(edad) && edad <= promo.edadHasta));
   }
 
   function aplicarPromocion(bruto, { modalidad, zona, plan, fecha, edad }) {
-    const promo = getPromo();
+    const promo = promoPorModalidad(getPromo(), modalidad);
     if (!promoAplica({ promo, modalidad, zona, plan, fecha, edad })) {
       return { promo: PROMOS[0], descuento: 0, subtotal: bruto, aporteMonotributo: 0 };
     }
@@ -100,9 +106,10 @@
     return PROMOS.filter(p => p.modalidades.includes(modalidad)
       && p.zonas.includes(zona)
       && (!plan || p.planes.includes(plan))
-      && promoVigente(p, fecha)
+      && promoVigente(p, fecha, modalidad)
       && (p.edadDesde == null || (Number.isFinite(edad) && edad >= p.edadDesde))
-      && (p.edadHasta == null || (Number.isFinite(edad) && edad <= p.edadHasta)));
+      && (p.edadHasta == null || (Number.isFinite(edad) && edad <= p.edadHasta)))
+      .map(p => promoPorModalidad(p, modalidad));
   }
 
   window.PremedicPromos = {
