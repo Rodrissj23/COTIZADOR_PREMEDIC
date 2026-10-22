@@ -28,7 +28,7 @@ async function optionValues(page) {
   return page.locator('#promocionPremedic option').evaluateAll(options => options.map(option => option.value));
 }
 
-await test('FLASH25 aparece hasta el 21/10 para AMBA Directo y planes habilitados', async () => {
+await test('FLASH25 conserva el 25% permanente para Directo y planes habilitados', async () => {
   const page = await pageAt('2026-10-21');
   assert((await optionValues(page)).includes('flash25'), 'FLASH25 no aparece en AMBA Directo');
   await page.locator('#nombre').fill('Flash Directo QA');
@@ -110,9 +110,42 @@ await test('Cambiar AMBA a Interior elimina FLASH25 automáticamente', async () 
   await page.close();
 });
 
-await test('El 22/10/2026 FLASH25 ya no puede seleccionarse', async () => {
+await test('El 22/10/2026 FLASH25 está extendida y muestra la fecha de cada modalidad', async () => {
   const page = await pageAt('2026-10-22');
-  assert(!(await optionValues(page)).includes('flash25'), 'FLASH25 aparece fuera de vigencia');
+  assert((await optionValues(page)).includes('flash25'), 'FLASH25 falta durante la extensión');
+  assert((await page.locator('#promocionPremedic option[value="flash25"]').innerText()).includes('20/11/2026'),'Directo no muestra su vencimiento');
+  await page.locator('#zona').selectOption('cordoba');
+  assert((await optionValues(page)).includes('flash25'),'FLASH25 falta en Córdoba');
+  await page.locator('#modalidad').selectOption('desregulado');
+  assert((await page.locator('#promocionPremedic option[value="flash25"]').innerText()).includes('31/10/2026'),'Desregulado no muestra su vencimiento');
+  await page.close();
+});
+
+for (const [fecha, directo, desregulado] of [['2026-10-31',true,true],['2026-11-01',true,false],['2026-11-20',true,false],['2026-11-21',false,false]]) {
+  await test(`Vigencia por modalidad al ${fecha}`,async()=>{
+    const page=await pageAt(fecha);
+    await page.locator('#zona').selectOption('cordoba');
+    assert((await optionValues(page)).includes('flash25')===directo,'Vigencia Directo incorrecta');
+    await page.locator('#modalidad').selectOption('desregulado');
+    assert((await optionValues(page)).includes('flash25')===desregulado,'Vigencia Desregulado incorrecta');
+    await page.close();
+  });
+}
+
+await test('Al volver después del vencimiento Desregulado se descarta también el importe FLASH anterior',async()=>{
+  const page=await pageAt('2026-10-31');
+  await page.locator('#nombre').fill('Vencimiento FLASH');
+  await page.locator('#edadTitular').fill('35');
+  await page.locator('#zona').selectOption('cordoba');
+  await page.locator('#modalidad').selectOption('desregulado');
+  await page.locator('#aporteRecibo').fill('10000');
+  await page.locator('#promocionPremedic').selectOption('flash25');
+  await page.locator('#cotizarBtn').click();
+  const before=await page.locator('.plan-card[data-plan="300"] .plan-price').innerText();
+  await page.clock.setFixedTime(new Date('2026-11-01T12:00:00-03:00'));
+  await page.evaluate(()=>window.dispatchEvent(new Event('focus')));
+  assert(await page.locator('#promocionPremedic').inputValue()==='ninguna','quedó seleccionada una campaña vencida');
+  assert((await page.locator('.plan-card[data-plan="300"] .plan-price').innerText())!==before,'quedó un precio de la campaña vencida');
   await page.close();
 });
 

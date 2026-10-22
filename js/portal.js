@@ -126,7 +126,7 @@
       promoApi.state.promoId = promoSelect.value;
       updateMonotributoUI();
       decorateResults();
-      if (plan && previous !== 'ninguna' && promoSelect.value !== previous) {
+      if (resultados?.children.length && previous !== 'ninguna' && promoSelect.value !== previous) {
         queueMicrotask(() => window.dispatchEvent(new CustomEvent('premedic:recalculate', { detail: { plan } })));
       }
     }
@@ -237,7 +237,7 @@
   }
 
   const promoScript = document.createElement('script');
-  promoScript.src = 'js/promociones-premedic.js?v=20261016-control1';
+  promoScript.src = 'js/promociones-premedic.js?v=20261022-flash25';
   promoScript.onload = initPromociones;
   document.head.appendChild(promoScript);
 })();
