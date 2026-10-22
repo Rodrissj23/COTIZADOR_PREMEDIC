@@ -100,6 +100,7 @@
     function recalculateQuoteAfterBenefitChange() {
       if (resultados?.children.length) {
         window.dispatchEvent(new CustomEvent('premedic:recalculate', { detail: { plan: selectedPlan } }));
+        decorateResults();
         return;
       }
       invalidateQuote();
@@ -185,6 +186,14 @@
       recalculateQuoteAfterBenefitChange();
     });
 
+    document.getElementById('limpiarBtn')?.addEventListener('click', () => {
+      promoApi.state.promoId = 'ninguna';
+      promoApi.state.categoriaMonotributo = 'A';
+      categoriaSelect.value = 'A';
+      selectedPlan = null;
+      populatePromos(null);
+    });
+
     for (const id of ['edadTitular', 'edadPareja', 'composicion']) {
       document.getElementById(id)?.addEventListener('change', () => populatePromos(selectedPlan));
     }
@@ -210,7 +219,10 @@
 
     // app.js registra primero el cálculo. Este listener corre después y agrega
     // únicamente el detalle visual del beneficio aplicado.
-    cotizarBtn?.addEventListener('click', () => populatePromos(selectedPlan), true);
+    cotizarBtn?.addEventListener('click', () => {
+      selectedPlan = null;
+      populatePromos(null);
+    }, true);
     cotizarBtn?.addEventListener('click', () => queueMicrotask(decorateResults));
 
     const style = document.createElement('style');

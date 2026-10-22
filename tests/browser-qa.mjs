@@ -208,6 +208,52 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   await page.close();
 });
 
+await test('Cambiar beneficio después de calcular actualiza importe y desglose sin elegir plan',async()=>{
+  const page=await browser.newPage();
+  await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
+  await page.locator('#nombre').fill('QA beneficio');
+  await page.locator('#edadTitular').fill('35');
+  await page.locator('#cotizarBtn').click();
+  await page.locator('#promocionPremedic').selectOption('tc15');
+  const card=page.locator('.plan-card[data-plan="200"]');
+  assert((await card.locator('.plan-price').innerText()).includes('100.950,25'),'neto TC15 incorrecto');
+  assert((await card.locator('.promo-breakdown-line').innerText()).includes('17.814,75'),'falta detalle del beneficio recalculado');
+  await page.locator('#promocionPremedic').selectOption('ninguna');
+  assert(await card.locator('.promo-breakdown-line').count()===0,'quedó un descuento residual');
+  await page.close();
+});
+
+await test('Limpiar elimina promoción y categoría de monotributo de la cotización anterior',async()=>{
+  const page=await browser.newPage();
+  await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
+  await page.locator('#nombre').fill('Cliente anterior');
+  await page.locator('#edadTitular').fill('35');
+  await page.locator('#promocionPremedic').selectOption('monotributo');
+  await page.locator('#categoriaMonotributo').selectOption('K');
+  await page.locator('#cotizarBtn').click();
+  await page.locator('#limpiarBtn').click();
+  assert(await page.locator('#promocionPremedic').evaluate(el=>el.value)==='ninguna','Limpiar conservó el beneficio');
+  assert(await page.locator('#categoriaMonotributo').evaluate(el=>el.value)==='A','Limpiar conservó la categoría');
+  await page.locator('#nombre').fill('Cliente nuevo');
+  await page.locator('#edadTitular').fill('35');
+  await page.locator('#cotizarBtn').click();
+  assert((await page.locator('.plan-card[data-plan="200"] .plan-price').innerText()).includes('118.765'),'el cliente nuevo heredó el descuento');
+  await page.close();
+});
+
+await test('Recalcular libera el filtro del plan anteriormente elegido',async()=>{
+  const page=await browser.newPage();
+  await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
+  await page.locator('#nombre').fill('QA filtros');
+  await page.locator('#edadTitular').fill('35');
+  await page.locator('#cotizarBtn').click();
+  await page.locator('.plan-card[data-plan="C-100"] .elegir-plan').click();
+  assert(await page.locator('#promocionPremedic option[value="tc15"]').count()===0,'C-100 permite un beneficio incompatible');
+  await page.locator('#cotizarBtn').click();
+  assert(await page.locator('#promocionPremedic option[value="tc15"]').count()===1,'quedó el filtro del C-100 anterior');
+  await page.close();
+});
+
 await browser.close();
 console.log(`\nResultado navegador: ${passed} PASS, ${failures.length} FAIL`);
 if(failures.length){console.error('\nFallos:');failures.forEach(f=>console.error(`- ${f}`));process.exit(1)}

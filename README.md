@@ -39,6 +39,8 @@ Las credenciales se configuran mediante variables de entorno y la sesión usa co
 Los archivos del tarifario no deben quedar accesibles sin autenticación en el deployment de producción. Si las tarifas son confidenciales, el repositorio también debe mantenerse privado y no publicarse por GitHub Pages.
 
 ## QA
+El cambio de beneficio actualiza tanto el precio como su desglose, incluso antes de elegir un plan. **Limpiar** restablece el beneficio a “Sin beneficio” y la categoría de monotributo a A. Al recalcular se liberan los filtros del plan elegido anteriormente.
+
 El workflow `Premedic QA` verifica en cada cambio a `main`:
 - sintaxis y reglas del motor;
 - estructura completa del tarifario cargado;
