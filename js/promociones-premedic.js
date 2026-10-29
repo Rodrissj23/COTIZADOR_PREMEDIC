@@ -1,16 +1,18 @@
 (() => {
+  // Condiciones Monotributo Nov 26: importe que Premedic recibe y descuenta
+  // desde noviembre de 2026, no el aporte bruto de obra social.
   const MONOTRIBUTO_APORTES = Object.freeze({
-    A: 19791,
-    B: 19791,
-    C: 19791,
-    D: 23520,
-    E: 28862,
-    F: 32985,
-    G: 35566,
-    H: 42736,
-    I: 52766,
-    J: 59299,
-    K: 67690
+    A: 23125,
+    B: 23125,
+    C: 23125,
+    D: 27482,
+    E: 33515,
+    F: 38542,
+    G: 41588,
+    H: 49937,
+    I: 61667,
+    J: 69208,
+    K: 79094
   });
 
   const LEGACY_PROMOS = [
@@ -126,3 +128,4 @@
     promosDisponibles
   };
 })();
+

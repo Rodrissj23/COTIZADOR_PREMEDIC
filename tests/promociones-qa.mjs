@@ -107,11 +107,37 @@ function close(actual, expected, label) {
 {
   const result = quote({ modalidad:'directo', zona:'amba', promo:'monotributo', categoria:'D' });
   const p = plan(result, '200');
-  assert.equal(PremedicPromos.aporteMonotributo('D'), 23520);
-  assert.equal(p.descuentoPromocion, 23520);
-  assert.equal(p.neto, 95245);
+  assert.equal(PremedicPromos.aporteMonotributo('D'), 27482);
+  assert.equal(p.descuentoPromocion, 27482);
+  assert.equal(p.neto, 91283);
   const c100 = plan(result, 'C-100');
   assert.equal(c100.descuentoPromocion, 0, 'Monotributo no debe aplicarse a C-100');
+}
+
+// Cuadro 2 de Condiciones Monotributo Nov 26: columna recibida/descontada.
+// Verificar el total de todos los planes y que no se extienda el beneficio
+// a Desregulado, C-100 ni Interior sin una zona comercial habilitada.
+const aportesNoviembre = { A:23125, B:23125, C:23125, D:27482, E:33515,
+  F:38542, G:41588, H:49937, I:61667, J:69208, K:79094 };
+let monotributoCases = 0;
+for (const [categoria, aporte] of Object.entries(aportesNoviembre)) {
+  assert.equal(PremedicPromos.aporteMonotributo(categoria), aporte);
+  for (const modalidad of ['directo', 'desregulado']) {
+    for (const zona of ['amba', 'cordoba', 'mendoza', 'misiones', 'tucuman', 'interior']) {
+      for (const edad of [29, 35, 45, 55]) {
+        const result = quote({ modalidad, zona, edad, promo:'monotributo', categoria });
+        assert.ok(result.ok);
+        for (const p of result.plans) {
+          const aplica = modalidad === 'directo' && zona !== 'interior' && p.plan !== 'C-100';
+          const descuento = aplica ? aporte : 0;
+          assert.equal(p.descuentoPromocion, descuento, `${categoria}/${modalidad}/${zona}/${p.plan}`);
+          assert.equal(p.aporteMonotributo, descuento);
+          assert.equal(p.neto, Math.max(0, p.bruto - descuento));
+          monotributoCases++;
+        }
+      }
+    }
+  }
 }
 
 // 4) Desregulado + TC 15% + aporte del recibo de $30.000.
@@ -140,4 +166,5 @@ function close(actual, expected, label) {
   assert.equal(onePromo.id, 'promo40');
 }
 
-console.log(`Promociones QA OK: ${flashCases} escenarios de extensión FLASH25, vencimientos por modalidad en horario argentino, filtros y monotributo.`);
+console.log(`Promociones QA OK: ${flashCases} escenarios FLASH25 y ${monotributoCases} casos de monotributo noviembre 2026, vencimientos y filtros.`);
+
