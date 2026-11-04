@@ -46,7 +46,7 @@
 
   function pmoInfoPage(quoteId) {
     const items = [
-      ['Elegibilidad por aportes', 'La opción PMO se habilita cuando el aporte computable por persona alcanza $ 15.000.'],
+      ['Elegibilidad por aportes', 'La opción PMO se habilita cuando el aporte computable por persona alcanza $ 16.000.'],
       ['Valor a abonar', 'Con la condición de aportes cumplida, el cotizador informa un valor mensual a abonar de $ 0.'],
       ['Aporte del titular', 'El cálculo utiliza el aporte de obra social del recibo del titular multiplicado por 2,33.'],
       ['Sin tope adicional', 'La fórmula de aportes de Premedic se aplica sin un tope adicional de base dentro de este cotizador.'],
@@ -89,7 +89,7 @@
 
   function pmoConditionsPage(quoteId) {
     const rows = [
-      ['PMO', 'Condición de acceso', 'Aportes', 'Aporte computable por persona igual o superior a $ 15.000.'],
+      ['PMO', 'Condición de acceso', 'Aportes', 'Aporte computable por persona igual o superior a $ 16.000.'],
       ['PMO', 'Valor mensual', 'Cubierto', 'El valor a abonar informado por esta opción es $ 0 cuando se cumple la condición de aportes.'],
       ['PMO', 'Cobertura médica', 'Según PMO', 'Prestaciones y alcance conforme a la documentación oficial vigente aplicable.'],
       ['PMO', 'Prestadores', 'Según cartilla', 'Disponibilidad y cartilla sujetas a la documentación y condiciones vigentes de Premedic.'],
@@ -177,7 +177,7 @@
                 <div class="quote-economic-row"><span>Aporte computable por persona</span><strong>${window.PremedicMotor.money(result.aportePorPersona)}</strong></div>
                 <div class="quote-economic-row"><span>Valor del plan</span><strong>$ 0</strong></div>
               </div>
-              <div class="quote-covered-note">La opción PMO quedó habilitada porque el aporte computable por persona alcanza $ 15.000.</div>
+              <div class="quote-covered-note">La opción PMO quedó habilitada porque el aporte computable por persona alcanza $ 16.000.</div>
             </div>
             <div class="quote-total-card quote-total-card-v3 quote-total-card-final">
               <span>Total a abonar</span><b>Plan PMO</b><strong>$ 0</strong><small>Valor mensual a abonar</small><em>Cubierto por aportes</em>
@@ -185,7 +185,7 @@
           </section>
           ${advisorStrip(state)}
           <section class="quote-highlights quote-highlights-final" aria-label="Datos destacados de la propuesta">
-            <article><div class="quote-highlight-icon">${pmoIcon}</div><div class="quote-highlight-copy"><strong>≥ $15.000</strong><span>Aporte computable por persona</span></div></article>
+            <article><div class="quote-highlight-icon">${pmoIcon}</div><div class="quote-highlight-copy"><strong>≥ $16.000</strong><span>Aporte computable por persona</span></div></article>
             <article><div class="quote-highlight-icon">${pmoIcon}</div><div class="quote-highlight-copy"><strong>$ 0</strong><span>Valor mensual PMO</span></div></article>
             <article><div class="quote-highlight-icon">${pmoIcon}</div><div class="quote-highlight-copy"><strong>72 hs</strong><span>Vigencia de la propuesta</span></div></article>
           </section>

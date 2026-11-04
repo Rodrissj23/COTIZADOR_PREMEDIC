@@ -132,19 +132,30 @@ await test('Directo no usa aporte monetario', async()=>{
   eq(a.aporteComputable,0); eq(a.plans.find(p=>p.plan==='200').neto,b.plans.find(p=>p.plan==='200').neto);
 });
 
-await test('PMO solo aparece en Desregulado con aporte por persona >= $15.000', async()=>{
-  const below=motor.quote(state({modalidad:'desregulado',aporteRecibo:6437.76}));
+await test('PMO solo aparece en Desregulado con aporte por persona >= $16.000', async()=>{
+  const below=motor.quote(state({modalidad:'desregulado',aporteRecibo:6866.95}));
   assert(below.ok,below.error); assert(!below.plans.some(p=>p.esPMO),'PMO apareció por debajo');
-  const atOrAbove=motor.quote(state({modalidad:'desregulado',aporteRecibo:6437.77}));
+  const atOrAbove=motor.quote(state({modalidad:'desregulado',aporteRecibo:6866.96}));
   assert(atOrAbove.ok,atOrAbove.error); const pmo=atOrAbove.plans.find(p=>p.esPMO); assert(pmo,'PMO no apareció'); eq(pmo.neto,0); eq(pmo.plan,'PMO');
   assert(!motor.quote(state({modalidad:'directo',aporteRecibo:999999})).plans.some(p=>p.esPMO),'PMO apareció en Directo');
 });
 
-await test('Umbral PMO considera todos los integrantes', async()=>{
-  const twoBelow=motor.quote(state({modalidad:'desregulado',composicion:'pareja',edadPareja:29,aporteRecibo:12875.53}));
-  assert(!twoBelow.pmoDisponible,'PMO habilitado debajo del umbral familiar');
-  const twoOk=motor.quote(state({modalidad:'desregulado',composicion:'pareja',edadPareja:29,aporteRecibo:12875.54}));
-  assert(twoOk.pmoDisponible,'PMO no habilitado al superar umbral familiar'); eq(twoOk.cantidadPersonas,2);
+await test('Umbral PMO de $16.000 incluye todos los integrantes en AMBA e Interior', async()=>{
+  const families = [
+    {composicion:'individual', personas:1},
+    {composicion:'pareja', edadPareja:29, personas:2},
+    {composicion:'titular_hijos', hijos:[5,10], personas:3},
+    {composicion:'pareja_hijos', edadPareja:29, hijos:[5,10], personas:4}
+  ];
+  for (const zona of ['amba','interior']) for (const {personas,...family} of families) {
+    for (const [porPersona, available] of [[15000,false],[15999.99,false],[16000,true],[16000.01,true]]) {
+      const r=motor.quote(state({modalidad:'desregulado',zona,...family,aporteRecibo:porPersona*personas/2.33}));
+      assert(r.ok,r.error); eq(r.cantidadPersonas,personas);
+      eq(r.pmoDisponible,available,`${zona} ${family.composicion} $${porPersona}`);
+      eq(r.plans.some(p=>p.esPMO),available);
+      if(available) eq(r.plans.find(p=>p.esPMO).neto,0);
+    }
+  }
 });
 
 await test('Documento comercial tiene portada, resumen y beneficios, sin cierre ni cobertura recreada', async()=>{

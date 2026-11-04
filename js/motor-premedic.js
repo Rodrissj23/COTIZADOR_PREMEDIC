@@ -1,6 +1,6 @@
 window.PremedicMotor = (() => {
   const data = window.PREMEDIC_DATA;
-  const PMO_MINIMO_POR_PERSONA = 15000;
+  const PMO_MINIMO_POR_PERSONA = 16000;
 
   function vigenciaPara(state) {
     const zone = window.PremedicPromos?.pricingZone(state.zona) || (state.zona === 'amba' ? 'amba' : 'interior');

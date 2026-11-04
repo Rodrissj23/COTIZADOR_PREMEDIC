@@ -23,7 +23,7 @@ Actualización del 19/10/2026: 396 importes contrastados con las cuatro nóminas
 - Desregulado: se ingresa el ítem de obra social del recibo. El motor calcula el aporte a descontar multiplicándolo por 2,33, como indica el cotizador original, y redondea a centavos. La pantalla distingue importe ingresado y aporte a descontar.
 - Premedic no aplica tope adicional de aporte/base en este motor.
 - El aporte se descuenta del valor del plan y el resultado nunca puede ser negativo.
-- PMO se habilita cuando `aporte computable total ÷ cantidad de integrantes >= $15.000`.
+- PMO se habilita cuando `aporte computable total ÷ cantidad de integrantes >= $16.000`.
 - PMO informa valor mensual a abonar de $0 cuando se cumple esa condición.
 - Cotización válida por 72 hs hábiles desde su emisión.
 
