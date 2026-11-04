@@ -59,7 +59,10 @@ await test('Desregulado mantiene aporte visible y PMO aparece primero con valor 
   await page.locator('#nombre').fill('PMO QA');
   await page.locator('#edadTitular').fill('29');
   await page.locator('#modalidad').selectOption('desregulado');
-  await page.locator('#aporteRecibo').fill('6437.77');
+  await page.locator('#aporteRecibo').fill('6866.95');
+  await page.locator('#cotizarBtn').click();
+  assert(await page.locator('#resultados .plan-card[data-plan="PMO"]').count()===0,'PMO apareció debajo de $16.000 por cápita');
+  await page.locator('#aporteRecibo').fill('6866.96');
   await page.locator('#cotizarBtn').click();
   const first=page.locator('#resultados .plan-card').first();
   assert(await first.getAttribute('data-plan')==='PMO','PMO no quedó primero');
