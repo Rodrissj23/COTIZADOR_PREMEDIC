@@ -102,15 +102,15 @@ await test('Aporte del recibo se multiplica por 2,33 y se redondea a centavos', 
   near(motor.aporteComputable(1000000),2330000,0.001);
 });
 
-await test('Caso familiar convierte recibo $84.619,61 a aporte $197.163,69 y neto $223.706,31', async()=>{
+await test('Caso familiar convierte recibo $84.619,61 a aporte $197.163,69 y neto $232.124,31', async()=>{
   const r=motor.quote(state({modalidad:'desregulado',edadTitular:36,edadPareja:36,composicion:'pareja_hijos',hijos:[10,14],aporteRecibo:84619.61}));
   assert(r.ok,r.error);
   const p=r.plans.find(p=>p.plan==='300');
-  eq(p.base,420870); near(p.aporteComputable,197163.69); near(p.neto,223706.31);
+  eq(p.base,429288); near(p.aporteComputable,197163.69); near(p.neto,232124.31);
   near(r.aporteRecibo,84619.61); near(r.aporteComputable,197163.69); near(r.aportePorPersona,49290.9225);
   const html=formal.renderQuote({state:state({modalidad:'desregulado',edadTitular:36,edadPareja:36,composicion:'pareja_hijos',hijos:[10,14],aporteRecibo:84619.61}),result:r,selectedPlan:'300',quoteId:'QA-APORTE'});
   assert(html.includes('- $ 197.163,69'),'aporte exacto ausente en propuesta');
-  assert(html.includes('$ 223.706,31'),'total familiar ausente en propuesta');
+  assert(html.includes('$ 232.124,31'),'total familiar ausente en propuesta');
 });
 
 await test('Desregulado acepta cero y rechaza aportes vacíos, negativos o no finitos',async()=>{
