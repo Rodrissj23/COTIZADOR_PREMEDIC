@@ -151,28 +151,28 @@ await test('Mobile 390px no tiene overflow horizontal',async()=>{
   await page.close();
 });
 
-await test('Las cuatro tablas usan noviembre al cambiar de zona y modalidad',async()=>{
+await test('Desregulado usa diciembre y Directo conserva diciembre al cambiar de zona',async()=>{
   const page=await browser.newPage({viewport:{width:1440,height:1000}});
   await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
   await page.locator('#nombre').fill('QA Noviembre');
   await page.locator('#edadTitular').fill('35');
   await page.locator('#modalidad').selectOption('desregulado');
   await page.locator('#aporteRecibo').fill('0');
-  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'badge no muestra noviembre');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Diciembre 2026'),'badge no muestra diciembre');
   await page.locator('#cotizarBtn').click();
   const card=page.locator('.plan-card[data-plan="200"]');
-  assert((await card.innerText()).includes('107.480'),'Plan 200 no muestra precio de noviembre');
+  assert((await card.innerText()).includes('109.630'),'Plan 200 no muestra precio de diciembre');
   await card.locator('.elegir-plan').click();
   await page.locator('#verCotizacionBtn').click();
-  assert((await page.locator('#previewContent').innerText()).includes('tarifario Noviembre 2026'),'propuesta no muestra noviembre');
+  assert((await page.locator('#previewContent').innerText()).includes('tarifario Diciembre 2026'),'propuesta no muestra diciembre');
   await page.locator('#cerrarPreviewBtn').click();
   await page.locator('#zona').selectOption('interior');
-  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'Interior no muestra noviembre');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Diciembre 2026'),'Interior no muestra diciembre');
   await page.locator('#cotizarBtn').click();
-  assert((await page.locator('.plan-card[data-plan="200"]').innerText()).includes('107.480'),'Interior perdió precio de noviembre');
+  assert((await page.locator('.plan-card[data-plan="200"]').innerText()).includes('109.630'),'Interior perdió precio de diciembre');
   await page.locator('#zona').selectOption('amba');
   await page.locator('#modalidad').selectOption('directo');
-  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'Directo no muestra noviembre');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'Directo no conserva noviembre');
   await page.close();
 });
 
@@ -196,9 +196,9 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   assert(await page.locator('.plan-card[data-plan="300"]').count()===1,`cotización rechazada: ${await page.locator('#mensaje').innerText()}`);
   const card=page.locator('.plan-card[data-plan="300"]');
   const text=await card.innerText();
-  assert(text.includes('420.870'),'base familiar incorrecta');
+  assert(text.includes('429.288'),'base familiar incorrecta');
   assert(text.includes('197.163,69'),'aporte computable incorrecto');
-  assert(text.includes('223.706,31'),'neto familiar incorrecto');
+  assert(text.includes('232.124,31'),'neto familiar incorrecto');
   assert(!text.includes('205.912,99'),'persiste el factor anterior de 2,55');
   assert(!text.includes('337.073,39'),'se descontó el importe del recibo sin convertirlo');
   assert((await page.locator('#sumAporteRecibo').innerText()).includes('84.619,61'),'resumen no conserva el importe ingresado');
@@ -207,7 +207,7 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   await page.locator('#verCotizacionBtn').click();
   const preview=await page.locator('#previewContent').innerText();
   assert(preview.includes('- $ 197.163,69'),'propuesta no descuenta el aporte exacto');
-  assert(preview.includes('$ 223.706,31'),'propuesta no coincide con pantalla');
+  assert(preview.includes('$ 232.124,31'),'propuesta no coincide con pantalla');
   await page.close();
 });
 
@@ -254,6 +254,33 @@ await test('Recalcular libera el filtro del plan anteriormente elegido',async()=
   assert(await page.locator('#promocionPremedic option[value="tc15"]').count()===0,'C-100 permite un beneficio incompatible');
   await page.locator('#cotizarBtn').click();
   assert(await page.locator('#promocionPremedic option[value="tc15"]').count()===1,'quedó el filtro del C-100 anterior');
+  await page.close();
+});
+
+await test('Promociones noviembre muestran condiciones, códigos y requisitos de afinidad',async()=>{
+  const page=await browser.newPage();
+  await page.clock.install({time:new Date('2026-11-04T12:00:00-03:00')});
+  await page.goto(`${BASE}/index.html#cotizador`,{waitUntil:'networkidle'});
+  await page.locator('#promocionPremedic').selectOption('promo40');
+  assert((await page.locator('#promoCondicionesPremedic').innerText()).includes('3 meses'),'falta duración del 40%');
+  assert((await page.locator('#promoCondicionesPremedic').innerText()).includes('tarjeta de crédito'),'falta condición de pago Directo');
+  assert(!await page.locator('#ordenCompraPremedic').isVisible(),'regalo Desregulado aparece en Directo');
+  await page.locator('#zona').selectOption('interior');
+  assert(await page.locator('#promocionPremedic option[value="monotributo"]').count()===1,'monotributo falta en Directo Interior');
+  await page.locator('#modalidad').selectOption('desregulado');
+  await page.locator('#zona').selectOption('misiones');
+  await page.locator('#promocionPremedic').selectOption('interior25');
+  const label=await page.locator('#promocionPremedic option:checked').innerText();
+  assert(label.includes('MIS25')&&label.includes('31/01/2027'),'faltan código o vencimiento');
+  assert((await page.locator('#ordenCompraPremedic').innerText()).includes('$19.000'),'falta orden de compra');
+  await page.locator('#afinidadPremedic summary').click();
+  const conditions=await page.locator('#afinidadPremedic').innerText();
+  assert(conditions.includes('$1.400.000')&&conditions.includes('4 cápitas'),'faltan condiciones de afinidad');
+  assert(conditions.includes('03/11/2026'),'falta referencia al listado comercial vigente');
+  await page.clock.setFixedTime(new Date('2027-02-01T12:00:00-03:00'));
+  await page.evaluate(()=>window.dispatchEvent(new Event('focus')));
+  assert(await page.locator('#promocionPremedic').inputValue()==='ninguna','beneficio vencido sigue seleccionado');
+  assert(!await page.locator('#ordenCompraPremedic').isVisible(),'regalo sigue disponible después del cierre');
   await page.close();
 });
 

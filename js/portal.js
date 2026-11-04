@@ -80,6 +80,17 @@
         <select id="categoriaMonotributo"></select>
         <small id="aporteMonotributoInfo"></small>
       </label>
+      <div class="premedic-commercial-info">
+        <p id="promoCondicionesPremedic" aria-live="polite"></p>
+        <p id="ordenCompraPremedic" class="hidden">Regalo por afiliación Desregulada: orden de compra de $19.000 en supermercados determinados al finalizar el trámite. Altas hasta el 31/01/2027. Este regalo no se descuenta de la cuota.</p>
+        <details id="afinidadPremedic" class="hidden">
+          <summary>Grupos de afinidad y empresas</summary>
+          <p>Para empresas incluidas en el listado: Plan 300 sin diferencias mensuales, sujeto a requisitos de ingreso. Sueldo mínimo de $1.400.000 y hasta 4 cápitas; grupos mayores requieren consulta si el sueldo supera ampliamente el mínimo. La foto de legajo con nota debe aclarar «Grupo de afinidad Plan 300» y la empresa.</p>
+          <p>Supermercados: Plan 200 o 300 según la grilla comercial correspondiente. El listado también distingue empresas con plan por aportes, con ejecutivo exclusivo; esa condición no equivale a una afinidad Plan 300. Para pasar de plan por aportes a afinidad 300 en Línea 216 se requieren 3 referidos de la misma empresa.</p>
+          <p>Verificar CUIT, empresa y zona con el listado comercial vigente del 03/11/2026 antes de solicitar el beneficio.</p>
+        </details>
+        <small>Condiciones comerciales actualizadas al 04/11/2026.</small>
+      </div>
     `;
     aporteWrap.insertAdjacentElement('afterend', panel);
 
@@ -107,6 +118,11 @@
     }
 
     function updateMonotributoUI() {
+      const promo = promoApi.getPromo();
+      document.getElementById('promoCondicionesPremedic').textContent = promo.descripcion || '';
+      const desregulado = modalidad.value === 'desregulado';
+      document.getElementById('afinidadPremedic').classList.toggle('hidden', !desregulado);
+      document.getElementById('ordenCompraPremedic').classList.toggle('hidden', !desregulado || promoApi.businessDate() > '2027-01-31');
       const isMono = promoSelect.value === 'monotributo';
       categoriaWrap.classList.toggle('hidden', !isMono);
       if (isMono) {
@@ -228,7 +244,7 @@
     const style = document.createElement('style');
     style.textContent = `
       .premedic-promo-panel{margin-top:16px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(220px,.9fr) minmax(220px,.9fr);gap:18px;align-items:end;padding:20px 22px;border:1px solid rgba(13,138,122,.18);border-radius:18px;background:linear-gradient(135deg,rgba(13,138,122,.07),rgba(255,255,255,.92))}
-      .premedic-promo-copy span{display:block;font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0d8a7a}.premedic-promo-copy strong{display:block;margin-top:4px;font-size:1rem}.premedic-promo-copy p{margin:6px 0 0;color:#61716d;font-size:.86rem;line-height:1.45}.premedic-promo-field{margin:0}.premedic-promo-field small{display:block;margin-top:6px;color:#0d8a7a;font-weight:700}.premedic-promo-panel .hidden{display:none!important}
+      .premedic-promo-copy span{display:block;font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0d8a7a}.premedic-promo-copy strong{display:block;margin-top:4px;font-size:1rem}.premedic-promo-copy p{margin:6px 0 0;color:#61716d;font-size:.86rem;line-height:1.45}.premedic-promo-field{margin:0}.premedic-promo-field small{display:block;margin-top:6px;color:#0d8a7a;font-weight:700}.premedic-promo-panel .hidden{display:none!important}.premedic-commercial-info{grid-column:1/-1;color:#4c635c;font-size:.86rem;line-height:1.5}.premedic-commercial-info p{margin:0 0 10px}.premedic-commercial-info p:empty{display:none}.premedic-commercial-info a{color:#08776b;text-decoration:underline}.premedic-commercial-info details{margin:0 0 12px}.premedic-commercial-info summary{cursor:pointer;font-weight:700;margin-bottom:8px}
       @media(max-width:850px){.premedic-promo-panel{grid-template-columns:1fr}.premedic-promo-copy{margin-bottom:2px}}
     `;
     document.head.appendChild(style);
@@ -237,7 +253,7 @@
   }
 
   const promoScript = document.createElement('script');
-  promoScript.src = 'js/promociones-premedic.js?v=20261022-flash25';
+  promoScript.src = 'js/promociones-premedic.js?v=20261104-promos-nov';
   promoScript.onload = initPromociones;
   document.head.appendChild(promoScript);
 })();

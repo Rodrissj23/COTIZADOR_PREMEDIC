@@ -116,7 +116,7 @@ function close(actual, expected, label) {
 
 // Cuadro 2 de Condiciones Monotributo Nov 26: columna recibida/descontada.
 // Verificar el total de todos los planes y que no se extienda el beneficio
-// a Desregulado, C-100 ni Interior sin una zona comercial habilitada.
+// a Desregulado, C-100 y está disponible en AMBA e Interior.
 const aportesNoviembre = { A:23125, B:23125, C:23125, D:27482, E:33515,
   F:38542, G:41588, H:49937, I:61667, J:69208, K:79094 };
 let monotributoCases = 0;
@@ -128,7 +128,7 @@ for (const [categoria, aporte] of Object.entries(aportesNoviembre)) {
         const result = quote({ modalidad, zona, edad, promo:'monotributo', categoria });
         assert.ok(result.ok);
         for (const p of result.plans) {
-          const aplica = modalidad === 'directo' && zona !== 'interior' && p.plan !== 'C-100';
+          const aplica = modalidad === 'directo' && p.plan !== 'C-100';
           const descuento = aplica ? aporte : 0;
           assert.equal(p.descuentoPromocion, descuento, `${categoria}/${modalidad}/${zona}/${p.plan}`);
           assert.equal(p.aporteMonotributo, descuento);
@@ -143,10 +143,10 @@ for (const [categoria, aporte] of Object.entries(aportesNoviembre)) {
 // 4) Desregulado + TC 15% + aporte del recibo de $30.000.
 {
   const p = plan(quote({ modalidad:'desregulado', zona:'amba', promo:'tc15', aporteRecibo:30000 }), '200');
-  assert.equal(p.bruto, 107480);
-  close(p.descuentoPromocion, 16122.00, 'TC 15% Desregulado');
+  assert.equal(p.bruto, 109630);
+  close(p.descuentoPromocion, 16444.50, 'TC 15% Desregulado');
   close(p.aporteComputable, 69900, 'Aporte computable');
-  close(p.neto, 21458.00, 'Neto Desregulado TC15 + aporte');
+  close(p.neto, 23285.50, 'Neto Desregulado TC15 + aporte');
 }
 
 // Filtros de zona / segmento y exclusividad.
@@ -166,5 +166,25 @@ for (const [categoria, aporte] of Object.entries(aportesNoviembre)) {
   assert.equal(onePromo.id, 'promo40');
 }
 
-console.log(`Promociones QA OK: ${flashCases} escenarios FLASH25 y ${monotributoCases} casos de monotributo noviembre 2026, vencimientos y filtros.`);
+// Cuadro actualizado de noviembre: cierre de admisión y códigos regionales.
+for (const modalidad of ['directo', 'desregulado']) {
+  for (const [zona, codigo] of [['mendoza','MZA25'],['misiones','MIS25'],['tucuman','TUC25']]) {
+    const p = plan(quote({modalidad,zona,promo:'interior25',fechaCotizacion:'2027-01-31'}),'200');
+    assert.equal(p.promocion.codigo,codigo);
+    assert.equal(p.descuentoPromocion,p.bruto*.25);
+    assert.equal(plan(quote({modalidad,zona,promo:'interior25',fechaCotizacion:'2027-02-01'}),'200').descuentoPromocion,0);
+  }
+  for (const promo of ['tc15','cbu15','efectivo10','promo40']) {
+    assert.ok(plan(quote({modalidad,promo,fechaCotizacion:'2027-01-31'}),'300').descuentoPromocion>0);
+    assert.equal(plan(quote({modalidad,promo,fechaCotizacion:'2027-02-01'}),'300').descuentoPromocion,0);
+    assert.equal(plan(quote({modalidad,promo,fechaCotizacion:new Date('2027-02-01T02:59:59Z')}),'300').descuentoPromocion>0,true);
+    assert.equal(plan(quote({modalidad,promo,fechaCotizacion:new Date('2027-02-01T03:00:00Z')}),'300').descuentoPromocion,0);
+  }
+}
+assert.equal(PremedicPromos.getPromo('promo40').duracionMeses,3);
+assert.ok(PremedicPromos.getPromo('promo40').descripcion.includes('tarjeta de crédito'));
+assert.equal(PremedicPromos.getPromo('interior25').permanente,true);
+assert.ok(PremedicPromos.promosDisponibles('directo','interior').some(p=>p.id==='monotributo'));
+
+console.log(`Promociones QA OK: ${flashCases} escenarios FLASH25 y ${monotributoCases} casos de monotributo noviembre 2026; promociones al 31/01/2027 y códigos MZA25/MIS25/TUC25 verificados.`);
 

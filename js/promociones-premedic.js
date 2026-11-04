@@ -17,13 +17,13 @@
 
   const LEGACY_PROMOS = [
     { id: 'ninguna', label: 'Sin beneficio', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['C-100', '200', '300', '400', '500'], tipo: 'none', valor: 0 },
-    { id: 'monotributo', label: 'Monotributo · descuento por categoría', modalidades: ['directo'], zonas: ['amba', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'monotributo', valor: 0 },
-    { id: 'tc15', label: 'Débito automático en TC · 15%', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 15 },
-    { id: 'cbu15', label: 'Débito en CBU · 15%', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 15 },
-    { id: 'efectivo10', label: 'Efectivo / débito / transferencia · 10%', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 10 },
-    { id: 'promo40', label: 'Promo 40% AMBA / Córdoba', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 40 },
+    { id: 'monotributo', label: 'Monotributo · descuento por categoría', modalidades: ['directo'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'monotributo', valor: 0 },
+    { id: 'tc15', codigo: 'TC15', label: 'TC15 · débito automático en TC · 15% permanente', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 15, permanente: true, vigenteHasta: '2027-01-31' },
+    { id: 'cbu15', codigo: 'CBU15', label: 'CBU15 · débito en CBU · 15% permanente', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 15, permanente: true, vigenteHasta: '2027-01-31' },
+    { id: 'efectivo10', codigo: 'EDT10', label: 'EDT10 · efectivo / débito / transferencia · 10% permanente', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 10, permanente: true, vigenteHasta: '2027-01-31' },
+    { id: 'promo40', codigosPorModalidad: { directo: 'PRE40' }, label: '40% por 3 meses · AMBA / Córdoba', descripcion: 'Duración: 3 meses. En Directo requiere débito en tarjeta de crédito; en Desregulado admite todos los medios de pago.', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 40, duracionMeses: 3, vigenteHasta: '2027-01-31' },
     { id: 'flash25', codigo: 'FLASH25', label: '🔥 FLASH25 — 25% permanente · AMBA y Córdoba', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['300', '400', '500'], tipo: 'porcentaje', valor: 25, permanente: true, vigenteDesde: '2026-10-14', vigenteHasta: '2026-11-20', vigenteHastaPorModalidad: { directo: '2026-11-20', desregulado: '2026-10-31' } },
-    { id: 'interior25', label: 'Promo 25% Interior Nuevo', modalidades: ['directo', 'desregulado'], zonas: ['mendoza', 'misiones', 'tucuman'], planes: ['C-100', '200', '300', '400', '500'], tipo: 'porcentaje', valor: 25 }
+    { id: 'interior25', codigosPorZona: { mendoza: 'MZA25', misiones: 'MIS25', tucuman: 'TUC25' }, label: '25% permanente · Interior Nuevo', descripcion: 'Mendoza, Misiones y Tucumán. Cualquier medio de pago.', modalidades: ['directo', 'desregulado'], zonas: ['mendoza', 'misiones', 'tucuman'], planes: ['C-100', '200', '300', '400', '500'], tipo: 'porcentaje', valor: 25, permanente: true, vigenteHasta: '2027-01-31' }
   ];
   const PROMOS = Object.freeze(window.PremedicControl
     ? [...LEGACY_PROMOS.filter(p => ['ninguna', 'monotributo'].includes(p.id)), ...window.PremedicControl.promotions]
@@ -66,9 +66,14 @@
       && (!hasta || current <= hasta);
   }
 
-  function promoPorModalidad(promo, modalidad) {
-    const hasta = promo.vigenteHastaPorModalidad?.[modalidad];
-    return hasta ? { ...promo, label: `${promo.label} · Válido hasta el ${hasta.split('-').reverse().join('/')}` } : promo;
+  function promoPorModalidad(promo, modalidad, zona) {
+    const hasta = promo.vigenteHastaPorModalidad?.[modalidad] || promo.vigenteHasta;
+    const codigo = promo.codigosPorZona?.[zona] || promo.codigosPorModalidad?.[modalidad] || promo.codigo;
+    let label = promo.label;
+    if (promo.codigosPorZona && codigo) label = `${codigo} · ${label}`;
+    if (promo.id === 'promo40' && modalidad === 'directo') label = `PRE40 · ${label} · débito en TC`;
+    if (hasta) label += ` · Altas hasta el ${hasta.split('-').reverse().join('/')}`;
+    return { ...promo, codigo, label };
   }
 
   function promoAplica({ promo = getPromo(), modalidad, zona, plan, fecha, edad }) {
@@ -81,7 +86,7 @@
   }
 
   function aplicarPromocion(bruto, { modalidad, zona, plan, fecha, edad }) {
-    const promo = promoPorModalidad(getPromo(), modalidad);
+    const promo = promoPorModalidad(getPromo(), modalidad, zona);
     if (!promoAplica({ promo, modalidad, zona, plan, fecha, edad })) {
       return { promo: PROMOS[0], descuento: 0, subtotal: bruto, aporteMonotributo: 0 };
     }
@@ -111,7 +116,7 @@
       && promoVigente(p, fecha, modalidad)
       && (p.edadDesde == null || (Number.isFinite(edad) && edad >= p.edadDesde))
       && (p.edadHasta == null || (Number.isFinite(edad) && edad <= p.edadHasta)))
-      .map(p => promoPorModalidad(p, modalidad));
+      .map(p => promoPorModalidad(p, modalidad, zona));
   }
 
   window.PremedicPromos = {

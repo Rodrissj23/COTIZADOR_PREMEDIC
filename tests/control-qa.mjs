@@ -14,7 +14,7 @@ function load(config, adapter=true) {
 const state={nombre:'QA',edadTitular:35,edadPareja:40,composicion:'individual',hijos:[],modalidad:'directo',zona:'amba',aporteRecibo:5000,fechaCotizacion:'2026-10-16'};
 const legacy=load(null,false), bridged=load(fixture);
 assert(!bridged.PremedicControlError);
-assert.equal(bridged.PremedicMotor.vigenciaPara({...state,modalidad:'desregulado'}),'Noviembre 2026');
+assert.equal(bridged.PremedicMotor.vigenciaPara({...state,modalidad:'desregulado'}),'Diciembre 2026');
 assert.equal(bridged.PremedicMotor.vigenciaPara({...state,modalidad:'directo'}),'Noviembre 2026');
 let cases=0;
 for (const modalidad of ['directo','desregulado']) for(const zona of ['amba','interior','cordoba','mendoza','misiones','tucuman']) for(const edadTitular of [1,29,30,39,40,49,50,59]) for(const [composicion,hijos] of [['individual',[]],['pareja',[]],['titular_hijos',[0,10,24]],['pareja_hijos',[0]],['pareja_hijos',[0,5]],['pareja_hijos',[0,5,10]],['pareja_hijos',[0,5,10,24]]]) {
