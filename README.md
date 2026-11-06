@@ -8,12 +8,12 @@ Directos AMBA e Interior: noviembre 2026. Desregulados AMBA e Interior: diciembr
 Actualización del 19/10/2026: 396 importes contrastados con las cuatro nóminas enviadas. La nueva nómina Desregulados AMBA reemplaza la recibida el 16/10 porque sus valores difieren. Las promociones se conservan por indicación de Rodri, aunque las nóminas contienen una nota de suspensión de bonificaciones.
 
 ## Reglas incluidas
-- FLASH25: 25% permanente para planes 300/400/500 en AMBA y Córdoba. Admisión de Directos hasta el 20/11/2026 y de Desregulados hasta el 31/10/2026, inclusive, con fecha de Argentina. Se aplica antes de descontar los aportes y no se acumula con otros beneficios. La fecha de admisión no limita la permanencia del descuento otorgado.
+- FLASH25: 25% permanente para planes 300/400/500 en AMBA y Córdoba. Admisión de Directos y Desregulados hasta el 20/11/2026, inclusive, con fecha de Argentina. Se aplica antes de descontar los aportes y no se acumula con otros beneficios. La fecha de admisión no limita la permanencia del descuento otorgado.
 - Promociones de noviembre: TC15 y CBU15 (15% permanente), EDT10 (10% permanente), 40% por 3 meses AMBA/Córdoba (Directo con débito en TC; Desregulado con cualquier medio de pago) y 25% permanente en Mendoza/Misiones/Tucumán (MZA25/MIS25/TUC25). Admisión hasta el 31/01/2027, inclusive; el cierre de admisión no limita la permanencia del descuento otorgado.
 - Monotributo Directo: planes 200–500, AMBA e Interior, conserva los importes por categoría de noviembre.
 - Regalo Desregulados: orden de compra de $19.000 en supermercados determinados al finalizar la afiliación, para altas hasta el 31/01/2027; se informa por separado y no se resta de la cuota.
 - Afinidad: condiciones del listado oficial del 03/11/2026 visibles en el cotizador; consultar el documento comercial para verificar CUIT, empresa y zona. Plan 300 requiere empresa habilitada, sueldo mínimo de $1.400.000 y hasta 4 cápitas (grupos mayores a consultar); no se adjudica automáticamente el plan empresarial. Supermercados requieren su grilla 200/300. Plan por aportes y afinidad 300 se distinguen en el documento.
-- Las nóminas de diciembre contienen una leyenda genérica de bonificaciones suspendidas. Se respetan las promociones específicas del cuadro actualizado enviado junto con ellas y la confirmación expresa de MIS25/MZA25/TUC25. FLASH25 conserva sus vencimientos previamente confirmados; no se extendió por ausencia de una nueva fecha.
+- Las nóminas de diciembre contienen una leyenda genérica de bonificaciones suspendidas. Se respetan las promociones específicas del cuadro actualizado enviado junto con ellas y la confirmación expresa de MIS25/MZA25/TUC25. FLASH25 se extiende hasta el 20/11/2026 inclusive para Directos y Desregulados en AMBA y Córdoba, según el comunicado del 06/11/2026.
 - Planes: C-100, 200, 300, 400, 500 y PMO.
 - C-100 disponible únicamente en AMBA.
 - Modalidades Directo y Desregulado con tarifarios propios.

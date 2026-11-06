@@ -29,7 +29,7 @@ function quote({ modalidad='directo', zona='amba', edad=35, aporteRecibo=0, prom
   });
 }
 
-// FLASH25: AMBA y Córdoba, Directo hasta 20/11 y Desregulado hasta 31/10.
+// FLASH25: AMBA y Córdoba, Directo y Desregulado hasta el 20/11 inclusive.
 {
   for (const modalidad of ['directo', 'desregulado']) {
     for (const planName of ['300', '400', '500']) {
@@ -55,9 +55,9 @@ function quote({ modalidad='directo', zona='amba', edad=35, aporteRecibo=0, prom
 
 let flashCases = 0;
 for (const modalidad of ['directo', 'desregulado']) {
-  const until = modalidad === 'directo' ? '2026-11-20' : '2026-10-31';
+  const until = '2026-11-20';
   for (const zona of ['amba', 'cordoba', 'interior', 'mendoza', 'misiones', 'tucuman']) {
-    for (const fechaCotizacion of ['2026-10-13', '2026-10-14', '2026-10-22', '2026-10-31', '2026-11-01', '2026-11-20', '2026-11-21']) {
+    for (const fechaCotizacion of ['2026-10-13', '2026-10-14', '2026-10-22', '2026-10-31', '2026-11-01', '2026-11-06', '2026-11-20', '2026-11-21']) {
       const result = quote({ modalidad, zona, promo:'flash25', aporteRecibo:10000, fechaCotizacion });
       for (const p of result.plans.filter(p => !p.esPMO)) {
         const applies = ['amba', 'cordoba'].includes(zona) && ['300', '400', '500'].includes(p.plan)
@@ -72,8 +72,8 @@ for (const modalidad of ['directo', 'desregulado']) {
     }
   }
 }
-assert.ok(PremedicPromos.promosDisponibles('desregulado','amba','300',new Date('2026-11-01T02:59:59Z')).some(p=>p.id==='flash25'));
-assert.ok(!PremedicPromos.promosDisponibles('desregulado','amba','300',new Date('2026-11-01T03:00:00Z')).some(p=>p.id==='flash25'));
+assert.ok(PremedicPromos.promosDisponibles('desregulado','amba','300',new Date('2026-11-21T02:59:59Z')).some(p=>p.id==='flash25'));
+assert.ok(!PremedicPromos.promosDisponibles('desregulado','amba','300',new Date('2026-11-21T03:00:00Z')).some(p=>p.id==='flash25'));
 assert.ok(PremedicPromos.promosDisponibles('directo','cordoba','500',new Date('2026-11-21T02:59:59Z')).some(p=>p.id==='flash25'));
 assert.ok(!PremedicPromos.promosDisponibles('directo','cordoba','500',new Date('2026-11-21T03:00:00Z')).some(p=>p.id==='flash25'));
 
