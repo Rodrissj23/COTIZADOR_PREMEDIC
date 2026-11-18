@@ -22,7 +22,7 @@
     { id: 'cbu15', codigo: 'CBU15', label: 'CBU15 · débito en CBU · 15% permanente', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 15, permanente: true, vigenteHasta: '2027-01-31' },
     { id: 'efectivo10', codigo: 'EDT10', label: 'EDT10 · efectivo / débito / transferencia · 10% permanente', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'interior', 'cordoba', 'mendoza', 'misiones', 'tucuman'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 10, permanente: true, vigenteHasta: '2027-01-31' },
     { id: 'promo40', codigosPorModalidad: { directo: 'PRE40' }, label: '40% por 3 meses · AMBA / Córdoba', descripcion: 'Duración: 3 meses. En Directo requiere débito en tarjeta de crédito; en Desregulado admite todos los medios de pago.', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['200', '300', '400', '500'], tipo: 'porcentaje', valor: 40, duracionMeses: 3, vigenteHasta: '2027-01-31' },
-    { id: 'flash25', codigo: 'FLASH25', label: '🔥 FLASH25 — 25% permanente · AMBA y Córdoba', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['300', '400', '500'], tipo: 'porcentaje', valor: 25, permanente: true, vigenteDesde: '2026-10-14', vigenteHasta: '2026-11-20', vigenteHastaPorModalidad: { directo: '2026-11-20', desregulado: '2026-11-20' } },
+    { id: 'flash25', codigo: 'FLASH25', label: '🔥 FLASH25 — 25% permanente · AMBA y Córdoba', modalidades: ['directo', 'desregulado'], zonas: ['amba', 'cordoba'], planes: ['300', '400', '500'], tipo: 'porcentaje', valor: 25, permanente: true, vigenteDesde: '2026-10-14', vigenteHasta: '2026-11-24', vigenteHastaHora: '12:00', vigenteHastaPorModalidad: { directo: '2026-11-24', desregulado: '2026-11-24' } },
     { id: 'interior25', codigosPorZona: { mendoza: 'MZA25', misiones: 'MIS25', tucuman: 'TUC25' }, label: '25% permanente · Interior Nuevo', descripcion: 'Mendoza, Misiones y Tucumán. Cualquier medio de pago.', modalidades: ['directo', 'desregulado'], zonas: ['mendoza', 'misiones', 'tucuman'], planes: ['C-100', '200', '300', '400', '500'], tipo: 'porcentaje', valor: 25, permanente: true, vigenteHasta: '2027-01-31' }
   ];
   const PROMOS = Object.freeze(window.PremedicControl
@@ -62,7 +62,13 @@
     const hasta = promo.vigenteHastaPorModalidad?.[modalidad] || promo.vigenteHasta;
     if (!promo.vigenteDesde && !hasta) return true;
     const current = businessDate(fecha);
-    return (!promo.vigenteDesde || current >= promo.vigenteDesde)
+    // Las fechas sin hora representan el inicio del día comercial de Argentina.
+    const instante = typeof fecha === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(fecha)
+      ? new Date(`${fecha}T00:00:00-03:00`)
+      : new Date(fecha ?? Date.now());
+    const dentroDelHorario = !hasta || !promo.vigenteHastaHora
+      || instante.getTime() < Date.parse(`${hasta}T${promo.vigenteHastaHora}:00-03:00`);
+    return dentroDelHorario && (!promo.vigenteDesde || current >= promo.vigenteDesde)
       && (!hasta || current <= hasta);
   }
 
@@ -72,7 +78,7 @@
     let label = promo.label;
     if (promo.codigosPorZona && codigo) label = `${codigo} · ${label}`;
     if (promo.id === 'promo40' && modalidad === 'directo') label = `PRE40 · ${label} · débito en TC`;
-    if (hasta) label += ` · Altas hasta el ${hasta.split('-').reverse().join('/')}`;
+    if (hasta) label += ` · Altas hasta el ${hasta.split('-').reverse().join('/')}${promo.vigenteHastaHora ? ` a las ${promo.vigenteHastaHora} hs (Argentina)` : ''}`;
     return { ...promo, codigo, label };
   }
 

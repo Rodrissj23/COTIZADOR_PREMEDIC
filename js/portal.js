@@ -253,7 +253,7 @@
   }
 
   const promoScript = document.createElement('script');
-  promoScript.src = 'js/promociones-premedic.js?v=20261104-promos-nov';
+  promoScript.src = 'js/promociones-premedic.js?v=20261118-flash25-24nov12';
   promoScript.onload = initPromociones;
   document.head.appendChild(promoScript);
 })();

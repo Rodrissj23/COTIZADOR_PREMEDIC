@@ -29,7 +29,7 @@ function quote({ modalidad='directo', zona='amba', edad=35, aporteRecibo=0, prom
   });
 }
 
-// FLASH25: AMBA y Córdoba, Directo y Desregulado hasta el 20/11 inclusive.
+// FLASH25: AMBA y Córdoba, Directo y Desregulado hasta el 24/11 a las 12:00 hs de Argentina.
 {
   for (const modalidad of ['directo', 'desregulado']) {
     for (const planName of ['300', '400', '500']) {
@@ -55,9 +55,9 @@ function quote({ modalidad='directo', zona='amba', edad=35, aporteRecibo=0, prom
 
 let flashCases = 0;
 for (const modalidad of ['directo', 'desregulado']) {
-  const until = '2026-11-20';
+  const until = '2026-11-24';
   for (const zona of ['amba', 'cordoba', 'interior', 'mendoza', 'misiones', 'tucuman']) {
-    for (const fechaCotizacion of ['2026-10-13', '2026-10-14', '2026-10-22', '2026-10-31', '2026-11-01', '2026-11-06', '2026-11-20', '2026-11-21']) {
+    for (const fechaCotizacion of ['2026-10-13', '2026-10-14', '2026-10-22', '2026-10-31', '2026-11-01', '2026-11-06', '2026-11-20', '2026-11-21', '2026-11-24', '2026-11-25']) {
       const result = quote({ modalidad, zona, promo:'flash25', aporteRecibo:10000, fechaCotizacion });
       for (const p of result.plans.filter(p => !p.esPMO)) {
         const applies = ['amba', 'cordoba'].includes(zona) && ['300', '400', '500'].includes(p.plan)
@@ -72,10 +72,27 @@ for (const modalidad of ['directo', 'desregulado']) {
     }
   }
 }
-assert.ok(PremedicPromos.promosDisponibles('desregulado','amba','300',new Date('2026-11-21T02:59:59Z')).some(p=>p.id==='flash25'));
-assert.ok(!PremedicPromos.promosDisponibles('desregulado','amba','300',new Date('2026-11-21T03:00:00Z')).some(p=>p.id==='flash25'));
-assert.ok(PremedicPromos.promosDisponibles('directo','cordoba','500',new Date('2026-11-21T02:59:59Z')).some(p=>p.id==='flash25'));
-assert.ok(!PremedicPromos.promosDisponibles('directo','cordoba','500',new Date('2026-11-21T03:00:00Z')).some(p=>p.id==='flash25'));
+// El corte es exactamente a las 12:00 de Argentina (15:00 UTC), en ambas modalidades.
+for (const modalidad of ['directo', 'desregulado']) {
+  for (const zona of ['amba', 'cordoba']) {
+    for (const [instante, aplica] of [
+      ['2026-11-24T11:59:59.999-03:00', true],
+      ['2026-11-24T12:00:00-03:00', false],
+      ['2026-11-24T12:00:00.001-03:00', false],
+      ['2026-11-24T14:59:59.999Z', true],
+      ['2026-11-24T15:00:00Z', false]
+    ]) {
+      for (const fecha of [instante, new Date(instante)]) {
+        const disponible = PremedicPromos.promosDisponibles(modalidad, zona, '300', fecha).find(p => p.id === 'flash25');
+        assert.equal(Boolean(disponible), aplica, `${modalidad}/${zona}/${instante}`);
+        if (disponible) assert.ok(disponible.label.includes('12:00 hs (Argentina)'));
+        for (const p of quote({modalidad, zona, promo:'flash25', fechaCotizacion:fecha}).plans.filter(p => !p.esPMO)) {
+          close(p.descuentoPromocion, aplica && ['300','400','500'].includes(p.plan) ? p.bruto * .25 : 0, `Corte horario ${p.plan}`);
+        }
+      }
+    }
+  }
+}
 
 function plan(result, name) {
   const found = result.plans.find(p => p.plan === name);

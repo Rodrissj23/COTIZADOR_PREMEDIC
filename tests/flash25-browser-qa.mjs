@@ -110,18 +110,18 @@ await test('Cambiar AMBA a Interior elimina FLASH25 automáticamente', async () 
   await page.close();
 });
 
-await test('El 06/11/2026 FLASH25 está extendida hasta el 20/11 en ambas modalidades', async () => {
-  const page = await pageAt('2026-11-06');
+await test('El 18/11/2026 FLASH25 está extendida hasta el 24/11 a las 12:00 en ambas modalidades', async () => {
+  const page = await pageAt('2026-11-18');
   assert((await optionValues(page)).includes('flash25'), 'FLASH25 falta durante la extensión');
-  assert((await page.locator('#promocionPremedic option[value="flash25"]').innerText()).includes('20/11/2026'),'Directo no muestra su vencimiento');
+  assert((await page.locator('#promocionPremedic option[value="flash25"]').innerText()).includes('24/11/2026 a las 12:00 hs (Argentina)'),'Directo no muestra su vencimiento');
   await page.locator('#zona').selectOption('cordoba');
   assert((await optionValues(page)).includes('flash25'),'FLASH25 falta en Córdoba');
   await page.locator('#modalidad').selectOption('desregulado');
-  assert((await page.locator('#promocionPremedic option[value="flash25"]').innerText()).includes('20/11/2026'),'Desregulado no muestra su vencimiento');
+  assert((await page.locator('#promocionPremedic option[value="flash25"]').innerText()).includes('24/11/2026 a las 12:00 hs (Argentina)'),'Desregulado no muestra su vencimiento');
   await page.close();
 });
 
-for (const [fecha, directo, desregulado] of [['2026-10-31',true,true],['2026-11-01',true,true],['2026-11-06',true,true],['2026-11-20',true,true],['2026-11-21',false,false]]) {
+for (const [fecha, directo, desregulado] of [['2026-10-31',true,true],['2026-11-01',true,true],['2026-11-06',true,true],['2026-11-20',true,true],['2026-11-21',true,true],['2026-11-24',false,false],['2026-11-25',false,false]]) {
   await test(`Vigencia por modalidad al ${fecha}`,async()=>{
     const page=await pageAt(fecha);
     await page.locator('#zona').selectOption('cordoba');
@@ -133,7 +133,8 @@ for (const [fecha, directo, desregulado] of [['2026-10-31',true,true],['2026-11-
 }
 
 await test('Al volver después del vencimiento Desregulado se descarta también el importe FLASH anterior',async()=>{
-  const page=await pageAt('2026-11-20');
+  const page=await pageAt('2026-11-23');
+  await page.clock.setFixedTime(new Date('2026-11-24T11:59:59-03:00'));
   await page.locator('#nombre').fill('Vencimiento FLASH');
   await page.locator('#edadTitular').fill('35');
   await page.locator('#zona').selectOption('cordoba');
@@ -142,7 +143,7 @@ await test('Al volver después del vencimiento Desregulado se descarta también 
   await page.locator('#promocionPremedic').selectOption('flash25');
   await page.locator('#cotizarBtn').click();
   const before=await page.locator('.plan-card[data-plan="300"] .plan-price').innerText();
-  await page.clock.setFixedTime(new Date('2026-11-21T12:00:00-03:00'));
+  await page.clock.setFixedTime(new Date('2026-11-24T12:00:00-03:00'));
   await page.evaluate(()=>window.dispatchEvent(new Event('focus')));
   assert(await page.locator('#promocionPremedic').inputValue()==='ninguna','quedó seleccionada una campaña vencida');
   assert((await page.locator('.plan-card[data-plan="300"] .plan-price').innerText())!==before,'quedó un precio de la campaña vencida');
