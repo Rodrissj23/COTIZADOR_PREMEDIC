@@ -3,7 +3,7 @@
 Cotizador comercial web de Premedic en HTML, CSS y JavaScript.
 
 ## Estado
-Directos AMBA e Interior: noviembre 2026. Desregulados AMBA e Interior: diciembre 2026, disponibles para nuevos ingresos desde el envío comercial del 04/11/2026.
+Directos y Desregulados AMBA e Interior: diciembre 2026. Actualizados el 19/11/2026 con las cuatro nóminas oficiales recibidas (396 importes, incluidas tarifas familiares y adicionales).
 
 Actualización del 19/10/2026: 396 importes contrastados con las cuatro nóminas enviadas. La nueva nómina Desregulados AMBA reemplaza la recibida el 16/10 porque sus valores difieren. Las promociones se conservan por indicación de Rodri, aunque las nóminas contienen una nota de suspensión de bonificaciones.
 

@@ -107,17 +107,17 @@ function close(actual, expected, label) {
 // 1) Directo AMBA + Promo 40%.
 {
   const p = plan(quote({ modalidad:'directo', zona:'amba', promo:'promo40' }), '200');
-  assert.equal(p.bruto, 118765);
-  close(p.descuentoPromocion, 47506.00, '40% Plan 200');
-  close(p.neto, 71259.00, 'Neto 40% Plan 200');
+  assert.equal(p.bruto, 121735);
+  close(p.descuentoPromocion, 48694.00, '40% Plan 200');
+  close(p.neto, 73041.00, 'Neto 40% Plan 200');
 }
 
 // 2) Directo Mendoza + Promo 25% Interior Nuevo.
 {
   const p = plan(quote({ modalidad:'directo', zona:'mendoza', promo:'interior25' }), '200');
-  assert.equal(p.bruto, 118765);
-  close(p.descuentoPromocion, 29691.25, '25% Mendoza Plan 200');
-  close(p.neto, 89073.75, 'Neto 25% Mendoza Plan 200');
+  assert.equal(p.bruto, 121735);
+  close(p.descuentoPromocion, 30433.75, '25% Mendoza Plan 200');
+  close(p.neto, 91301.25, 'Neto 25% Mendoza Plan 200');
 }
 
 // 3) Directo Monotributo categoría D.
@@ -126,7 +126,7 @@ function close(actual, expected, label) {
   const p = plan(result, '200');
   assert.equal(PremedicPromos.aporteMonotributo('D'), 27482);
   assert.equal(p.descuentoPromocion, 27482);
-  assert.equal(p.neto, 91283);
+  assert.equal(p.neto, 94253);
   const c100 = plan(result, 'C-100');
   assert.equal(c100.descuentoPromocion, 0, 'Monotributo no debe aplicarse a C-100');
 }
@@ -160,10 +160,10 @@ for (const [categoria, aporte] of Object.entries(aportesNoviembre)) {
 // 4) Desregulado + TC 15% + aporte del recibo de $30.000.
 {
   const p = plan(quote({ modalidad:'desregulado', zona:'amba', promo:'tc15', aporteRecibo:30000 }), '200');
-  assert.equal(p.bruto, 109630);
-  close(p.descuentoPromocion, 16444.50, 'TC 15% Desregulado');
+  assert.equal(p.bruto, 110167);
+  close(p.descuentoPromocion, 16525.05, 'TC 15% Desregulado');
   close(p.aporteComputable, 69900, 'Aporte computable');
-  close(p.neto, 23285.50, 'Neto Desregulado TC15 + aporte');
+  close(p.neto, 23741.950, 'Neto Desregulado TC15 + aporte');
 }
 
 // Filtros de zona / segmento y exclusividad.
@@ -183,7 +183,7 @@ for (const [categoria, aporte] of Object.entries(aportesNoviembre)) {
   assert.equal(onePromo.id, 'promo40');
 }
 
-// Cuadro actualizado de noviembre: cierre de admisión y códigos regionales.
+// Cuadro actualizado de diciembre: cierre de admisión y códigos regionales.
 for (const modalidad of ['directo', 'desregulado']) {
   for (const [zona, codigo] of [['mendoza','MZA25'],['misiones','MIS25'],['tucuman','TUC25']]) {
     const p = plan(quote({modalidad,zona,promo:'interior25',fechaCotizacion:'2027-01-31'}),'200');

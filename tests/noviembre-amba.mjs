@@ -10,8 +10,8 @@ for (const name of ['precios-premedic', 'promociones-premedic', 'motor-premedic'
 const { PREMEDIC_DATA: data, PremedicMotor: motor, PremedicQuote: formal, PremedicPromos: promos } = context.window;
 let checks = 0, prices = 0;
 for (const modalidad of ['directo','desregulado']) for (const zona of ['amba','interior']) {
-  const month = modalidad === 'desregulado' ? '2026-12' : '2026-11';
-  const vigencia = modalidad === 'desregulado' ? 'Diciembre 2026' : 'Noviembre 2026';
+  const month = '2026-12';
+  const vigencia = 'Diciembre 2026';
   const expected = JSON.parse(fs.readFileSync(`tests/fixtures/${modalidad === 'directo' ? 'directos' : 'desregulados'}-${zona}-${month}.json`, 'utf8'));
   assert.deepEqual(JSON.parse(JSON.stringify(data.tarifas[modalidad][zona])), expected.tarifas);
   const base = { nombre: 'QA Noviembre', modalidad, zona, composicion: 'individual', edadTitular: 29, aporteRecibo: 0, hijos: [] };
@@ -37,12 +37,12 @@ for (const modalidad of ['directo','desregulado']) for (const zona of ['amba','i
 for (const zona of ['cordoba','mendoza','misiones','tucuman']) {
   const state = { nombre: 'QA Interior', modalidad:'desregulado', zona, composicion:'individual', edadTitular:35, aporteRecibo:0, hijos:[] };
   assert.equal(motor.quote(state).vigencia,'Diciembre 2026');
-  assert.equal(motor.quote(state).plans.find(p=>p.plan==='200').neto,109630);
+  assert.equal(motor.quote(state).plans.find(p=>p.plan==='200').neto,110167);
 }
 promos.state.promoId = 'tc15';
 const discounted = motor.quote({nombre:'QA Promo', modalidad:'desregulado',zona:'amba',composicion:'individual',edadTitular:35,aporteRecibo:30000,hijos:[]}).plans.find(p=>p.plan==='200');
-assert.equal(discounted.bruto,109630);
-assert.equal(discounted.neto,23285.5);
+assert.equal(discounted.bruto,110167);
+assert.ok(Math.abs(discounted.neto - 23741.95) < 0.001);
 assert.equal(prices,396);
 assert.equal(checks,360);
-console.log(`PASS Directos noviembre / Desregulados diciembre: ${prices} importes oficiales, ${checks} cotizaciones, cuatro tablas, adicionales, vigencias PDF y promociones conservadas.`);
+console.log(`PASS Directos y Desregulados diciembre: ${prices} importes oficiales, ${checks} cotizaciones, cuatro tablas, adicionales, vigencias PDF y promociones conservadas.`);

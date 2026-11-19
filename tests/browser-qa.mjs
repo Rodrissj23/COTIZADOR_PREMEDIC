@@ -37,7 +37,7 @@ await test('Directo AMBA edad 35 muestra 5 planes y precio correcto del 200',asy
   await page.locator('#resultadosSection').waitFor({state:'visible'});
   assert(await page.locator('#resultados .plan-card').count()===5,'no hay 5 planes');
   const price=(await page.locator('.plan-card[data-plan="200"] .plan-price').innerText()).replace(/\s/g,'');
-  assert(price.includes('$118.765'),`precio 200 inesperado ${price}`);
+  assert(price.includes('$121.735'),`precio 200 inesperado ${price}`);
   await page.close();
 });
 
@@ -161,7 +161,7 @@ await test('Desregulado usa diciembre y Directo conserva diciembre al cambiar de
   assert((await page.locator('#vigenciaBadge').innerText()).includes('Diciembre 2026'),'badge no muestra diciembre');
   await page.locator('#cotizarBtn').click();
   const card=page.locator('.plan-card[data-plan="200"]');
-  assert((await card.innerText()).includes('109.630'),'Plan 200 no muestra precio de diciembre');
+  assert((await card.innerText()).includes('110.167'),'Plan 200 no muestra precio de diciembre');
   await card.locator('.elegir-plan').click();
   await page.locator('#verCotizacionBtn').click();
   assert((await page.locator('#previewContent').innerText()).includes('tarifario Diciembre 2026'),'propuesta no muestra diciembre');
@@ -169,10 +169,10 @@ await test('Desregulado usa diciembre y Directo conserva diciembre al cambiar de
   await page.locator('#zona').selectOption('interior');
   assert((await page.locator('#vigenciaBadge').innerText()).includes('Diciembre 2026'),'Interior no muestra diciembre');
   await page.locator('#cotizarBtn').click();
-  assert((await page.locator('.plan-card[data-plan="200"]').innerText()).includes('109.630'),'Interior perdió precio de diciembre');
+  assert((await page.locator('.plan-card[data-plan="200"]').innerText()).includes('110.167'),'Interior perdió precio de diciembre');
   await page.locator('#zona').selectOption('amba');
   await page.locator('#modalidad').selectOption('directo');
-  assert((await page.locator('#vigenciaBadge').innerText()).includes('Noviembre 2026'),'Directo no conserva noviembre');
+  assert((await page.locator('#vigenciaBadge').innerText()).includes('Diciembre 2026'),'Directo no muestra diciembre');
   await page.close();
 });
 
@@ -196,9 +196,9 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   assert(await page.locator('.plan-card[data-plan="300"]').count()===1,`cotización rechazada: ${await page.locator('#mensaje').innerText()}`);
   const card=page.locator('.plan-card[data-plan="300"]');
   const text=await card.innerText();
-  assert(text.includes('429.288'),'base familiar incorrecta');
+  assert(text.includes('431.392'),'base familiar incorrecta');
   assert(text.includes('197.163,69'),'aporte computable incorrecto');
-  assert(text.includes('232.124,31'),'neto familiar incorrecto');
+  assert(text.includes('234.228,31'),'neto familiar incorrecto');
   assert(!text.includes('205.912,99'),'persiste el factor anterior de 2,55');
   assert(!text.includes('337.073,39'),'se descontó el importe del recibo sin convertirlo');
   assert((await page.locator('#sumAporteRecibo').innerText()).includes('84.619,61'),'resumen no conserva el importe ingresado');
@@ -207,7 +207,7 @@ await test('Aporte familiar del recibo se convierte por 2,33 y coincide con la p
   await page.locator('#verCotizacionBtn').click();
   const preview=await page.locator('#previewContent').innerText();
   assert(preview.includes('- $ 197.163,69'),'propuesta no descuenta el aporte exacto');
-  assert(preview.includes('$ 232.124,31'),'propuesta no coincide con pantalla');
+  assert(preview.includes('$ 234.228,31'),'propuesta no coincide con pantalla');
   await page.close();
 });
 
@@ -240,7 +240,7 @@ await test('Limpiar elimina promoción y categoría de monotributo de la cotizac
   await page.locator('#nombre').fill('Cliente nuevo');
   await page.locator('#edadTitular').fill('35');
   await page.locator('#cotizarBtn').click();
-  assert((await page.locator('.plan-card[data-plan="200"] .plan-price').innerText()).includes('118.765'),'el cliente nuevo heredó el descuento');
+  assert((await page.locator('.plan-card[data-plan="200"] .plan-price').innerText()).includes('121.735'),'el cliente nuevo heredó el descuento');
   await page.close();
 });
 
